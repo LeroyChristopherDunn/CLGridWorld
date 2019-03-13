@@ -23,16 +23,16 @@ class GridWorldState:
             GridWorldState._get_pit_beacon_coords(pit_coords)
 
         return {
-            GridWorldState.SHAPE_KEY: shape,
-            GridWorldState.PLAYER_COORDS_KEY: player_coords,
-            GridWorldState.KEY_COORDS_KEY: key_coords,
-            GridWorldState.LOCK_COORDS_KEY: lock_coords,
-            GridWorldState.PIT_COORDS_KEY: pit_coords,
-            GridWorldState.NW_BEACON_COORDS_KEY: nw_beacon_coords,
-            GridWorldState.NE_BEACON_COORDS_KEY: ne_beacon_coords,
-            GridWorldState.SW_BEACON_COORDS_KEY: sw_beacon_coords,
-            GridWorldState.SE_BEACON_COORDS_KEY: se_beacon_coords,
-            GridWorldState.HAS_KEY_KEY: 0,
+            GridWorldState.SHAPE_KEY:               shape,
+            GridWorldState.PLAYER_COORDS_KEY:       player_coords,
+            GridWorldState.KEY_COORDS_KEY:          key_coords,
+            GridWorldState.LOCK_COORDS_KEY:         lock_coords,
+            GridWorldState.PIT_COORDS_KEY:          pit_coords,
+            GridWorldState.NW_BEACON_COORDS_KEY:    nw_beacon_coords,
+            GridWorldState.NE_BEACON_COORDS_KEY:    ne_beacon_coords,
+            GridWorldState.SW_BEACON_COORDS_KEY:    sw_beacon_coords,
+            GridWorldState.SE_BEACON_COORDS_KEY:    se_beacon_coords,
+            GridWorldState.HAS_KEY_KEY:             0,
         }
 
     @staticmethod
