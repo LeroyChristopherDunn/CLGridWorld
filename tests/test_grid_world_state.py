@@ -167,4 +167,11 @@ class TestGridWorldState(TestCase):
         self.assertEqual(se_beacon, state[GridWorldState.SE_BEACON_KEY], "se beacon coords not equal")
         self.assertEqual(0, state[GridWorldState.HAS_KEY_DICT_KEY], "has key not equal")
 
+    def test_given_single_set_of_pit_coords_should_throw_error(self):
+
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, pit_start_coords=None,
+                          pit_end_coords=(4, 7))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, pit_start_coords=(4, 7),
+                          pit_end_coords=None)
+
 

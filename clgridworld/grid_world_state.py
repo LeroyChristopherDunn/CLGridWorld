@@ -86,8 +86,14 @@ class _GridWorldStateValidator:
         self.key = key
 
     def validate(self):
+        self._validate_pit_coords_pairing()
         self._validate_coords_are_in_bounds()
         self._validate_coords_dont_overlap()
+
+    def _validate_pit_coords_pairing(self):
+
+        if type(self.pit_start) != type(self.pit_end):
+            raise ValueError("invalid pit coords, start %s end %s" % (self.pit_start, self.pit_end))
 
     def _validate_coords_are_in_bounds(self):
 
