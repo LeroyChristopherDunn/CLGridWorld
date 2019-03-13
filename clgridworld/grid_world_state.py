@@ -16,8 +16,8 @@ class GridWorldState:
     @staticmethod
     def create(shape: tuple, player_coords: tuple, key_coords: tuple, lock_coords: tuple, pit_coords: tuple) -> dict:
 
-        GridWorldState._validate_coords_are_in_bounds(key_coords, lock_coords, pit_coords, player_coords, shape)
-        GridWorldState._validate_coords_dont_overlap(key_coords, lock_coords, pit_coords, player_coords)
+        GridWorldState._validate_coords_are_in_bounds(shape, player_coords, key_coords, lock_coords, pit_coords)
+        GridWorldState._validate_coords_dont_overlap(player_coords, key_coords, lock_coords, pit_coords)
 
         ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords = \
             GridWorldState._get_pit_beacon_coords(pit_coords)
@@ -36,7 +36,7 @@ class GridWorldState:
         }
 
     @staticmethod
-    def _validate_coords_are_in_bounds(key_coords, lock_coords, pit_coords, player_coords, shape):
+    def _validate_coords_are_in_bounds(shape, player_coords, key_coords, lock_coords, pit_coords):
 
         if not GridWorldState._is_in_shape_bounds(player_coords, shape):
             raise ValueError("Player coords %s not in shape bounds %s" % (player_coords, shape))
@@ -52,7 +52,7 @@ class GridWorldState:
                 raise ValueError("lock coords %s not in shape bounds %s" % (pit_coord, shape))
 
     @staticmethod
-    def _validate_coords_dont_overlap(key_coords, lock_coords, pit_coords, player_coords):
+    def _validate_coords_dont_overlap(player_coords, key_coords, lock_coords, pit_coords):
 
         if player_coords == key_coords:
             raise ValueError("player coords %s equal to key coords %s" % (player_coords, key_coords))
