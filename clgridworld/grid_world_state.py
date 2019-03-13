@@ -63,16 +63,21 @@ class GridWorldState:
         if key_coords == lock_coords:
             raise ValueError("key coords %s equal to lock coords %s" % (player_coords, key_coords))
 
-        if pit_coords[0][0] <= player_coords[0] <= pit_coords[1][0] \
-                and pit_coords[0][1] <= player_coords[1] < pit_coords[1][1]:
+        pit_row_start_incl = pit_coords[0][0]
+        pit_col_start_incl = pit_coords[0][1]
+        pit_row_end_excl = pit_coords[1][0]
+        pit_col_end_excl = pit_coords[1][1]
+
+        if pit_row_start_incl <= player_coords[0] <= pit_row_end_excl \
+                and pit_col_start_incl <= player_coords[1] < pit_col_end_excl:
             raise ValueError("player coords %s within pit coords %s" % (player_coords, pit_coords))
 
-        if pit_coords[0][0] <= lock_coords[0] <= pit_coords[1][0] \
-                and pit_coords[0][1] <= lock_coords[1] < pit_coords[1][1]:
+        if pit_row_start_incl <= lock_coords[0] <= pit_row_end_excl \
+                and pit_col_start_incl <= lock_coords[1] < pit_col_end_excl:
             raise ValueError("lock coords %s within pit coords %s" % (lock_coords, pit_coords))
 
-        if pit_coords[0][0] <= key_coords[0] <= pit_coords[1][0] \
-                and pit_coords[0][1] <= key_coords[1] < pit_coords[1][1]:
+        if pit_row_start_incl <= key_coords[0] <= pit_row_end_excl \
+                and pit_col_start_incl <= key_coords[1] < pit_col_end_excl:
             raise ValueError("key coords %s within pit coords %s" % (key_coords, pit_coords))
 
     @staticmethod
