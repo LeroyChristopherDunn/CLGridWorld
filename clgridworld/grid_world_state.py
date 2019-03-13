@@ -93,6 +93,7 @@ class _GridWorldStateValidator:
 
     def validate(self):
         self._validate_pit_coords_pairing()
+        self._validate_key_lock_pairing()
         self._validate_coords_are_in_bounds()
         self._validate_coords_dont_overlap()
 
@@ -100,6 +101,12 @@ class _GridWorldStateValidator:
 
         if type(self.pit_start) != type(self.pit_end):
             raise ValueError("invalid pit coords, start %s end %s" % (self.pit_start, self.pit_end))
+
+    def _validate_key_lock_pairing(self):
+
+        if self.key is None and self.lock is None:
+            raise ValueError("key or lock coords required")
+
 
     def _validate_coords_are_in_bounds(self):
 
@@ -152,3 +159,4 @@ class _GridWorldStateValidator:
         if self.key is not None and pit_row_start <= self.key[0] <= pit_row_end and pit_col_start <= self.key[1] <= pit_col_end:
             raise ValueError("key coords %s within pit start coords %s and pit end coords %s" %
                              (self.key, self.pit_start, self.pit_end))
+
