@@ -38,17 +38,17 @@ class GridWorldState:
     @staticmethod
     def _validate_coords_are_in_bounds(key_coords, lock_coords, pit_coords, player_coords, shape):
 
-        if not GridWorldState._is_in_bounds(player_coords, shape):
+        if not GridWorldState._is_in_shape_bounds(player_coords, shape):
             raise ValueError("Player coords %s not in shape bounds %s" % (player_coords, shape))
 
-        if not GridWorldState._is_in_bounds(key_coords, shape):
+        if not GridWorldState._is_in_shape_bounds(key_coords, shape):
             raise ValueError("Key coords %s not in shape bounds %s" % (key_coords, shape))
 
-        if not GridWorldState._is_in_bounds(lock_coords, shape):
+        if not GridWorldState._is_in_shape_bounds(lock_coords, shape):
             raise ValueError("lock coords %s not in shape bounds %s" % (lock_coords, shape))
 
         for pit_coord in pit_coords:
-            if not GridWorldState._is_in_bounds(pit_coord, shape):
+            if not GridWorldState._is_in_shape_bounds(pit_coord, shape):
                 raise ValueError("lock coords %s not in shape bounds %s" % (pit_coord, shape))
 
     @staticmethod
@@ -76,7 +76,7 @@ class GridWorldState:
             raise ValueError("key coords %s within pit coords %s" % (key_coords, pit_coords))
 
     @staticmethod
-    def _is_in_bounds(point: tuple, shape: tuple) -> bool:
+    def _is_in_shape_bounds(point: tuple, shape: tuple) -> bool:
         return 0 <= point[0] < shape[0] and 0 <= point[1] < shape[1]
 
     @staticmethod
