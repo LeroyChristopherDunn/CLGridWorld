@@ -27,7 +27,7 @@ class GridWorldState:
         validator.validate()
 
         ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords = \
-            GridWorldState._get_pit_beacon_coords(pit_start_coords, pit_end_coords)
+            GridWorldState._get_pit_beacon_coords(shape, pit_start_coords, pit_end_coords)
 
         return {
             GridWorldState.GRID_SHAPE_KEY:      shape,
@@ -44,7 +44,7 @@ class GridWorldState:
         }
 
     @staticmethod
-    def _get_pit_beacon_coords(pit_start_coords, pit_end_coords):
+    def _get_pit_beacon_coords(shape, pit_start_coords, pit_end_coords):
 
         pit_row_start = pit_start_coords[0]
         pit_col_start = pit_start_coords[1]
@@ -55,6 +55,18 @@ class GridWorldState:
         ne_beacon_coords = (pit_row_start - 1, pit_col_end + 1)
         sw_beacon_coords = (pit_row_end + 1, pit_col_start - 1)
         se_beacon_coords = (pit_row_end + 1, pit_col_end + 1)
+
+        if not _GridWorldStateValidator.is_in_shape_bounds(nw_beacon_coords, shape):
+            nw_beacon_coords = None
+
+        if not _GridWorldStateValidator.is_in_shape_bounds(ne_beacon_coords, shape):
+            ne_beacon_coords = None
+
+        if not _GridWorldStateValidator.is_in_shape_bounds(sw_beacon_coords, shape):
+            sw_beacon_coords = None
+
+        if not _GridWorldStateValidator.is_in_shape_bounds(se_beacon_coords, shape):
+            se_beacon_coords = None
 
         return ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords
 
@@ -76,23 +88,23 @@ class _GridWorldStateValidator:
 
     def _validate_coords_are_in_bounds(self):
 
-        if not self._is_in_shape_bounds(self.player, self.grid_shape):
+        if not self.is_in_shape_bounds(self.player, self.grid_shape):
             raise ValueError("Player coords %s not in grid_shape bounds %s" % (self.player, self.grid_shape))
 
-        if not self._is_in_shape_bounds(self.key, self.grid_shape):
+        if not self.is_in_shape_bounds(self.key, self.grid_shape):
             raise ValueError("Key coords %s not in grid_shape bounds %s" % (self.key, self.grid_shape))
 
-        if not self._is_in_shape_bounds(self.lock, self.grid_shape):
+        if not self.is_in_shape_bounds(self.lock, self.grid_shape):
             raise ValueError("lock coords %s not in grid_shape bounds %s" % (self.lock, self.grid_shape))
 
-        if not self._is_in_shape_bounds(self.pit_start, self.grid_shape):
+        if not self.is_in_shape_bounds(self.pit_start, self.grid_shape):
             raise ValueError("lock coords %s not in grid_shape bounds %s" % (self.pit_start, self.grid_shape))
 
-        if not self._is_in_shape_bounds(self.pit_end, self.grid_shape):
+        if not self.is_in_shape_bounds(self.pit_end, self.grid_shape):
             raise ValueError("lock coords %s not in grid_shape bounds %s" % (self.pit_end, self.grid_shape))
 
-    # noinspection PyMethodMayBeStatic
-    def _is_in_shape_bounds(self, point: tuple, shape: tuple) -> bool:
+    @staticmethod
+    def is_in_shape_bounds(point: tuple, shape: tuple) -> bool:
         return 0 <= point[0] < shape[0] and 0 <= point[1] < shape[1]
 
     def _validate_coords_dont_overlap(self):

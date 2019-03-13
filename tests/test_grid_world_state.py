@@ -92,4 +92,50 @@ class TestGridWorldState(TestCase):
         self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, key_coords=(5, 7),
                           pit_start_coords=(4, 2), pit_end_coords=(5, 7))
 
+    def test_given_pit_on_sw_bound_should_correctly_create_state(self):
+
+        shape = (20, 20)
+        pit_start_coords = (17, 0)
+        pit_end_coords = (19, 3)
+
+        ne_beacon = (16, 4)
+
+        state = TestGridWorldState.create_state_with_spec(shape=shape, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
+
+        self.assertEqual(None, state[GridWorldState.NW_BEACON_KEY], "nw beacon coords not equal")
+        self.assertEqual(ne_beacon, state[GridWorldState.NE_BEACON_KEY], "ne beacon coords not equal")
+        self.assertEqual(None, state[GridWorldState.SW_BEACON_KEY], "sw beacon coords not equal")
+        self.assertEqual(None, state[GridWorldState.SE_BEACON_KEY], "se beacon coords not equal")
+
+    def test_given_pit_on_south_bound_should_correctly_create_state(self):
+
+        shape = (20, 20)
+        pit_start_coords = (17, 3)
+        pit_end_coords = (19, 6)
+
+        nw_beacon = (16, 2)
+        ne_beacon = (16, 7)
+
+        state = TestGridWorldState.create_state_with_spec(shape=shape, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
+
+        self.assertEqual(nw_beacon, state[GridWorldState.NW_BEACON_KEY], "nw beacon coords not equal")
+        self.assertEqual(ne_beacon, state[GridWorldState.NE_BEACON_KEY], "ne beacon coords not equal")
+        self.assertEqual(None, state[GridWorldState.SW_BEACON_KEY], "sw beacon coords not equal")
+        self.assertEqual(None, state[GridWorldState.SE_BEACON_KEY], "se beacon coords not equal")
+
+    def test_given_pit_on_ne_bound_should_correctly_create_state(self):
+
+        shape = (20, 20)
+        pit_start_coords = (0, 17)
+        pit_end_coords = (3, 19)
+
+        sw_beacon = (4, 16)
+
+        state = TestGridWorldState.create_state_with_spec(shape=shape, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
+
+        self.assertEqual(None, state[GridWorldState.NW_BEACON_KEY], "nw beacon coords not equal")
+        self.assertEqual(None, state[GridWorldState.NE_BEACON_KEY], "ne beacon coords not equal")
+        self.assertEqual(sw_beacon, state[GridWorldState.SW_BEACON_KEY], "sw beacon coords not equal")
+        self.assertEqual(None, state[GridWorldState.SE_BEACON_KEY], "se beacon coords not equal")
+
 
