@@ -58,20 +58,20 @@ class TestGridWorldState(TestCase):
 
     def test_given_pit_coords_out_of_bounds_should_throw_error(self):
 
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, pit_start_coords=(-1, 2),
-                          pit_end_coords=(4, 7), shape=(10, 10))
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, pit_start_coords=(4, 2),
-                          pit_end_coords=(4, 10), shape=(10, 10))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec,
+                          pit_start_coords=(-1, 2), pit_end_coords=(4, 7), shape=(10, 10))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec,
+                          pit_start_coords=(4, 2), pit_end_coords=(4, 10), shape=(10, 10))
 
     def test_given_player_coords_overlap_with_key_coords_should_throw_error(self):
 
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, player_coords=(0, 0),
-                          key_coords=(0, 0))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec,
+                          player_coords=(0, 0), key_coords=(0, 0))
 
     def test_given_player_coords_overlap_with_lock_coords_should_throw_error(self):
 
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, player_coords=(1, 1),
-                          lock_coords=(1, 1))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec,
+                          player_coords=(1, 1), lock_coords=(1, 1))
 
     def test_given_key_coords_overlap_with_lock_coords_should_throw_error(self):
 
@@ -79,18 +79,18 @@ class TestGridWorldState(TestCase):
 
     def test_given_player_coords_overlap_with_pit_coords_should_throw_error(self):
 
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, player_coords=(4, 2),
-                          pit_start_coords=(4, 2), pit_end_coords=(4, 7))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec,
+                          player_coords=(4, 2), pit_start_coords=(4, 2), pit_end_coords=(4, 7))
 
     def test_given_lock_coords_overlap_with_pit_coords_should_throw_error(self):
 
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, lock_coords=(5, 3),
-                          pit_start_coords=(4, 2), pit_end_coords=(5, 7))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec,
+                          lock_coords=(5, 3), pit_start_coords=(4, 2), pit_end_coords=(5, 7))
 
     def test_given_key_coords_overlap_with_pit_coords_should_throw_error(self):
 
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, key_coords=(5, 7),
-                          pit_start_coords=(4, 2), pit_end_coords=(5, 7))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec,
+                          key_coords=(5, 7), pit_start_coords=(4, 2), pit_end_coords=(5, 7))
 
     def test_given_pit_on_sw_bound_should_correctly_create_state(self):
 
@@ -100,7 +100,8 @@ class TestGridWorldState(TestCase):
 
         ne_beacon = (16, 4)
 
-        state = TestGridWorldState.create_state_with_spec(shape=shape, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
+        state = TestGridWorldState.create_state_with_spec(
+            shape=shape, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
 
         self.assertEqual(None, state[GridWorldState.NW_BEACON_KEY], "nw beacon coords not equal")
         self.assertEqual(ne_beacon, state[GridWorldState.NE_BEACON_KEY], "ne beacon coords not equal")
@@ -116,7 +117,8 @@ class TestGridWorldState(TestCase):
         nw_beacon = (16, 2)
         ne_beacon = (16, 7)
 
-        state = TestGridWorldState.create_state_with_spec(shape=shape, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
+        state = TestGridWorldState.create_state_with_spec(
+            shape=shape, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
 
         self.assertEqual(nw_beacon, state[GridWorldState.NW_BEACON_KEY], "nw beacon coords not equal")
         self.assertEqual(ne_beacon, state[GridWorldState.NE_BEACON_KEY], "ne beacon coords not equal")
@@ -131,7 +133,8 @@ class TestGridWorldState(TestCase):
 
         sw_beacon = (4, 16)
 
-        state = TestGridWorldState.create_state_with_spec(shape=shape, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
+        state = TestGridWorldState.create_state_with_spec(
+            shape=shape, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
 
         self.assertEqual(None, state[GridWorldState.NW_BEACON_KEY], "nw beacon coords not equal")
         self.assertEqual(None, state[GridWorldState.NE_BEACON_KEY], "ne beacon coords not equal")
@@ -169,10 +172,10 @@ class TestGridWorldState(TestCase):
 
     def test_given_single_set_of_pit_coords_should_throw_error(self):
 
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, pit_start_coords=None,
-                          pit_end_coords=(4, 7))
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, pit_start_coords=(4, 7),
-                          pit_end_coords=None)
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec,
+                          pit_start_coords=None, pit_end_coords=(4, 7))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec,
+                          pit_start_coords=(4, 7), pit_end_coords=None)
 
     def test_given_no_key_should_correctly_create_state(self):
 
@@ -195,5 +198,5 @@ class TestGridWorldState(TestCase):
 
     def test_given_no_key_and_lock_should_throw_error(self):
 
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, key_coords=None,
-                          lock_coords=None)
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec,
+                          key_coords=None, lock_coords=None)
