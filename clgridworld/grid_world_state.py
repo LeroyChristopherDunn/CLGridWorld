@@ -17,8 +17,13 @@ class GridWorldState:
     @staticmethod
     def create(shape: tuple, player_coords: tuple, key_coords: tuple, lock_coords: tuple, pit_start_coords: tuple, pit_end_coords: tuple) -> dict:
 
-        GridWorldState._validate_coords_are_in_bounds(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords)
-        GridWorldState._validate_coords_dont_overlap(player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords)
+        validator = _GridWorldStateValidator(shape,
+                                             player_coords,
+                                             key_coords,
+                                             lock_coords,
+                                             pit_start_coords,
+                                             pit_end_coords)
+        validator.validate()
 
         ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords = \
             GridWorldState._get_pit_beacon_coords(pit_start_coords, pit_end_coords)
@@ -38,54 +43,6 @@ class GridWorldState:
         }
 
     @staticmethod
-    def _validate_coords_are_in_bounds(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords):
-
-        if not GridWorldState._is_in_shape_bounds(player_coords, shape):
-            raise ValueError("Player coords %s not in shape bounds %s" % (player_coords, shape))
-
-        if not GridWorldState._is_in_shape_bounds(key_coords, shape):
-            raise ValueError("Key coords %s not in shape bounds %s" % (key_coords, shape))
-
-        if not GridWorldState._is_in_shape_bounds(lock_coords, shape):
-            raise ValueError("lock coords %s not in shape bounds %s" % (lock_coords, shape))
-
-        if not GridWorldState._is_in_shape_bounds(pit_start_coords, shape):
-            raise ValueError("lock coords %s not in shape bounds %s" % (pit_start_coords, shape))
-
-        if not GridWorldState._is_in_shape_bounds(pit_end_coords, shape):
-            raise ValueError("lock coords %s not in shape bounds %s" % (pit_end_coords, shape))
-
-    @staticmethod
-    def _validate_coords_dont_overlap(player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords):
-
-        if player_coords == key_coords:
-            raise ValueError("player coords %s equal to key coords %s" % (player_coords, key_coords))
-
-        if player_coords == lock_coords:
-            raise ValueError("player coords %s equal to lock coords %s" % (player_coords, key_coords))
-
-        if key_coords == lock_coords:
-            raise ValueError("key coords %s equal to lock coords %s" % (player_coords, key_coords))
-
-        pit_row_start = pit_start_coords[0]
-        pit_col_start = pit_start_coords[1]
-        pit_row_end = pit_end_coords[0]
-        pit_col_end = pit_end_coords[1]
-
-        if pit_row_start <= player_coords[0] <= pit_row_end and pit_col_start <= player_coords[1] <= pit_col_end:
-            raise ValueError("player coords %s within pit start coords %s and pit end coords %s" % (player_coords, pit_start_coords, pit_end_coords))
-
-        if pit_row_start <= lock_coords[0] <= pit_row_end and pit_col_start <= lock_coords[1] <= pit_col_end:
-            raise ValueError("lock coords %s within pit start coords %s and pit end coords %s" % (lock_coords, pit_start_coords, pit_end_coords))
-
-        if pit_row_start <= key_coords[0] <= pit_row_end and pit_col_start <= key_coords[1] <= pit_col_end:
-            raise ValueError("key coords %s within pit start coords %s and pit end coords %s" % (key_coords, pit_start_coords, pit_end_coords))
-
-    @staticmethod
-    def _is_in_shape_bounds(point: tuple, shape: tuple) -> bool:
-        return 0 <= point[0] < shape[0] and 0 <= point[1] < shape[1]
-
-    @staticmethod
     def _get_pit_beacon_coords(pit_start_coords, pit_end_coords):
 
         pit_row_start = pit_start_coords[0]
@@ -99,3 +56,65 @@ class GridWorldState:
         se_beacon_coords = (pit_row_end + 1, pit_col_end + 1)
 
         return ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords
+
+
+class _GridWorldStateValidator:
+
+    def __init__(self, grid_shape: tuple, player: tuple, key: tuple, lock: tuple, pit_start: tuple, pit_end: tuple):
+        self.grid_shape = grid_shape
+        self.player = player
+        self.pit_end = pit_end
+        self.pit_start = pit_start
+        self.lock = lock
+        self.key = key
+
+    def validate(self):
+        self._validate_coords_are_in_bounds()
+        self._validate_coords_dont_overlap()
+
+    def _validate_coords_are_in_bounds(self):
+
+        if not self._is_in_shape_bounds(self.player, self.grid_shape):
+            raise ValueError("Player coords %s not in grid_shape bounds %s" % (self.player, self.grid_shape))
+
+        if not self._is_in_shape_bounds(self.key, self.grid_shape):
+            raise ValueError("Key coords %s not in grid_shape bounds %s" % (self.key, self.grid_shape))
+
+        if not self._is_in_shape_bounds(self.lock, self.grid_shape):
+            raise ValueError("lock coords %s not in grid_shape bounds %s" % (self.lock, self.grid_shape))
+
+        if not self._is_in_shape_bounds(self.pit_start, self.grid_shape):
+            raise ValueError("lock coords %s not in grid_shape bounds %s" % (self.pit_start, self.grid_shape))
+
+        if not self._is_in_shape_bounds(self.pit_end, self.grid_shape):
+            raise ValueError("lock coords %s not in grid_shape bounds %s" % (self.pit_end, self.grid_shape))
+
+    # noinspection PyMethodMayBeStatic
+    def _is_in_shape_bounds(self, point: tuple, shape: tuple) -> bool:
+        return 0 <= point[0] < shape[0] and 0 <= point[1] < shape[1]
+
+    def _validate_coords_dont_overlap(self):
+
+        if self.player == self.key:
+            raise ValueError("player coords %s equal to key coords %s" % (self.player, self.key))
+
+        if self.player == self.lock:
+            raise ValueError("player coords %s equal to lock coords %s" % (self.player, self.lock))
+
+        if self.key == self.lock:
+            raise ValueError("key coords %s equal to lock coords %s" % (self.key, self.lock))
+
+        pit_row_start = self.pit_start[0]
+        pit_col_start = self.pit_start[1]
+        pit_row_end = self.pit_end[0]
+        pit_col_end = self.pit_end[1]
+
+        if pit_row_start <= self.player[0] <= pit_row_end and pit_col_start <= self.player[1] <= pit_col_end:
+            raise ValueError("player coords %s within pit start coords %s and pit end coords %s" % (self.player, self.pit_start, self.pit_end))
+
+        if pit_row_start <= self.lock[0] <= pit_row_end and pit_col_start <= self.lock[1] <= pit_col_end:
+            raise ValueError("lock coords %s within pit start coords %s and pit end coords %s" % (self.lock, self.pit_start, self.pit_end))
+
+        if pit_row_start <= self.key[0] <= pit_row_end and pit_col_start <= self.key[1] <= pit_col_end:
+            raise ValueError("key coords %s within pit start coords %s and pit end coords %s" % (self.key, self.pit_start, self.pit_end))
+
