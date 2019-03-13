@@ -109,7 +109,7 @@ class _GridWorldStateValidator:
         if self.key is not None and not self.is_in_shape_bounds(self.key, self.grid_shape):
             raise ValueError("Key coords %s not in grid_shape bounds %s" % (self.key, self.grid_shape))
 
-        if not self.is_in_shape_bounds(self.lock, self.grid_shape):
+        if self.lock is not None and not self.is_in_shape_bounds(self.lock, self.grid_shape):
             raise ValueError("lock coords %s not in grid_shape bounds %s" % (self.lock, self.grid_shape))
 
         if self.pit_start is not None and not self.is_in_shape_bounds(self.pit_start, self.grid_shape):
@@ -145,7 +145,7 @@ class _GridWorldStateValidator:
             raise ValueError("player coords %s within pit start coords %s and pit end coords %s" %
                              (self.player, self.pit_start, self.pit_end))
 
-        if pit_row_start <= self.lock[0] <= pit_row_end and pit_col_start <= self.lock[1] <= pit_col_end:
+        if self.lock is not None and pit_row_start <= self.lock[0] <= pit_row_end and pit_col_start <= self.lock[1] <= pit_col_end:
             raise ValueError("lock coords %s within pit start coords %s and pit end coords %s" %
                              (self.lock, self.pit_start, self.pit_end))
 

@@ -185,4 +185,12 @@ class TestGridWorldState(TestCase):
         self.assertEqual(key_coords, state[GridWorldState.KEY_DICT_KEY], "key coords not equal")
         self.assertEqual(has_key, state[GridWorldState.HAS_KEY_DICT_KEY], "has key not equal")
 
+    def test_given_no_lock_should_correctly_create_state(self):
+
+        lock_coords = None
+
+        state = TestGridWorldState.create_state_with_spec(lock_coords=lock_coords)
+
+        self.assertEqual(lock_coords, state[GridWorldState.LOCK_KEY], "lock coords not equal")
+
 
