@@ -29,7 +29,7 @@ class GridWorldState:
         ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords = \
             GridWorldState._get_pit_beacon_coords(shape, pit_start_coords, pit_end_coords)
 
-        has_key = GridWorldState._get_has_key(key_coords)
+        has_key = 1 if key_coords is None else 0
 
         return {
             GridWorldState.GRID_SHAPE_KEY:      shape,
@@ -74,10 +74,6 @@ class GridWorldState:
             se_beacon_coords = None
 
         return ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords
-
-    @staticmethod
-    def _get_has_key(key_coords):
-        return 1 if key_coords is None else 0
 
 
 class _GridWorldStateValidator:
