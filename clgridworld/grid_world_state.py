@@ -111,10 +111,10 @@ class _GridWorldStateValidator:
     def _validate_coords_are_in_bounds(self):
 
         if not self.is_in_shape_bounds(self.player, self.grid_shape):
-            raise ValueError("Player coords %s not in grid_shape bounds %s" % (self.player, self.grid_shape))
+            raise ValueError("player coords %s not in grid_shape bounds %s" % (self.player, self.grid_shape))
 
         if self.key is not None and not self.is_in_shape_bounds(self.key, self.grid_shape):
-            raise ValueError("Key coords %s not in grid_shape bounds %s" % (self.key, self.grid_shape))
+            raise ValueError("key coords %s not in grid_shape bounds %s" % (self.key, self.grid_shape))
 
         if self.lock is not None and not self.is_in_shape_bounds(self.lock, self.grid_shape):
             raise ValueError("lock coords %s not in grid_shape bounds %s" % (self.lock, self.grid_shape))
