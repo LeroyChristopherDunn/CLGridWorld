@@ -8,6 +8,10 @@ class GridWorldState:
     LOCK_COORDS_KEY = "lock_coords"
     PIT_COORDS_KEY = "pit_coords"
     HAS_KEY_KEY = "has_key"
+    NW_BEACON_COORDS_KEY = "nw_beacon_coords"
+    NE_BEACON_COORDS_KEY = "ne_beacon_coords"
+    SW_BEACON_COORDS_KEY = "sw_beacon_coords"
+    SE_BEACON_COORDS_KEY = "se_beacon_coords"
 
     @staticmethod
     def create(shape: tuple, player_coords: tuple, key_coords: tuple, lock_coords: tuple, pit_coords: tuple) -> dict:
@@ -15,12 +19,19 @@ class GridWorldState:
         GridWorldState._validate_coords_are_in_bounds(key_coords, lock_coords, pit_coords, player_coords, shape)
         GridWorldState._validate_coords_dont_overlap(key_coords, lock_coords, pit_coords, player_coords)
 
+        ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords = \
+            GridWorldState._get_pit_beacon_coords(pit_coords)
+
         return {
             GridWorldState.SHAPE_KEY: shape,
             GridWorldState.PLAYER_COORDS_KEY: player_coords,
             GridWorldState.KEY_COORDS_KEY: key_coords,
             GridWorldState.LOCK_COORDS_KEY: lock_coords,
             GridWorldState.PIT_COORDS_KEY: pit_coords,
+            GridWorldState.NW_BEACON_COORDS_KEY: nw_beacon_coords,
+            GridWorldState.NE_BEACON_COORDS_KEY: ne_beacon_coords,
+            GridWorldState.SW_BEACON_COORDS_KEY: sw_beacon_coords,
+            GridWorldState.SE_BEACON_COORDS_KEY: se_beacon_coords,
             GridWorldState.HAS_KEY_KEY: 0,
         }
 
@@ -67,3 +78,18 @@ class GridWorldState:
     @staticmethod
     def _is_in_bounds(point: tuple, shape: tuple) -> bool:
         return 0 <= point[0] < shape[0] and 0 <= point[1] < shape[1]
+
+    @staticmethod
+    def _get_pit_beacon_coords(pit_coords):
+
+        pit_row_start_incl = pit_coords[0][0]
+        pit_col_start_incl = pit_coords[0][1]
+        pit_row_end_excl = pit_coords[1][0]
+        pit_col_end_excl = pit_coords[1][1]
+
+        nw_beacon_coords = (pit_row_start_incl - 1, pit_col_start_incl - 1)
+        ne_beacon_coords = (pit_row_start_incl - 1, pit_col_end_excl)
+        sw_beacon_coords = (pit_row_end_excl, pit_col_start_incl - 1)
+        se_beacon_coords = (pit_row_end_excl, pit_col_end_excl)
+
+        return ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords
