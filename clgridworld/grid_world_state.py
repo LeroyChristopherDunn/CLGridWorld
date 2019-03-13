@@ -15,8 +15,8 @@ class GridWorldState:
     HAS_KEY_DICT_KEY = "has_key"
 
     @staticmethod
-    def create(shape: tuple, player_coords: tuple, key_coords: tuple, lock_coords: tuple, pit_start_coords: tuple,
-               pit_end_coords: tuple) -> dict:
+    def create(shape: tuple, player_coords: tuple, key_coords: tuple, lock_coords: tuple, pit_start_coords,
+               pit_end_coords) -> dict:
 
         validator = _GridWorldStateValidator(shape,
                                              player_coords,
@@ -45,6 +45,9 @@ class GridWorldState:
 
     @staticmethod
     def _get_pit_beacon_coords(shape, pit_start_coords, pit_end_coords):
+
+        if pit_start_coords is None and pit_end_coords is None:
+            return None, None, None, None
 
         pit_row_start = pit_start_coords[0]
         pit_col_start = pit_start_coords[1]
@@ -97,10 +100,10 @@ class _GridWorldStateValidator:
         if not self.is_in_shape_bounds(self.lock, self.grid_shape):
             raise ValueError("lock coords %s not in grid_shape bounds %s" % (self.lock, self.grid_shape))
 
-        if not self.is_in_shape_bounds(self.pit_start, self.grid_shape):
+        if self.pit_start is not None and not self.is_in_shape_bounds(self.pit_start, self.grid_shape):
             raise ValueError("lock coords %s not in grid_shape bounds %s" % (self.pit_start, self.grid_shape))
 
-        if not self.is_in_shape_bounds(self.pit_end, self.grid_shape):
+        if self.pit_end is not None and not self.is_in_shape_bounds(self.pit_end, self.grid_shape):
             raise ValueError("lock coords %s not in grid_shape bounds %s" % (self.pit_end, self.grid_shape))
 
     @staticmethod
@@ -117,6 +120,9 @@ class _GridWorldStateValidator:
 
         if self.key == self.lock:
             raise ValueError("key coords %s equal to lock coords %s" % (self.key, self.lock))
+
+        if self.pit_start is None and self.pit_end is None:
+            return
 
         pit_row_start = self.pit_start[0]
         pit_col_start = self.pit_start[1]

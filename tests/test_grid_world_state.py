@@ -138,4 +138,33 @@ class TestGridWorldState(TestCase):
         self.assertEqual(sw_beacon, state[GridWorldState.SW_BEACON_KEY], "sw beacon coords not equal")
         self.assertEqual(None, state[GridWorldState.SE_BEACON_KEY], "se beacon coords not equal")
 
+    def test_given_no_pit_should_correctly_create_state(self):
+
+        #  target task spec in 'Autonomous Task Sequencing... Narvekar et al 2017'
+        shape = (10, 10)
+        player_coords = (1, 4)
+        key_coords = (7, 5)
+        lock_coords = (1, 1)
+        pit_start_coords = None
+        pit_end_coords = None
+
+        nw_beacon = None
+        ne_beacon = None
+        sw_beacon = None
+        se_beacon = None
+
+        state = GridWorldState.create(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords)
+
+        self.assertEqual(shape, state[GridWorldState.GRID_SHAPE_KEY], "shape not equal")
+        self.assertEqual(player_coords, state[GridWorldState.PLAYER_KEY], "player coords not equal")
+        self.assertEqual(key_coords, state[GridWorldState.KEY_DICT_KEY], "key coords not equal")
+        self.assertEqual(lock_coords, state[GridWorldState.LOCK_KEY], "lock coords not equal")
+        self.assertEqual(pit_start_coords, state[GridWorldState.PIT_START_KEY], "pit start key not equal")
+        self.assertEqual(pit_end_coords, state[GridWorldState.PIT_END_KEY], "pit end key not equal")
+        self.assertEqual(nw_beacon, state[GridWorldState.NW_BEACON_KEY], "nw beacon coords not equal")
+        self.assertEqual(ne_beacon, state[GridWorldState.NE_BEACON_KEY], "ne beacon coords not equal")
+        self.assertEqual(sw_beacon, state[GridWorldState.SW_BEACON_KEY], "sw beacon coords not equal")
+        self.assertEqual(se_beacon, state[GridWorldState.SE_BEACON_KEY], "se beacon coords not equal")
+        self.assertEqual(0, state[GridWorldState.HAS_KEY_DICT_KEY], "has key not equal")
+
 
