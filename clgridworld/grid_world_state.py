@@ -15,7 +15,8 @@ class GridWorldState:
     HAS_KEY_DICT_KEY = "has_key"
 
     @staticmethod
-    def create(shape: tuple, player_coords: tuple, key_coords: tuple, lock_coords: tuple, pit_start_coords: tuple, pit_end_coords: tuple) -> dict:
+    def create(shape: tuple, player_coords: tuple, key_coords: tuple, lock_coords: tuple, pit_start_coords: tuple,
+               pit_end_coords: tuple) -> dict:
 
         validator = _GridWorldStateValidator(shape,
                                              player_coords,
@@ -61,6 +62,7 @@ class GridWorldState:
 class _GridWorldStateValidator:
 
     def __init__(self, grid_shape: tuple, player: tuple, key: tuple, lock: tuple, pit_start: tuple, pit_end: tuple):
+
         self.grid_shape = grid_shape
         self.player = player
         self.pit_end = pit_end
@@ -110,11 +112,13 @@ class _GridWorldStateValidator:
         pit_col_end = self.pit_end[1]
 
         if pit_row_start <= self.player[0] <= pit_row_end and pit_col_start <= self.player[1] <= pit_col_end:
-            raise ValueError("player coords %s within pit start coords %s and pit end coords %s" % (self.player, self.pit_start, self.pit_end))
+            raise ValueError("player coords %s within pit start coords %s and pit end coords %s" %
+                             (self.player, self.pit_start, self.pit_end))
 
         if pit_row_start <= self.lock[0] <= pit_row_end and pit_col_start <= self.lock[1] <= pit_col_end:
-            raise ValueError("lock coords %s within pit start coords %s and pit end coords %s" % (self.lock, self.pit_start, self.pit_end))
+            raise ValueError("lock coords %s within pit start coords %s and pit end coords %s" %
+                             (self.lock, self.pit_start, self.pit_end))
 
         if pit_row_start <= self.key[0] <= pit_row_end and pit_col_start <= self.key[1] <= pit_col_end:
-            raise ValueError("key coords %s within pit start coords %s and pit end coords %s" % (self.key, self.pit_start, self.pit_end))
-
+            raise ValueError("key coords %s within pit start coords %s and pit end coords %s" %
+                             (self.key, self.pit_start, self.pit_end))

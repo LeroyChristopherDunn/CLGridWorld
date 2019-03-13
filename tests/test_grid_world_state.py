@@ -6,7 +6,8 @@ from clgridworld.grid_world_state import GridWorldState
 class TestGridWorldState(TestCase):
 
     @staticmethod
-    def create_state_with_spec(shape=(10, 10), player_coords=(1, 4), key_coords=(7, 5), lock_coords=(1, 1), pit_start_coords=(4, 2), pit_end_coords=(4, 7)):
+    def create_state_with_spec(shape=(10, 10), player_coords=(1, 4), key_coords=(7, 5), lock_coords=(1, 1),
+                               pit_start_coords=(4, 2), pit_end_coords=(4, 7)):
 
         #  defaults to target task spec in 'Autonomous Task Sequencing... Narvekar et al 2017'
         return GridWorldState.create(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords)
@@ -57,16 +58,20 @@ class TestGridWorldState(TestCase):
 
     def test_given_pit_coords_out_of_bounds_should_throw_error(self):
 
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, pit_start_coords=(-1, 2), pit_end_coords=(4, 7), shape=(10, 10))
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, pit_start_coords=(4, 2), pit_end_coords=(4, 10), shape=(10, 10))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, pit_start_coords=(-1, 2),
+                          pit_end_coords=(4, 7), shape=(10, 10))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, pit_start_coords=(4, 2),
+                          pit_end_coords=(4, 10), shape=(10, 10))
 
     def test_given_player_coords_overlap_with_key_coords_should_throw_error(self):
 
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, player_coords=(0, 0), key_coords=(0, 0))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, player_coords=(0, 0),
+                          key_coords=(0, 0))
 
     def test_given_player_coords_overlap_with_lock_coords_should_throw_error(self):
 
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, player_coords=(1, 1), lock_coords=(1, 1))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, player_coords=(1, 1),
+                          lock_coords=(1, 1))
 
     def test_given_key_coords_overlap_with_lock_coords_should_throw_error(self):
 
@@ -74,14 +79,17 @@ class TestGridWorldState(TestCase):
 
     def test_given_player_coords_overlap_with_pit_coords_should_throw_error(self):
 
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, player_coords=(4, 2), pit_start_coords=(4, 2), pit_end_coords=(4, 7))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, player_coords=(4, 2),
+                          pit_start_coords=(4, 2), pit_end_coords=(4, 7))
 
     def test_given_lock_coords_overlap_with_pit_coords_should_throw_error(self):
 
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, lock_coords=(5, 3), pit_start_coords=(4, 2), pit_end_coords=(5, 7))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, lock_coords=(5, 3),
+                          pit_start_coords=(4, 2), pit_end_coords=(5, 7))
 
     def test_given_key_coords_overlap_with_pit_coords_should_throw_error(self):
 
-        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, key_coords=(5, 7), pit_start_coords=(4, 2), pit_end_coords=(5, 7))
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, key_coords=(5, 7),
+                          pit_start_coords=(4, 2), pit_end_coords=(5, 7))
 
 
