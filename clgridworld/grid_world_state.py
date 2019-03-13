@@ -2,16 +2,16 @@
 
 class GridWorldState:
 
-    SHAPE_KEY = "shape"
-    PLAYER_COORDS_KEY = "player_coords"
-    KEY_COORDS_KEY = "key_coords"
-    LOCK_COORDS_KEY = "lock_coords"
-    PIT_COORDS_KEY = "pit_coords"
-    HAS_KEY_KEY = "has_key"
-    NW_BEACON_COORDS_KEY = "nw_beacon_coords"
-    NE_BEACON_COORDS_KEY = "ne_beacon_coords"
-    SW_BEACON_COORDS_KEY = "sw_beacon_coords"
-    SE_BEACON_COORDS_KEY = "se_beacon_coords"
+    GRID_SHAPE_KEY = "grid_shape"
+    PLAYER_KEY = "player"
+    KEY_DICT_KEY = "key"
+    LOCK_KEY = "lock"
+    PIT_KEY = "pit"
+    NW_BEACON_KEY = "nw_beacon"
+    NE_BEACON_KEY = "ne_beacon"
+    SW_BEACON_KEY = "sw_beacon"
+    SE_BEACON_KEY = "se_beacon"
+    HAS_KEY_DICT_KEY = "has_key"
 
     @staticmethod
     def create(shape: tuple, player_coords: tuple, key_coords: tuple, lock_coords: tuple, pit_coords: tuple) -> dict:
@@ -23,16 +23,16 @@ class GridWorldState:
             GridWorldState._get_pit_beacon_coords(pit_coords)
 
         return {
-            GridWorldState.SHAPE_KEY:               shape,
-            GridWorldState.PLAYER_COORDS_KEY:       player_coords,
-            GridWorldState.KEY_COORDS_KEY:          key_coords,
-            GridWorldState.LOCK_COORDS_KEY:         lock_coords,
-            GridWorldState.PIT_COORDS_KEY:          pit_coords,
-            GridWorldState.NW_BEACON_COORDS_KEY:    nw_beacon_coords,
-            GridWorldState.NE_BEACON_COORDS_KEY:    ne_beacon_coords,
-            GridWorldState.SW_BEACON_COORDS_KEY:    sw_beacon_coords,
-            GridWorldState.SE_BEACON_COORDS_KEY:    se_beacon_coords,
-            GridWorldState.HAS_KEY_KEY:             0,
+            GridWorldState.GRID_SHAPE_KEY:      shape,
+            GridWorldState.PLAYER_KEY:          player_coords,
+            GridWorldState.KEY_DICT_KEY:        key_coords,
+            GridWorldState.LOCK_KEY:            lock_coords,
+            GridWorldState.PIT_KEY:             pit_coords,
+            GridWorldState.NW_BEACON_KEY:       nw_beacon_coords,
+            GridWorldState.NE_BEACON_KEY:       ne_beacon_coords,
+            GridWorldState.SW_BEACON_KEY:       sw_beacon_coords,
+            GridWorldState.SE_BEACON_KEY:       se_beacon_coords,
+            GridWorldState.HAS_KEY_DICT_KEY:    0,
         }
 
     @staticmethod
