@@ -29,6 +29,8 @@ class GridWorldState:
         ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords = \
             GridWorldState._get_pit_beacon_coords(shape, pit_start_coords, pit_end_coords)
 
+        has_key = GridWorldState._get_has_key(key_coords)
+
         return {
             GridWorldState.GRID_SHAPE_KEY:      shape,
             GridWorldState.PLAYER_KEY:          player_coords,
@@ -40,7 +42,7 @@ class GridWorldState:
             GridWorldState.NE_BEACON_KEY:       ne_beacon_coords,
             GridWorldState.SW_BEACON_KEY:       sw_beacon_coords,
             GridWorldState.SE_BEACON_KEY:       se_beacon_coords,
-            GridWorldState.HAS_KEY_DICT_KEY:    0,
+            GridWorldState.HAS_KEY_DICT_KEY:    has_key,
         }
 
     @staticmethod
@@ -73,6 +75,10 @@ class GridWorldState:
 
         return ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords
 
+    @staticmethod
+    def _get_has_key(key_coords):
+        return 1 if key_coords is None else 0
+
 
 class _GridWorldStateValidator:
 
@@ -100,7 +106,7 @@ class _GridWorldStateValidator:
         if not self.is_in_shape_bounds(self.player, self.grid_shape):
             raise ValueError("Player coords %s not in grid_shape bounds %s" % (self.player, self.grid_shape))
 
-        if not self.is_in_shape_bounds(self.key, self.grid_shape):
+        if self.key is not None and not self.is_in_shape_bounds(self.key, self.grid_shape):
             raise ValueError("Key coords %s not in grid_shape bounds %s" % (self.key, self.grid_shape))
 
         if not self.is_in_shape_bounds(self.lock, self.grid_shape):
@@ -143,6 +149,6 @@ class _GridWorldStateValidator:
             raise ValueError("lock coords %s within pit start coords %s and pit end coords %s" %
                              (self.lock, self.pit_start, self.pit_end))
 
-        if pit_row_start <= self.key[0] <= pit_row_end and pit_col_start <= self.key[1] <= pit_col_end:
+        if self.key is not None and pit_row_start <= self.key[0] <= pit_row_end and pit_col_start <= self.key[1] <= pit_col_end:
             raise ValueError("key coords %s within pit start coords %s and pit end coords %s" %
                              (self.key, self.pit_start, self.pit_end))

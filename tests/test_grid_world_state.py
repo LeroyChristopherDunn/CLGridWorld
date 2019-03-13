@@ -174,4 +174,15 @@ class TestGridWorldState(TestCase):
         self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, pit_start_coords=(4, 7),
                           pit_end_coords=None)
 
+    def test_given_no_key_should_correctly_create_state(self):
+
+        key_coords = None
+
+        has_key = 1
+
+        state = TestGridWorldState.create_state_with_spec(key_coords=key_coords)
+
+        self.assertEqual(key_coords, state[GridWorldState.KEY_DICT_KEY], "key coords not equal")
+        self.assertEqual(has_key, state[GridWorldState.HAS_KEY_DICT_KEY], "has key not equal")
+
 
