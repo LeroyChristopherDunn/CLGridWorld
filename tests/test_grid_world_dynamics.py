@@ -17,41 +17,23 @@ class TestGridWorldDynamics(TestCase):
 
         self.assertFalse(state is new_state)
 
-    def test_when_player_moves_into_top_boundary_should_remain_in_same_state(self):
+    def test_when_player_moves_into_boundary_should_remain_in_same_state(self):
 
-        player_coords = (0, 0)
-        state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
+        actions = [GridWorldActions.NORTH, GridWorldActions.EAST, GridWorldActions.SOUTH, GridWorldActions.WEST]
+        action_names = ["North", "East", "South", "West"]
+        grid_shape = (10, 10)
+        player_start_coords = [(0, 0), (9, 9), (9, 9), (0, 0)]
 
-        new_state = GridWorldDynamics(state).step(GridWorldActions.NORTH)
+        for i in range(len(actions)):
+            with self.subTest(action=action_names[i]):
 
-        self.assertEqual(state, new_state)
+                player_coords = player_start_coords[i]
+                action = actions[i]
 
-    def test_when_player_moves_into_left_boundary_should_remain_in_same_state(self):
+                state = GridWorldStateBuilder.create_state_with_spec(shape=grid_shape, player_coords=player_coords)
+                new_state = GridWorldDynamics(state).step(action)
 
-        player_coords = (0, 0)
-        state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
-
-        new_state = GridWorldDynamics(state).step(GridWorldActions.WEST)
-
-        self.assertEqual(state, new_state)
-
-    def test_when_player_moves_into_bottom_boundary_should_remain_in_same_state(self):
-
-        player_coords = (9, 9)
-        state = GridWorldStateBuilder.create_state_with_spec(shape=(10, 10), player_coords=player_coords)
-
-        new_state = GridWorldDynamics(state).step(GridWorldActions.SOUTH)
-
-        self.assertEqual(state, new_state)
-
-    def test_when_player_moves_into_right_boundary_should_remain_in_same_state(self):
-
-        player_coords = (9, 9)
-        state = GridWorldStateBuilder.create_state_with_spec(shape=(10, 10), player_coords=player_coords)
-
-        new_state = GridWorldDynamics(state).step(GridWorldActions.EAST)
-
-        self.assertEqual(state, new_state)
+                self.assertDictEqual(state, new_state)
 
     def test_when_player_moves_north_into_empty_space_should_move_to_empty_space(self):
 
