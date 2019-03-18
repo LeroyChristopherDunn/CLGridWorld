@@ -21,6 +21,22 @@ class GridWorldState(dict):
         super().__init__()
         self.update(state.copy())
 
+    def is_in_pit(self) -> bool:
+
+        player = self[GridWorldStateKey.PLAYER_KEY]
+        pit_start = self[GridWorldStateKey.PIT_START_KEY]
+        pit_end = self[GridWorldStateKey.PIT_END_KEY]
+
+        if pit_start is None and pit_end is None:
+            return False
+
+        pit_row_start = pit_start[0]
+        pit_col_start = pit_start[1]
+        pit_row_end = pit_end[0]
+        pit_col_end = pit_end[1]
+
+        return pit_row_start <= player[0] <= pit_row_end and pit_col_start <= player[1] <= pit_col_end
+
 
 class GridWorldStateFactory:
 

@@ -18,15 +18,15 @@ class GridWorldDynamics:
         if self._player_moves_into_beacon(action):
             return self.state.copy()
 
-        return self._translate_player(action)
+        return GridWorldState(self._translate_player(action))
 
-    def _translate_player(self, action):
+    def _translate_player(self, action) -> GridWorldState:
 
         player_coords = self.state[STATE.PLAYER_KEY]
         new_player_coords = GridWorldDynamics._translate_coords(player_coords, action)
         new_state = self.state.copy()
         new_state[STATE.PLAYER_KEY] = new_player_coords
-        return new_state
+        return GridWorldState(new_state)
 
     def _player_moves_into_boundary(self, action):
 
