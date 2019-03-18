@@ -13,11 +13,14 @@ class GridWorldDynamics:
 
     def step(self, action) -> GridWorldState:
 
+        if self._is_terminal_state():
+            raise Exception("state is terminal state. No further actions allowed")
+
         if self._player_moves_into_boundary(action):
-            return self.state.copy()
+            return self.clone_state()
 
         if self._player_moves_into_immovable_object(action):
-            return self.state.copy()
+            return self.clone_state()
 
         if self._player_picks_up_key_from_eligible_coords(action):
             return self._pick_up_key()
@@ -26,6 +29,9 @@ class GridWorldDynamics:
             return self._unlock_lock()
 
         return GridWorldState(self._translate_player(action))
+
+    def clone_state(self):
+        return GridWorldState(self.state.copy())
 
     def _translate_player(self, action) -> GridWorldState:
 
@@ -78,7 +84,7 @@ class GridWorldDynamics:
 
         return new_coords
 
-    def _player_picks_up_key_from_eligible_coords(self, action):
+    def _player_picks_up_key_from_eligible_coords(self, action) -> bool:
 
         player_coords = self.state[STATE_KEY.PLAYER]
         key_coords = self.state[STATE_KEY.KEY]
@@ -117,7 +123,7 @@ class GridWorldDynamics:
 
         return self._coords_are_next_to_each_other(player_coords, lock_coords)
 
-    def _unlock_lock(self):
+    def _unlock_lock(self) -> GridWorldState:
 
         new_state = self.state.copy()
         new_state[STATE_KEY.LOCK] = None
