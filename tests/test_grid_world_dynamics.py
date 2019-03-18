@@ -10,7 +10,7 @@ class TestGridWorldDynamics(TestCase):
 
     def setUp(self):
 
-        self.actions = [GridWorldActions.NORTH, GridWorldActions.EAST, GridWorldActions.SOUTH, GridWorldActions.WEST]
+        self.directional_actions = [GridWorldActions.NORTH, GridWorldActions.EAST, GridWorldActions.SOUTH, GridWorldActions.WEST]
         self.action_names = ["North", "East", "South", "West"]
 
     def test_new_state_should_be_new_object(self):
@@ -27,11 +27,11 @@ class TestGridWorldDynamics(TestCase):
         grid_shape = (10, 10)
         player_start_coords = [(0, 0), (9, 9), (9, 9), (0, 0)]
 
-        for i in range(len(self.actions)):
+        for i in range(len(self.directional_actions)):
             with self.subTest(action=self.action_names[i]):
 
                 player_coords = player_start_coords[i]
-                action = self.actions[i]
+                action = self.directional_actions[i]
 
                 state = GridWorldStateBuilder.create_state_with_spec(shape=grid_shape, player_coords=player_coords)
                 new_state = GridWorldDynamics(state).step(action)
@@ -43,11 +43,11 @@ class TestGridWorldDynamics(TestCase):
         player_start_coords =           [(1, 0), (0, 0), (0, 0), (0, 1)]
         expected_player_coords_list =   [(0, 0), (0, 1), (1, 0), (0, 0)]
 
-        for i in range(len(self.actions)):
+        for i in range(len(self.directional_actions)):
             with self.subTest(action=self.action_names[i]):
 
                 player_coords = player_start_coords[i]
-                action = self.actions[i]
+                action = self.directional_actions[i]
                 expected_player_coords = expected_player_coords_list[i]
 
                 state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
@@ -65,11 +65,11 @@ class TestGridWorldDynamics(TestCase):
         pit_end_coords = (4, 7)
         player_start_coords = [(6, 1), (5, 0), (2, 8), (3, 9)]
 
-        for i in range(len(self.actions)):
+        for i in range(len(self.directional_actions)):
             with self.subTest(action=self.action_names[i]):
 
                 player_coords = player_start_coords[i]
-                action = self.actions[i]
+                action = self.directional_actions[i]
 
                 state = GridWorldStateBuilder.create_state_with_spec(
                     shape=shape, player_coords=player_coords, pit_start_coords=pit_start_coords,
@@ -87,11 +87,11 @@ class TestGridWorldDynamics(TestCase):
         player_start_coords =         [(5, 4), (4, 1), (3, 2), (4, 8)]
         expected_player_coords_list = [(4, 4), (4, 2), (4, 2), (4, 7)]
 
-        for i in range(len(self.actions)):
+        for i in range(len(self.directional_actions)):
             with self.subTest(action=self.action_names[i]):
 
                 player_coords = player_start_coords[i]
-                action = self.actions[i]
+                action = self.directional_actions[i]
                 expected_player_coords = expected_player_coords_list[i]
 
                 state = GridWorldStateBuilder.create_state_with_spec(
@@ -110,11 +110,11 @@ class TestGridWorldDynamics(TestCase):
         player_start_coords =   [(1, 0), (0, 0), (0, 0), (0, 1)]
         key_start_coords =      [(0, 0), (0, 1), (1, 0), (0, 0)]
 
-        for i in range(len(self.actions)):
+        for i in range(len(self.directional_actions)):
             with self.subTest(action=self.action_names[i]):
 
                 player_coords = player_start_coords[i]
-                action = self.actions[i]
+                action = self.directional_actions[i]
                 key_coords = key_start_coords[i]
 
                 state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords, key_coords=key_coords)
@@ -127,11 +127,11 @@ class TestGridWorldDynamics(TestCase):
         player_start_coords =   [(1, 0), (0, 0), (0, 0), (0, 1)]
         lock_start_coords =      [(0, 0), (0, 1), (1, 0), (0, 0)]
 
-        for i in range(len(self.actions)):
+        for i in range(len(self.directional_actions)):
             with self.subTest(action=self.action_names[i]):
 
                 player_coords = player_start_coords[i]
-                action = self.actions[i]
+                action = self.directional_actions[i]
                 lock_coords = lock_start_coords[i]
 
                 state = GridWorldStateBuilder.create_state_with_spec(
