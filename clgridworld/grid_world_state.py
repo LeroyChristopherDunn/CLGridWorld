@@ -15,8 +15,8 @@ class GridWorldState:
     HAS_KEY_DICT_KEY = "has_key"
 
     @staticmethod
-    def create(shape: tuple, player_coords: tuple, key_coords: tuple=None, lock_coords: tuple=None,
-               pit_start_coords=None, pit_end_coords=None) -> dict:
+    def create(shape: (int, int), player_coords: (int, int), key_coords: (int, int)=None, lock_coords: (int, int)=None,
+               pit_start_coords: (int, int)=None, pit_end_coords: (int, int)=None) -> dict:
 
         _GridWorldStateValidator(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords)\
             .validate()
@@ -73,7 +73,8 @@ class GridWorldState:
 
 class _GridWorldStateValidator:
 
-    def __init__(self, grid_shape: tuple, player: tuple, key: tuple, lock: tuple, pit_start: tuple, pit_end: tuple):
+    def __init__(self, grid_shape: (int, int), player: (int, int), key: (int, int), lock: (int, int),
+                 pit_start: (int, int), pit_end: (int, int)):
 
         self.grid_shape = grid_shape
         self.player = player
@@ -116,7 +117,7 @@ class _GridWorldStateValidator:
             raise ValueError("lock coords %s not in grid_shape bounds %s" % (self.pit_end, self.grid_shape))
 
     @staticmethod
-    def is_in_shape_bounds(point: tuple, shape: tuple) -> bool:
+    def is_in_shape_bounds(point: (int, int), shape: (int, int)) -> bool:
         return 0 <= point[0] < shape[0] and 0 <= point[1] < shape[1]
 
     def _validate_coords_dont_overlap(self):

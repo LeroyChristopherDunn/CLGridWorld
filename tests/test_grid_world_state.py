@@ -201,3 +201,7 @@ class TestGridWorldState(TestCase):
 
         self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec,
                           key_coords=None, lock_coords=None)
+
+    def test_given_no_shape_should_throw_error(self):
+
+        self.assertRaises(ValueError, TestGridWorldState.create_state_with_spec, shape=None)
