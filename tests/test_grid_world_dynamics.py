@@ -100,3 +100,59 @@ class TestGridWorldDynamics(TestCase):
         expected_state = state.copy()
         expected_state[GridWorldState.PLAYER_KEY] = expected_player_state
         self.assertEqual(expected_state, actual_state)
+
+    def test_when_player_moves_north_into_beacon_should_remain_in_same_state(self):
+
+        shape = (10, 10)
+        player_coords = (6, 1)
+        pit_start_coords = (4, 2)
+        pit_end_coords = (4, 7)
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+            shape=shape, player_coords=player_coords, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
+
+        new_state = GridWorldDynamics(state).step(GridWorldActions.NORTH)
+
+        self.assertEqual(state, new_state)
+
+    def test_when_player_moves_east_into_beacon_should_remain_in_same_state(self):
+
+        shape = (10, 10)
+        player_coords = (5, 0)
+        pit_start_coords = (4, 2)
+        pit_end_coords = (4, 7)
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+            shape=shape, player_coords=player_coords, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
+
+        new_state = GridWorldDynamics(state).step(GridWorldActions.EAST)
+
+        self.assertEqual(state, new_state)
+
+    def test_when_player_moves_west_into_beacon_should_remain_in_same_state(self):
+
+        shape = (10, 10)
+        player_coords = (3, 9)
+        pit_start_coords = (4, 2)
+        pit_end_coords = (4, 7)
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+            shape=shape, player_coords=player_coords, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
+
+        new_state = GridWorldDynamics(state).step(GridWorldActions.WEST)
+
+        self.assertEqual(state, new_state)
+
+    def test_when_player_moves_south_into_beacon_should_remain_in_same_state(self):
+
+        shape = (10, 10)
+        player_coords = (2, 8)
+        pit_start_coords = (4, 2)
+        pit_end_coords = (4, 7)
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+            shape=shape, player_coords=player_coords, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
+
+        new_state = GridWorldDynamics(state).step(GridWorldActions.SOUTH)
+
+        self.assertEqual(state, new_state)
