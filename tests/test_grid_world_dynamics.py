@@ -54,7 +54,7 @@ class TestGridWorldDynamics(TestCase):
                 actual_state = GridWorldDynamics(state).step(action)
 
                 expected_state = state.copy()
-                expected_state[GridWorldStateKey.PLAYER_KEY] = expected_player_coords
+                expected_state[GridWorldStateKey.PLAYER] = expected_player_coords
                 self.assertDictEqual(expected_state, actual_state)
                 self.assertFalse(actual_state.is_in_pit(), "should not be in pit")
 
@@ -101,7 +101,7 @@ class TestGridWorldDynamics(TestCase):
                 new_state = GridWorldDynamics(state).step(action)
 
                 expected_state = state.copy()
-                expected_state[GridWorldStateKey.PLAYER_KEY] = expected_player_coords
+                expected_state[GridWorldStateKey.PLAYER] = expected_player_coords
                 self.assertDictEqual(expected_state, new_state)
                 self.assertTrue(new_state.is_in_pit())
 
@@ -180,8 +180,8 @@ class TestGridWorldDynamics(TestCase):
                 actual_state = GridWorldDynamics(state).step(GridWorldActions.PICK_UP_KEY)
 
                 expected_state = state.copy()
-                expected_state[GridWorldStateKey.KEY_DICT_KEY] = None
-                expected_state[GridWorldStateKey.HAS_KEY_DICT_KEY] = 1
+                expected_state[GridWorldStateKey.KEY] = None
+                expected_state[GridWorldStateKey.HAS_KEY] = 1
                 self.assertDictEqual(expected_state, actual_state)
 
     def test_given_player_does_not_have_key_and_if_not_next_to_lock_when_unlock_should_remain_in_same_state(self):
@@ -243,7 +243,7 @@ class TestGridWorldDynamics(TestCase):
                 actual_state = GridWorldDynamics(state).step(GridWorldActions.UNLOCK_LOCK)
 
                 expected_state = state.copy()
-                expected_state[GridWorldStateKey.LOCK_KEY] = None
+                expected_state[GridWorldStateKey.LOCK] = None
 
                 self.assertDictEqual(expected_state, actual_state)
                 self.assertTrue(actual_state.has_unlocked_lock(), "lock should be unlocked")

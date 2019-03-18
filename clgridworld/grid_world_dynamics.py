@@ -1,5 +1,5 @@
 from clgridworld.grid_world_actions import GridWorldActions as ACTIONS
-from clgridworld.grid_world_state import GridWorldStateKey as STATE, GridWorldState
+from clgridworld.grid_world_state import GridWorldStateKey as STATE_KEY, GridWorldState
 
 
 class GridWorldDynamics:
@@ -7,9 +7,9 @@ class GridWorldDynamics:
     def __init__(self, state: GridWorldState):
 
         self.state = state
-        self._immovable_objects = [state[STATE.KEY_DICT_KEY], state[STATE.LOCK_KEY],
-                                   state[STATE.NW_BEACON_KEY], state[STATE.NE_BEACON_KEY],
-                                   state[STATE.SW_BEACON_KEY], state[STATE.SE_BEACON_KEY]].copy()
+        self._immovable_objects = [state[STATE_KEY.KEY], state[STATE_KEY.LOCK],
+                                   state[STATE_KEY.NW_BEACON], state[STATE_KEY.NE_BEACON],
+                                   state[STATE_KEY.SW_BEACON], state[STATE_KEY.SE_BEACON]].copy()
 
     def step(self, action) -> GridWorldState:
 
@@ -29,16 +29,16 @@ class GridWorldDynamics:
 
     def _translate_player(self, action) -> GridWorldState:
 
-        player_coords = self.state[STATE.PLAYER_KEY]
+        player_coords = self.state[STATE_KEY.PLAYER]
         new_player_coords = GridWorldDynamics._translate_coords(player_coords, action)
         new_state = self.state.copy()
-        new_state[STATE.PLAYER_KEY] = new_player_coords
+        new_state[STATE_KEY.PLAYER] = new_player_coords
         return GridWorldState(new_state)
 
     def _player_moves_into_boundary(self, action) -> bool:
 
-        player_coords = self.state[STATE.PLAYER_KEY]
-        shape = self.state[STATE.GRID_SHAPE_KEY]
+        player_coords = self.state[STATE_KEY.PLAYER]
+        shape = self.state[STATE_KEY.GRID_SHAPE]
 
         if action == ACTIONS.NORTH:
             return player_coords[0] == 0
@@ -54,7 +54,7 @@ class GridWorldDynamics:
 
     def _player_moves_into_immovable_object(self, action) -> bool:
 
-        player_coords = self.state[STATE.PLAYER_KEY]
+        player_coords = self.state[STATE_KEY.PLAYER]
         new_player_coords = GridWorldDynamics._translate_coords(player_coords, action)
 
         return new_player_coords in self._immovable_objects
@@ -80,8 +80,8 @@ class GridWorldDynamics:
 
     def _player_picks_up_key_from_eligible_coords(self, action):
 
-        player_coords = self.state[STATE.PLAYER_KEY]
-        key_coords = self.state[STATE.KEY_DICT_KEY]
+        player_coords = self.state[STATE_KEY.PLAYER]
+        key_coords = self.state[STATE_KEY.KEY]
 
         if action is not ACTIONS.PICK_UP_KEY:
             return False
@@ -99,15 +99,15 @@ class GridWorldDynamics:
     def _pick_up_key(self) -> GridWorldState:
 
         new_state = self.state.copy()
-        new_state[STATE.KEY_DICT_KEY] = None
-        new_state[STATE.HAS_KEY_DICT_KEY] = 1
+        new_state[STATE_KEY.KEY] = None
+        new_state[STATE_KEY.HAS_KEY] = 1
         return GridWorldState(new_state)
 
     def _player_unlocks_lock_from_eligible_state(self, action) -> bool:
 
-        player_coords = self.state[STATE.PLAYER_KEY]
-        key_coords = self.state[STATE.KEY_DICT_KEY]
-        lock_coords = self.state[STATE.LOCK_KEY]
+        player_coords = self.state[STATE_KEY.PLAYER]
+        key_coords = self.state[STATE_KEY.KEY]
+        lock_coords = self.state[STATE_KEY.LOCK]
 
         if action is not ACTIONS.UNLOCK_LOCK:
             return False
@@ -120,7 +120,7 @@ class GridWorldDynamics:
     def _unlock_lock(self):
 
         new_state = self.state.copy()
-        new_state[STATE.LOCK_KEY] = None
+        new_state[STATE_KEY.LOCK] = None
         return GridWorldState(new_state)
 
 

@@ -16,17 +16,17 @@ class GridWorldGridState:
 
         self.state = state
 
-        self.grid_shape = state[GridWorldStateKey.GRID_SHAPE_KEY]
-        self.player_coords = state[GridWorldStateKey.PLAYER_KEY]
-        self.lock_coords = state[GridWorldStateKey.LOCK_KEY]
-        self.key_coords = state[GridWorldStateKey.KEY_DICT_KEY]
-        self.pit_start_coords = state[GridWorldStateKey.PIT_START_KEY]
-        self.pit_end_coords = state[GridWorldStateKey.PIT_END_KEY]
-        self.nw_beacon_coords = state[GridWorldStateKey.NW_BEACON_KEY]
-        self.ne_beacon_coords = state[GridWorldStateKey.NE_BEACON_KEY]
-        self.sw_beacon_coords = state[GridWorldStateKey.SW_BEACON_KEY]
-        self.se_beacon_coords = state[GridWorldStateKey.SE_BEACON_KEY]
-        self.has_key = state[GridWorldStateKey.GRID_SHAPE_KEY]
+        self.grid_shape = state[GridWorldStateKey.GRID_SHAPE]
+        self.player_coords = state[GridWorldStateKey.PLAYER]
+        self.lock_coords = state[GridWorldStateKey.LOCK]
+        self.key_coords = state[GridWorldStateKey.KEY]
+        self.pit_start_coords = state[GridWorldStateKey.PIT_START]
+        self.pit_end_coords = state[GridWorldStateKey.PIT_END]
+        self.nw_beacon_coords = state[GridWorldStateKey.NW_BEACON]
+        self.ne_beacon_coords = state[GridWorldStateKey.NE_BEACON]
+        self.sw_beacon_coords = state[GridWorldStateKey.SW_BEACON]
+        self.se_beacon_coords = state[GridWorldStateKey.SE_BEACON]
+        self.has_key = state[GridWorldStateKey.GRID_SHAPE]
 
         self.grid = self.create_grid()
 

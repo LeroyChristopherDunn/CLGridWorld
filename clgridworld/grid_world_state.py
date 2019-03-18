@@ -1,17 +1,17 @@
 
 class GridWorldStateKey:
 
-    GRID_SHAPE_KEY = "grid_shape"
-    PLAYER_KEY = "player"
-    KEY_DICT_KEY = "key"
-    LOCK_KEY = "lock"
-    PIT_START_KEY = "pit_start"
-    PIT_END_KEY = "pit_end"
-    NW_BEACON_KEY = "nw_beacon"
-    NE_BEACON_KEY = "ne_beacon"
-    SW_BEACON_KEY = "sw_beacon"
-    SE_BEACON_KEY = "se_beacon"
-    HAS_KEY_DICT_KEY = "has_key"
+    GRID_SHAPE = "grid_shape"
+    PLAYER = "player"
+    KEY = "key"
+    LOCK = "lock"
+    PIT_START = "pit_start"
+    PIT_END = "pit_end"
+    NW_BEACON = "nw_beacon"
+    NE_BEACON = "ne_beacon"
+    SW_BEACON = "sw_beacon"
+    SE_BEACON = "se_beacon"
+    HAS_KEY = "has_key"
 
 
 class GridWorldState(dict):
@@ -23,9 +23,9 @@ class GridWorldState(dict):
 
     def is_in_pit(self) -> bool:
 
-        player = self[GridWorldStateKey.PLAYER_KEY]
-        pit_start = self[GridWorldStateKey.PIT_START_KEY]
-        pit_end = self[GridWorldStateKey.PIT_END_KEY]
+        player = self[GridWorldStateKey.PLAYER]
+        pit_start = self[GridWorldStateKey.PIT_START]
+        pit_end = self[GridWorldStateKey.PIT_END]
 
         if pit_start is None and pit_end is None:
             return False
@@ -39,7 +39,7 @@ class GridWorldState(dict):
 
     def has_unlocked_lock(self) -> bool:
 
-        return self[GridWorldStateKey.KEY_DICT_KEY] is None and self[GridWorldStateKey.LOCK_KEY] is None
+        return self[GridWorldStateKey.KEY] is None and self[GridWorldStateKey.LOCK] is None
 
 
 class GridWorldStateFactory:
@@ -57,17 +57,17 @@ class GridWorldStateFactory:
         has_key = 1 if key_coords is None else 0
 
         return GridWorldState({
-            GridWorldStateKey.GRID_SHAPE_KEY:      shape,
-            GridWorldStateKey.PLAYER_KEY:          player_coords,
-            GridWorldStateKey.KEY_DICT_KEY:        key_coords,
-            GridWorldStateKey.LOCK_KEY:            lock_coords,
-            GridWorldStateKey.PIT_START_KEY:       pit_start_coords,
-            GridWorldStateKey.PIT_END_KEY:         pit_end_coords,
-            GridWorldStateKey.NW_BEACON_KEY:       nw_beacon_coords,
-            GridWorldStateKey.NE_BEACON_KEY:       ne_beacon_coords,
-            GridWorldStateKey.SW_BEACON_KEY:       sw_beacon_coords,
-            GridWorldStateKey.SE_BEACON_KEY:       se_beacon_coords,
-            GridWorldStateKey.HAS_KEY_DICT_KEY:    has_key,
+            GridWorldStateKey.GRID_SHAPE:   shape,
+            GridWorldStateKey.PLAYER:       player_coords,
+            GridWorldStateKey.KEY:          key_coords,
+            GridWorldStateKey.LOCK:         lock_coords,
+            GridWorldStateKey.PIT_START:    pit_start_coords,
+            GridWorldStateKey.PIT_END:      pit_end_coords,
+            GridWorldStateKey.NW_BEACON:    nw_beacon_coords,
+            GridWorldStateKey.NE_BEACON:    ne_beacon_coords,
+            GridWorldStateKey.SW_BEACON:    sw_beacon_coords,
+            GridWorldStateKey.SE_BEACON:    se_beacon_coords,
+            GridWorldStateKey.HAS_KEY:      has_key,
         })
 
     @staticmethod
