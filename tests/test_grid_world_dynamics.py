@@ -8,6 +8,15 @@ from tests.grid_world_state_builder import GridWorldStateBuilder
 
 class TestGridWorldDynamics(TestCase):
 
+    def test_new_state_should_be_new_object(self):
+
+        player_coords = (0, 0)
+        state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
+
+        new_state = GridWorldDynamics(state).step(GridWorldActions.NORTH)
+
+        self.assertFalse(state is new_state)
+
     def test_when_player_moves_into_top_boundary_should_remain_in_same_state(self):
 
         player_coords = (0, 0)
@@ -74,7 +83,7 @@ class TestGridWorldDynamics(TestCase):
         expected_player_state = (1, 0)
 
         state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
-        actual_state = GridWorldDynamics(state).step(GridWorldActions.EAST)
+        actual_state = GridWorldDynamics(state).step(GridWorldActions.SOUTH)
 
         expected_state = state.copy()
         expected_state[GridWorldState.PLAYER_KEY] = expected_player_state

@@ -10,7 +10,7 @@ class GridWorldDynamics:
     def step(self, action) -> dict:  # this should return a state
 
         if self._player_moves_into_boundary(action):
-            return self.state.copy
+            return self.state.copy()
 
         return self._move_player(action)
 
