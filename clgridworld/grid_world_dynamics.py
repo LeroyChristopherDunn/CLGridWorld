@@ -129,5 +129,11 @@ class GridWorldDynamics:
         new_state[STATE_KEY.LOCK] = None
         return GridWorldState(new_state)
 
+    def _is_terminal_state(self) -> bool:
+
+        state = self.state
+        return state.is_in_pit() or (state.player_has_key() and state.lock_is_unlocked())
+
+
 
 

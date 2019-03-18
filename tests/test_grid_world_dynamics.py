@@ -10,8 +10,14 @@ class TestGridWorldDynamics(TestCase):
 
     def setUp(self):
 
-        self.directional_actions = [GridWorldActions.NORTH, GridWorldActions.EAST, GridWorldActions.SOUTH, GridWorldActions.WEST]
+        self.directional_actions = [GridWorldActions.NORTH, GridWorldActions.EAST,
+                                    GridWorldActions.SOUTH, GridWorldActions.WEST]
         self.action_names = ["North", "East", "South", "West"]
+
+        self.all_actions = [GridWorldActions.NORTH, GridWorldActions.EAST,
+                            GridWorldActions.SOUTH, GridWorldActions.WEST,
+                            GridWorldActions.PICK_UP_KEY, GridWorldActions.UNLOCK_LOCK]
+        self.all_actions_names = ["North", "East", "South", "West", "PICK_UP_KEY", "UNLOCK_LOCK"]
 
     def test_new_state_should_be_new_object(self):
 
@@ -246,4 +252,50 @@ class TestGridWorldDynamics(TestCase):
                 expected_state[GridWorldStateKey.LOCK] = None
 
                 self.assertDictEqual(expected_state, actual_state)
-                self.assertTrue(actual_state.has_unlocked_lock(), "lock should be unlocked")
+                self.assertTrue(actual_state.lock_is_unlocked(), "lock should be unlocked")
+
+    def test_given_player_is_in_pit_should_throw_terminal_state_error_after_any_action_taken(self):
+
+        shape = (10, 10)
+        pit_start_coords = (4, 2)
+        pit_end_coords = (4, 7)
+        player_coords = (5, 4)
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+                    shape=shape, player_coords=player_coords, pit_start_coords=pit_start_coords,
+                    pit_end_coords=pit_end_coords)
+        pit_state = GridWorldDynamics(state).step(GridWorldActions.NORTH)
+
+        for i in range(len(self.all_actions)):
+            with self.subTest(action=self.all_actions_names[i]):
+                self.assertRaises(Exception, GridWorldDynamics(pit_state).step, self.all_actions[i])
+
+    def test_given_no_lock_and_player_picked_up_key_should_throw_terminal_state_error_after_any_action_taken(self):
+
+        player_coords = (0, 0)
+        key_coords = (0, 1)
+        lock_coords = None
+        action = GridWorldActions.PICK_UP_KEY
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+                    player_coords=player_coords, key_coords=key_coords, lock_coords=lock_coords)
+        terminal_state = GridWorldDynamics(state).step(action)
+
+        for i in range(len(self.all_actions)):
+            with self.subTest(action=self.all_actions_names[i]):
+                self.assertRaises(Exception, GridWorldDynamics(terminal_state).step, self.all_actions[i])
+
+    def test_given_player_picked_up_key_and_unlocked_lock_should_throw_terminal_state_error_after_any_action_taken(self):
+
+        player_coords = (0, 0)
+        lock_coords = (0, 1)
+        key_coords = None
+        action = GridWorldActions.UNLOCK_LOCK
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+                    player_coords=player_coords, key_coords=key_coords, lock_coords=lock_coords)
+        terminal_state = GridWorldDynamics(state).step(action)
+
+        for i in range(len(self.all_actions)):
+            with self.subTest(action=self.all_actions_names[i]):
+                self.assertRaises(Exception, GridWorldDynamics(terminal_state).step, self.all_actions[i])
