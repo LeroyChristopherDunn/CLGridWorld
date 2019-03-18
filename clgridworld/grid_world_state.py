@@ -15,8 +15,8 @@ class GridWorldState:
     HAS_KEY_DICT_KEY = "has_key"
 
     @staticmethod
-    def create(shape: tuple, player_coords: tuple, key_coords: tuple, lock_coords: tuple, pit_start_coords,
-               pit_end_coords) -> dict:
+    def create(shape: tuple, player_coords: tuple, key_coords: tuple=None, lock_coords: tuple=None,
+               pit_start_coords=None, pit_end_coords=None) -> dict:
 
         _GridWorldStateValidator(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords)\
             .validate()
