@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from clgridworld.grid_world_state import GridWorldState, GridWorldStateKey
+from clgridworld.grid_world_state import GridWorldStateFactory, GridWorldStateKey
 from tests.grid_world_state_builder import GridWorldStateBuilder
 
 
@@ -22,7 +22,8 @@ class TestGridWorldState(TestCase):
         se_beacon = (5, 8)
         has_key = 0
 
-        state = GridWorldState.create(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords)
+        state = GridWorldStateFactory.create(shape, player_coords, key_coords, lock_coords, pit_start_coords,
+                                             pit_end_coords)
 
         self.assertEqual(shape, state[GridWorldStateKey.GRID_SHAPE_KEY], "shape not equal")
         self.assertEqual(player_coords, state[GridWorldStateKey.PLAYER_KEY], "player coords not equal")
@@ -38,8 +39,10 @@ class TestGridWorldState(TestCase):
 
     def test_given_player_coords_out_of_bounds_should_throw_error(self):
 
-        self.assertRaises(ValueError, GridWorldStateBuilder.create_state_with_spec, player_coords=(-1, 0))
-        self.assertRaises(ValueError, GridWorldStateBuilder.create_state_with_spec, player_coords=(9, 10), shape=(10, 10))
+        self.assertRaises(ValueError, GridWorldStateBuilder.create_state_with_spec,
+                          player_coords=(-1, 0))
+        self.assertRaises(ValueError, GridWorldStateBuilder.create_state_with_spec,
+                          player_coords=(9, 10), shape=(10, 10))
 
     def test_given_key_coords_out_of_bounds_should_throw_error(self):
 
@@ -70,7 +73,8 @@ class TestGridWorldState(TestCase):
 
     def test_given_key_coords_overlap_with_lock_coords_should_throw_error(self):
 
-        self.assertRaises(ValueError, GridWorldStateBuilder.create_state_with_spec, key_coords=(7, 5), lock_coords=(7, 5))
+        self.assertRaises(ValueError, GridWorldStateBuilder.create_state_with_spec,
+                          key_coords=(7, 5), lock_coords=(7, 5))
 
     def test_given_player_coords_overlap_with_pit_coords_should_throw_error(self):
 
@@ -166,7 +170,7 @@ class TestGridWorldState(TestCase):
         sw_beacon = None
         se_beacon = None
 
-        state = GridWorldState.create(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords)
+        state = GridWorldStateFactory.create(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords)
 
         self.assertEqual(shape, state[GridWorldStateKey.GRID_SHAPE_KEY], "shape not equal")
         self.assertEqual(player_coords, state[GridWorldStateKey.PLAYER_KEY], "player coords not equal")
@@ -210,6 +214,4 @@ class TestGridWorldState(TestCase):
 
         self.assertRaises(ValueError, GridWorldStateBuilder.create_state_with_spec,
                           key_coords=None, lock_coords=None)
-
-    # todo intersections with beacons
 

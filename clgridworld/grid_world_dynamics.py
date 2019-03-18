@@ -1,16 +1,16 @@
 from clgridworld.grid_world_actions import GridWorldActions as ACTIONS
-from clgridworld.grid_world_state import GridWorldStateKey as STATE
+from clgridworld.grid_world_state import GridWorldStateKey as STATE, GridWorldState
 
 
 class GridWorldDynamics:
 
-    def __init__(self, state):
+    def __init__(self, state: GridWorldState):
 
         self.state = state
         self.beacons = [state[STATE.NW_BEACON_KEY], state[STATE.NE_BEACON_KEY],
                         state[STATE.SW_BEACON_KEY], state[STATE.SE_BEACON_KEY]].copy()
 
-    def step(self, action) -> dict:  # this should return a state
+    def step(self, action) -> GridWorldState:
 
         if self._player_moves_into_boundary(action):
             return self.state.copy()

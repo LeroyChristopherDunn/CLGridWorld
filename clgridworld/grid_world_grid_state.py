@@ -1,6 +1,6 @@
 import numpy as np
 
-from clgridworld.grid_world_state import GridWorldState, GridWorldStateKey
+from clgridworld.grid_world_state import GridWorldStateKey, GridWorldState
 
 
 class GridWorldGridState:
@@ -12,7 +12,7 @@ class GridWorldGridState:
     PIT = 4
     BEACON = 5
 
-    def __init__(self, state: dict):
+    def __init__(self, state: GridWorldState):
 
         self.state = state
 

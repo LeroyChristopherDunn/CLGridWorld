@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from clgridworld.grid_world_actions import GridWorldActions
 from clgridworld.grid_world_dynamics import GridWorldDynamics
-from clgridworld.grid_world_state import GridWorldState, GridWorldStateKey
+from clgridworld.grid_world_state import GridWorldStateKey
 from tests.grid_world_state_builder import GridWorldStateBuilder
 
 

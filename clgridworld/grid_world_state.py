@@ -14,21 +14,29 @@ class GridWorldStateKey:
     HAS_KEY_DICT_KEY = "has_key"
 
 
-class GridWorldState:
+class GridWorldState(dict):
+
+    def __init__(self, state: dict):
+
+        super().__init__()
+        self.update(state.copy())
+
+
+class GridWorldStateFactory:
 
     @staticmethod
     def create(shape: (int, int), player_coords: (int, int), key_coords: (int, int)=None, lock_coords: (int, int)=None,
-               pit_start_coords: (int, int)=None, pit_end_coords: (int, int)=None) -> dict:
+               pit_start_coords: (int, int)=None, pit_end_coords: (int, int)=None) -> GridWorldState:
 
         ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords = \
-            GridWorldState._get_pit_beacon_coords(shape, pit_start_coords, pit_end_coords)
+            GridWorldStateFactory._get_pit_beacon_coords(shape, pit_start_coords, pit_end_coords)
 
         _GridWorldStateValidator(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords,
                                  ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords).validate()
 
         has_key = 1 if key_coords is None else 0
 
-        return {
+        return GridWorldState({
             GridWorldStateKey.GRID_SHAPE_KEY:      shape,
             GridWorldStateKey.PLAYER_KEY:          player_coords,
             GridWorldStateKey.KEY_DICT_KEY:        key_coords,
@@ -40,7 +48,7 @@ class GridWorldState:
             GridWorldStateKey.SW_BEACON_KEY:       sw_beacon_coords,
             GridWorldStateKey.SE_BEACON_KEY:       se_beacon_coords,
             GridWorldStateKey.HAS_KEY_DICT_KEY:    has_key,
-        }
+        })
 
     @staticmethod
     def _get_pit_beacon_coords(shape, pit_start_coords, pit_end_coords):
