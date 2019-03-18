@@ -18,13 +18,8 @@ class GridWorldState:
     def create(shape: tuple, player_coords: tuple, key_coords: tuple, lock_coords: tuple, pit_start_coords,
                pit_end_coords) -> dict:
 
-        validator = _GridWorldStateValidator(shape,
-                                             player_coords,
-                                             key_coords,
-                                             lock_coords,
-                                             pit_start_coords,
-                                             pit_end_coords)
-        validator.validate()
+        _GridWorldStateValidator(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords)\
+            .validate()
 
         ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords = \
             GridWorldState._get_pit_beacon_coords(shape, pit_start_coords, pit_end_coords)
