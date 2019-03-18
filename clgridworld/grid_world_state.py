@@ -21,6 +21,18 @@ class GridWorldState(dict):
         super().__init__()
         self.update(state.copy())
 
+        self.grid_shape = self[GridWorldStateKey.GRID_SHAPE]
+        self.player = self[GridWorldStateKey.PLAYER]
+        self.lock = self[GridWorldStateKey.LOCK]
+        self.key = self[GridWorldStateKey.KEY]
+        self.pit_start = self[GridWorldStateKey.PIT_START]
+        self.pit_end = self[GridWorldStateKey.PIT_END]
+        self.ne_beacon = self[GridWorldStateKey.NE_BEACON]
+        self.nw_beacon = self[GridWorldStateKey.NW_BEACON]
+        self.se_beacon = self[GridWorldStateKey.SE_BEACON]
+        self.sw_beacon = self[GridWorldStateKey.SW_BEACON]
+        self.has_key = self[GridWorldStateKey.HAS_KEY]
+
     def is_in_pit(self) -> bool:
 
         player = self[GridWorldStateKey.PLAYER]
