@@ -139,3 +139,48 @@ class TestGridWorldDynamics(TestCase):
                 new_state = GridWorldDynamics(state).step(action)
 
                 self.assertDictEqual(state, new_state)
+
+    def test_given_player_is_not_near_a_key_when_pick_up_key_should_remain_in_same_state(self):
+
+        shape = (10, 10)
+        player_coords = (0, 0)
+        key_coords = (9, 9)
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+            shape=shape, player_coords=player_coords, key_coords=key_coords)
+        new_state = GridWorldDynamics(state).step(GridWorldActions.PICK_UP_KEY)
+
+        self.assertDictEqual(state, new_state)
+
+    def test_given_player_is_not_next_to_a_key_when_pick_up_key_should_remain_in_same_state(self):
+
+        shape = (10, 10)
+        player_coords = (0, 0)
+        key_coords = (1, 1)
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+            shape=shape, player_coords=player_coords, key_coords=key_coords, lock_coords=None)
+        new_state = GridWorldDynamics(state).step(GridWorldActions.PICK_UP_KEY)
+
+        self.assertDictEqual(state, new_state)
+
+    def test_given_player_is_next_to_key_when_pick_up_key_should_pick_up_key(self):
+
+        key_coords = (1, 1)
+        player_start_coords = [(0, 1), (1, 2), (2, 1), (1, 0)]
+        player_position_to_key = ["North", "East", "South", "West"]
+
+        for i in range(len(player_position_to_key)):
+            with self.subTest(player_position_to_key=player_position_to_key[i]):
+
+                player_coords = player_start_coords[i]
+
+                state = GridWorldStateBuilder.create_state_with_spec(
+                    player_coords=player_coords, key_coords=key_coords, lock_coords=None)
+                actual_state = GridWorldDynamics(state).step(GridWorldActions.PICK_UP_KEY)
+
+                expected_state = state.copy()
+                expected_state[GridWorldStateKey.KEY_DICT_KEY] = None
+                expected_state[GridWorldStateKey.HAS_KEY_DICT_KEY] = 1
+                self.assertDictEqual(expected_state, actual_state)
+

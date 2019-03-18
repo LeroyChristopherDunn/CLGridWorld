@@ -19,6 +19,9 @@ class GridWorldDynamics:
         if self._player_moves_into_immovable_object(action):
             return self.state.copy()
 
+        if self._player_picks_up_key_from_eligible_coords(action):
+            return self._pick_up_key()
+
         return GridWorldState(self._translate_player(action))
 
     def _translate_player(self, action) -> GridWorldState:
@@ -71,5 +74,31 @@ class GridWorldDynamics:
             new_coords = (coords[0], coords[1] - 1)
 
         return new_coords
+
+    def _player_picks_up_key_from_eligible_coords(self, action):
+
+        if action is not ACTIONS.PICK_UP_KEY:
+            return False
+
+        player_coords = self.state[STATE.PLAYER_KEY]
+        key_coords = self.state[STATE.KEY_DICT_KEY]
+
+        if key_coords is None:
+            return False
+
+        return self._coords_are_next_to_each_other(player_coords, key_coords)
+
+    @staticmethod
+    def _coords_are_next_to_each_other(point1: (int, int), point2: (int, int)) -> bool:
+
+        return abs(point1[0]-point2[0]) + abs(point1[1]-point2[1]) == 1
+
+    def _pick_up_key(self) -> GridWorldState:
+
+        new_state = self.state.copy()
+        new_state[STATE.KEY_DICT_KEY] = None
+        new_state[STATE.HAS_KEY_DICT_KEY] = 1
+        return GridWorldState(new_state)
+
 
 
