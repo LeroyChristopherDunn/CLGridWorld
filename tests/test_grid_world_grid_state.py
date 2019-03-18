@@ -88,3 +88,66 @@ class TestGridWorldGridState(TestCase):
         grid = GridWorldGridState(state).grid
 
         self.assertFalse(np.any(grid == GridWorldGridState.PIT), "pit should not be on grid")
+
+    def test_beacons_for_pit_in_bound(self):
+
+        # target task desc in Auto Sequencing..., Narverkar 2017
+
+        pit_start = (4, 2)
+        pit_end = (4, 7)
+
+        state = GridWorldStateBuilder.create_state_with_spec(pit_start_coords=pit_start, pit_end_coords=pit_end)
+        grid = GridWorldGridState(state).grid
+
+        self.assertEqual(GridWorldGridState.BEACON, grid[3, 1])  # top left
+        self.assertEqual(GridWorldGridState.BEACON, grid[3, 8])  # bottom left
+        self.assertEqual(GridWorldGridState.BEACON, grid[5, 1])  # top right
+        self.assertEqual(GridWorldGridState.BEACON, grid[5, 8])  # bottom right
+
+    def test_beacon_for_pit_on_bottom_left_state_bound(self):
+
+        shape = (10, 10)
+        pit_start = (7, 0)
+        pit_end = (9, 3)
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+            shape=shape, pit_start_coords=pit_start, pit_end_coords=pit_end)
+        grid = GridWorldGridState(state).grid
+
+        self.assertEqual(GridWorldGridState.BEACON, grid[6, 4])  # top right
+
+        grid[6, 4] = GridWorldGridState.EMPTY
+        self.assertFalse(np.any(grid == GridWorldGridState.BEACON), "additional beacons should not be on grid")
+
+    def test_beacons_for_pit_on_bottom_state_bound(self):
+
+        shape = (10, 10)
+        pit_start = (7, 3)
+        pit_end = (9, 5)
+        key_coords = (1, 2)
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+            key_coords=key_coords, shape=shape, pit_start_coords=pit_start, pit_end_coords=pit_end)
+        grid = GridWorldGridState(state).grid
+
+        self.assertEqual(GridWorldGridState.BEACON, grid[6, 2])  # top left
+        self.assertEqual(GridWorldGridState.BEACON, grid[6, 6])  # top right
+
+        grid[6, 2] = GridWorldGridState.EMPTY
+        grid[6, 6] = GridWorldGridState.EMPTY
+        self.assertFalse(np.any(grid == GridWorldGridState.BEACON), "additional beacons should not be on grid")
+
+    def test_beacons_for_pit_on_top_right_state_bound(self):
+
+        shape = (10, 10)
+        pit_start = (0, 7)
+        pit_end = (3, 9)
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+            shape=shape, pit_start_coords=pit_start, pit_end_coords=pit_end)
+        grid = GridWorldGridState(state).grid
+
+        self.assertEqual(GridWorldGridState.BEACON, grid[4, 6])  # bottom left
+
+        grid[4, 6] = GridWorldGridState.EMPTY
+        self.assertFalse(np.any(grid == GridWorldGridState.BEACON), "additional beacons should not be on grid")
