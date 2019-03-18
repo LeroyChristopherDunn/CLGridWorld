@@ -58,61 +58,26 @@ class TestGridWorldDynamics(TestCase):
                 self.assertDictEqual(expected_state, actual_state)
                 self.assertFalse(actual_state.is_in_pit(), "should not be in pit")
 
-    def test_when_player_moves_north_into_beacon_should_remain_in_same_state(self):
+    def test_when_player_moves_into_beacon_should_remain_in_same_state(self):
 
         shape = (10, 10)
-        player_coords = (6, 1)
         pit_start_coords = (4, 2)
         pit_end_coords = (4, 7)
+        player_start_coords = [(6, 1), (5, 0), (2, 8), (3, 9)]
 
-        state = GridWorldStateBuilder.create_state_with_spec(
-            shape=shape, player_coords=player_coords, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
+        for i in range(len(self.actions)):
+            with self.subTest(action=self.action_names[i]):
 
-        new_state = GridWorldDynamics(state).step(GridWorldActions.NORTH)
+                player_coords = player_start_coords[i]
+                action = self.actions[i]
 
-        self.assertEqual(state, new_state)
+                state = GridWorldStateBuilder.create_state_with_spec(
+                    shape=shape, player_coords=player_coords, pit_start_coords=pit_start_coords,
+                    pit_end_coords=pit_end_coords)
 
-    def test_when_player_moves_east_into_beacon_should_remain_in_same_state(self):
+                new_state = GridWorldDynamics(state).step(action)
 
-        shape = (10, 10)
-        player_coords = (5, 0)
-        pit_start_coords = (4, 2)
-        pit_end_coords = (4, 7)
-
-        state = GridWorldStateBuilder.create_state_with_spec(
-            shape=shape, player_coords=player_coords, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
-
-        new_state = GridWorldDynamics(state).step(GridWorldActions.EAST)
-
-        self.assertEqual(state, new_state)
-
-    def test_when_player_moves_west_into_beacon_should_remain_in_same_state(self):
-
-        shape = (10, 10)
-        player_coords = (3, 9)
-        pit_start_coords = (4, 2)
-        pit_end_coords = (4, 7)
-
-        state = GridWorldStateBuilder.create_state_with_spec(
-            shape=shape, player_coords=player_coords, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
-
-        new_state = GridWorldDynamics(state).step(GridWorldActions.WEST)
-
-        self.assertEqual(state, new_state)
-
-    def test_when_player_moves_south_into_beacon_should_remain_in_same_state(self):
-
-        shape = (10, 10)
-        player_coords = (2, 8)
-        pit_start_coords = (4, 2)
-        pit_end_coords = (4, 7)
-
-        state = GridWorldStateBuilder.create_state_with_spec(
-            shape=shape, player_coords=player_coords, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
-
-        new_state = GridWorldDynamics(state).step(GridWorldActions.SOUTH)
-
-        self.assertEqual(state, new_state)
+                self.assertDictEqual(state, new_state)
 
     def test_when_player_moves_north_into_pit_should_move_into_pit(self):
 
