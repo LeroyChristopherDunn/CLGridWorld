@@ -7,15 +7,16 @@ class GridWorldDynamics:
     def __init__(self, state: GridWorldState):
 
         self.state = state
-        self.beacons = [state[STATE.NW_BEACON_KEY], state[STATE.NE_BEACON_KEY],
-                        state[STATE.SW_BEACON_KEY], state[STATE.SE_BEACON_KEY]].copy()
+        self._immovable_objects = [state[STATE.KEY_DICT_KEY], state[STATE.LOCK_KEY],
+                                   state[STATE.NW_BEACON_KEY], state[STATE.NE_BEACON_KEY],
+                                   state[STATE.SW_BEACON_KEY], state[STATE.SE_BEACON_KEY]].copy()
 
     def step(self, action) -> GridWorldState:
 
         if self._player_moves_into_boundary(action):
             return self.state.copy()
 
-        if self._player_moves_into_beacon(action):
+        if self._player_moves_into_immovable_object(action):
             return self.state.copy()
 
         return GridWorldState(self._translate_player(action))
@@ -45,12 +46,12 @@ class GridWorldDynamics:
         elif action == ACTIONS.WEST:
             return player_coords[1] == 0
 
-    def _player_moves_into_beacon(self, action) -> bool:
+    def _player_moves_into_immovable_object(self, action) -> bool:
 
         player_coords = self.state[STATE.PLAYER_KEY]
         new_player_coords = GridWorldDynamics._translate_coords(player_coords, action)
 
-        return new_player_coords in self.beacons
+        return new_player_coords in self._immovable_objects
 
     @staticmethod
     def _translate_coords(coords: (int, int), action) -> (int, int):
