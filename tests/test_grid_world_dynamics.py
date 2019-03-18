@@ -184,3 +184,66 @@ class TestGridWorldDynamics(TestCase):
                 expected_state[GridWorldStateKey.HAS_KEY_DICT_KEY] = 1
                 self.assertDictEqual(expected_state, actual_state)
 
+    def test_given_player_does_not_have_key_and_if_not_next_to_lock_when_unlock_should_remain_in_same_state(self):
+
+        shape = (10, 10)
+        player_coords = (0, 0)
+        lock_coords = (9, 9)
+        key_coords = (0, 9)
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+            shape=shape, player_coords=player_coords, lock_coords=lock_coords, key_coords=key_coords)
+        new_state = GridWorldDynamics(state).step(GridWorldActions.UNLOCK_LOCK)
+
+        self.assertDictEqual(state, new_state)
+
+    def test_given_player_does_not_have_key_and_is_next_to_lock_when_unlock_should_remain_in_same_state(self):
+
+        lock_coords = (1, 1)
+        key_coords = (5, 0)
+        player_start_coords = [(0, 1), (1, 2), (2, 1), (1, 0)]
+        player_position_to_lock = ["North", "East", "South", "West"]
+
+        for i in range(len(player_position_to_lock)):
+            with self.subTest(player_position_to_lock=player_position_to_lock[i]):
+
+                player_coords = player_start_coords[i]
+
+                state = GridWorldStateBuilder.create_state_with_spec(
+                    player_coords=player_coords, lock_coords=lock_coords, key_coords=key_coords)
+                new_state = GridWorldDynamics(state).step(GridWorldActions.UNLOCK_LOCK)
+
+                self.assertDictEqual(state, new_state)
+
+    def test_given_player_has_key_and_if_not_next_to_lock_when_unlock_should_remain_in_same_state(self):
+
+        shape = (10, 10)
+        player_coords = (0, 0)
+        lock_coords = (9, 9)
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+            shape=shape, player_coords=player_coords, lock_coords=lock_coords, key_coords=None)
+        new_state = GridWorldDynamics(state).step(GridWorldActions.UNLOCK_LOCK)
+
+        self.assertDictEqual(state, new_state)
+
+    def test_given_player_has_key_and_is_next_to_lock_when_unlock_should_unlock_lock(self):
+
+        lock_coords = (1, 1)
+        player_start_coords = [(0, 1), (1, 2), (2, 1), (1, 0)]
+        player_position_to_lock = ["North", "East", "South", "West"]
+
+        for i in range(len(player_position_to_lock)):
+            with self.subTest(player_position_to_lock=player_position_to_lock[i]):
+
+                player_coords = player_start_coords[i]
+
+                state = GridWorldStateBuilder.create_state_with_spec(
+                    player_coords=player_coords, lock_coords=lock_coords, key_coords=None)
+                actual_state = GridWorldDynamics(state).step(GridWorldActions.UNLOCK_LOCK)
+
+                expected_state = state.copy()
+                expected_state[GridWorldStateKey.LOCK_KEY] = None
+
+                self.assertDictEqual(expected_state, actual_state)
+                self.assertTrue(actual_state.has_unlocked_lock(), "lock should be unlocked")

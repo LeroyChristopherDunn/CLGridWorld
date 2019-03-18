@@ -37,6 +37,10 @@ class GridWorldState(dict):
 
         return pit_row_start <= player[0] <= pit_row_end and pit_col_start <= player[1] <= pit_col_end
 
+    def has_unlocked_lock(self) -> bool:
+
+        return self[GridWorldStateKey.KEY_DICT_KEY] is None and self[GridWorldStateKey.LOCK_KEY] is None
+
 
 class GridWorldStateFactory:
 

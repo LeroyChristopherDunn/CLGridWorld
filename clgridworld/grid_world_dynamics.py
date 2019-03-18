@@ -22,6 +22,9 @@ class GridWorldDynamics:
         if self._player_picks_up_key_from_eligible_coords(action):
             return self._pick_up_key()
 
+        if self._player_unlocks_lock_from_eligible_state(action):
+            return self._unlock_lock()
+
         return GridWorldState(self._translate_player(action))
 
     def _translate_player(self, action) -> GridWorldState:
@@ -77,11 +80,11 @@ class GridWorldDynamics:
 
     def _player_picks_up_key_from_eligible_coords(self, action):
 
-        if action is not ACTIONS.PICK_UP_KEY:
-            return False
-
         player_coords = self.state[STATE.PLAYER_KEY]
         key_coords = self.state[STATE.KEY_DICT_KEY]
+
+        if action is not ACTIONS.PICK_UP_KEY:
+            return False
 
         if key_coords is None:
             return False
@@ -98,6 +101,26 @@ class GridWorldDynamics:
         new_state = self.state.copy()
         new_state[STATE.KEY_DICT_KEY] = None
         new_state[STATE.HAS_KEY_DICT_KEY] = 1
+        return GridWorldState(new_state)
+
+    def _player_unlocks_lock_from_eligible_state(self, action) -> bool:
+
+        player_coords = self.state[STATE.PLAYER_KEY]
+        key_coords = self.state[STATE.KEY_DICT_KEY]
+        lock_coords = self.state[STATE.LOCK_KEY]
+
+        if action is not ACTIONS.UNLOCK_LOCK:
+            return False
+
+        if key_coords is not None:
+            return False
+
+        return self._coords_are_next_to_each_other(player_coords, lock_coords)
+
+    def _unlock_lock(self):
+
+        new_state = self.state.copy()
+        new_state[STATE.LOCK_KEY] = None
         return GridWorldState(new_state)
 
 
