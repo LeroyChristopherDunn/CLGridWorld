@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from clgridworld.grid_world_actions import GridWorldActions
+from clgridworld.grid_world_action import GridWorldAction
 from clgridworld.grid_world_dynamics import GridWorldDynamics
 from clgridworld.grid_world_state import GridWorldStateKey
 from tests.grid_world_state_builder import GridWorldStateBuilder
@@ -10,13 +10,13 @@ class TestGridWorldDynamics(TestCase):
 
     def setUp(self):
 
-        self.directional_actions = [GridWorldActions.NORTH, GridWorldActions.EAST,
-                                    GridWorldActions.SOUTH, GridWorldActions.WEST]
+        self.directional_actions = [GridWorldAction.NORTH, GridWorldAction.EAST,
+                                    GridWorldAction.SOUTH, GridWorldAction.WEST]
         self.action_names = ["North", "East", "South", "West"]
 
-        self.all_actions = [GridWorldActions.NORTH, GridWorldActions.EAST,
-                            GridWorldActions.SOUTH, GridWorldActions.WEST,
-                            GridWorldActions.PICK_UP_KEY, GridWorldActions.UNLOCK_LOCK]
+        self.all_actions = [GridWorldAction.NORTH, GridWorldAction.EAST,
+                            GridWorldAction.SOUTH, GridWorldAction.WEST,
+                            GridWorldAction.PICK_UP_KEY, GridWorldAction.UNLOCK_LOCK]
         self.all_actions_names = ["North", "East", "South", "West", "PICK_UP_KEY", "UNLOCK_LOCK"]
 
     def test_new_state_should_be_new_object(self):
@@ -24,7 +24,7 @@ class TestGridWorldDynamics(TestCase):
         player_coords = (0, 0)
         state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
 
-        new_state = GridWorldDynamics(state).step(GridWorldActions.NORTH)
+        new_state = GridWorldDynamics(state).step(GridWorldAction.NORTH)
 
         self.assertFalse(state is new_state)
 
@@ -154,7 +154,7 @@ class TestGridWorldDynamics(TestCase):
 
         state = GridWorldStateBuilder.create_state_with_spec(
             shape=shape, player_coords=player_coords, key_coords=key_coords)
-        new_state = GridWorldDynamics(state).step(GridWorldActions.PICK_UP_KEY)
+        new_state = GridWorldDynamics(state).step(GridWorldAction.PICK_UP_KEY)
 
         self.assertDictEqual(state, new_state)
 
@@ -166,7 +166,7 @@ class TestGridWorldDynamics(TestCase):
 
         state = GridWorldStateBuilder.create_state_with_spec(
             shape=shape, player_coords=player_coords, key_coords=key_coords, lock_coords=None)
-        new_state = GridWorldDynamics(state).step(GridWorldActions.PICK_UP_KEY)
+        new_state = GridWorldDynamics(state).step(GridWorldAction.PICK_UP_KEY)
 
         self.assertDictEqual(state, new_state)
 
@@ -183,7 +183,7 @@ class TestGridWorldDynamics(TestCase):
 
                 state = GridWorldStateBuilder.create_state_with_spec(
                     player_coords=player_coords, key_coords=key_coords, lock_coords=None)
-                actual_state = GridWorldDynamics(state).step(GridWorldActions.PICK_UP_KEY)
+                actual_state = GridWorldDynamics(state).step(GridWorldAction.PICK_UP_KEY)
 
                 expected_state = state.copy()
                 expected_state[GridWorldStateKey.KEY] = None
@@ -199,7 +199,7 @@ class TestGridWorldDynamics(TestCase):
 
         state = GridWorldStateBuilder.create_state_with_spec(
             shape=shape, player_coords=player_coords, lock_coords=lock_coords, key_coords=key_coords)
-        new_state = GridWorldDynamics(state).step(GridWorldActions.UNLOCK_LOCK)
+        new_state = GridWorldDynamics(state).step(GridWorldAction.UNLOCK_LOCK)
 
         self.assertDictEqual(state, new_state)
 
@@ -217,7 +217,7 @@ class TestGridWorldDynamics(TestCase):
 
                 state = GridWorldStateBuilder.create_state_with_spec(
                     player_coords=player_coords, lock_coords=lock_coords, key_coords=key_coords)
-                new_state = GridWorldDynamics(state).step(GridWorldActions.UNLOCK_LOCK)
+                new_state = GridWorldDynamics(state).step(GridWorldAction.UNLOCK_LOCK)
 
                 self.assertDictEqual(state, new_state)
 
@@ -229,7 +229,7 @@ class TestGridWorldDynamics(TestCase):
 
         state = GridWorldStateBuilder.create_state_with_spec(
             shape=shape, player_coords=player_coords, lock_coords=lock_coords, key_coords=None)
-        new_state = GridWorldDynamics(state).step(GridWorldActions.UNLOCK_LOCK)
+        new_state = GridWorldDynamics(state).step(GridWorldAction.UNLOCK_LOCK)
 
         self.assertDictEqual(state, new_state)
 
@@ -246,7 +246,7 @@ class TestGridWorldDynamics(TestCase):
 
                 state = GridWorldStateBuilder.create_state_with_spec(
                     player_coords=player_coords, lock_coords=lock_coords, key_coords=None)
-                actual_state = GridWorldDynamics(state).step(GridWorldActions.UNLOCK_LOCK)
+                actual_state = GridWorldDynamics(state).step(GridWorldAction.UNLOCK_LOCK)
 
                 expected_state = state.copy()
                 expected_state[GridWorldStateKey.LOCK] = None
@@ -264,7 +264,7 @@ class TestGridWorldDynamics(TestCase):
         state = GridWorldStateBuilder.create_state_with_spec(
                     shape=shape, player_coords=player_coords, pit_start_coords=pit_start_coords,
                     pit_end_coords=pit_end_coords)
-        pit_state = GridWorldDynamics(state).step(GridWorldActions.NORTH)
+        pit_state = GridWorldDynamics(state).step(GridWorldAction.NORTH)
 
         for i in range(len(self.all_actions)):
             with self.subTest(action=self.all_actions_names[i]):
@@ -275,7 +275,7 @@ class TestGridWorldDynamics(TestCase):
         player_coords = (0, 0)
         key_coords = (0, 1)
         lock_coords = None
-        action = GridWorldActions.PICK_UP_KEY
+        action = GridWorldAction.PICK_UP_KEY
 
         state = GridWorldStateBuilder.create_state_with_spec(
                     player_coords=player_coords, key_coords=key_coords, lock_coords=lock_coords)
@@ -290,7 +290,7 @@ class TestGridWorldDynamics(TestCase):
         player_coords = (0, 0)
         lock_coords = (0, 1)
         key_coords = None
-        action = GridWorldActions.UNLOCK_LOCK
+        action = GridWorldAction.UNLOCK_LOCK
 
         state = GridWorldStateBuilder.create_state_with_spec(
                     player_coords=player_coords, key_coords=key_coords, lock_coords=lock_coords)

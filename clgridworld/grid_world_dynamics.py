@@ -1,4 +1,4 @@
-from clgridworld.grid_world_actions import GridWorldActions as ACTIONS
+from clgridworld.grid_world_action import GridWorldAction as ACTIONS
 from clgridworld.grid_world_state import GridWorldStateKey as STATE_KEY, GridWorldState
 
 

@@ -1,5 +1,5 @@
 
-class GridWorldActions:
+class GridWorldAction:
 
     NORTH = 0
     EAST = 1
