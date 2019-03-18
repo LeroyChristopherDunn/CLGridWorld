@@ -26,6 +26,7 @@ class TestGridWorldState(TestCase):
         ne_beacon = (3, 8)
         sw_beacon = (5, 1)
         se_beacon = (5, 8)
+        has_key = 0
 
         state = GridWorldState.create(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords)
 
@@ -39,7 +40,7 @@ class TestGridWorldState(TestCase):
         self.assertEqual(ne_beacon, state[GridWorldState.NE_BEACON_KEY], "ne beacon coords not equal")
         self.assertEqual(sw_beacon, state[GridWorldState.SW_BEACON_KEY], "sw beacon coords not equal")
         self.assertEqual(se_beacon, state[GridWorldState.SE_BEACON_KEY], "se beacon coords not equal")
-        self.assertEqual(0, state[GridWorldState.HAS_KEY_DICT_KEY], "has key not equal")
+        self.assertEqual(has_key, state[GridWorldState.HAS_KEY_DICT_KEY], "has key not equal")
 
     def test_given_player_coords_out_of_bounds_should_throw_error(self):
 
