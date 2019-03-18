@@ -38,8 +38,8 @@ class GridWorldGridState:
         GridWorldGridState._plot_if_not_null(grid, self.key_coords, GridWorldGridState.KEY)
         GridWorldGridState._plot_if_not_null(grid, self.lock_coords, GridWorldGridState.LOCK)
 
-        grid[self.pit_start_coords[0]:self.pit_end_coords[0] + 1, self.pit_start_coords[1]:self.pit_end_coords[1] + 1] \
-            = GridWorldGridState.PIT
+        if self.pit_start_coords is not None and self.pit_end_coords is not None:
+            grid[self.pit_start_coords[0]:self.pit_end_coords[0] + 1, self.pit_start_coords[1]:self.pit_end_coords[1] + 1] = GridWorldGridState.PIT
 
         GridWorldGridState._plot_if_not_null(grid, self.nw_beacon_coords, GridWorldGridState.BEACON)
         GridWorldGridState._plot_if_not_null(grid, self.ne_beacon_coords, GridWorldGridState.BEACON)

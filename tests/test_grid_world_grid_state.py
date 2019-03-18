@@ -59,3 +59,32 @@ class TestGridWorldGridState(TestCase):
         pit_state = grid_state.grid[pit_start[0]:pit_end[0]+1, pit_start[1]:pit_end[1]+1]
 
         self.assertTrue(np.all(pit_state == GridWorldGridState.PIT))
+
+    def test_no_key_coords(self):
+
+        key_coords = None
+
+        state = GridWorldStateBuilder.create_state_with_spec(key_coords=key_coords)
+        grid = GridWorldGridState(state).grid
+
+        self.assertFalse(np.any(grid == GridWorldGridState.KEY), "key should not be on grid")
+        
+    def test_no_lock_coords(self):
+
+        lock_coords = None
+
+        state = GridWorldStateBuilder.create_state_with_spec(lock_coords=lock_coords)
+        grid = GridWorldGridState(state).grid
+
+        self.assertFalse(np.any(grid == GridWorldGridState.LOCK), "lock should not be on grid")
+
+    def test_no_pit_coords(self):
+
+        pit_start_coords = None
+        pit_end_coords = None
+
+        state = GridWorldStateBuilder.create_state_with_spec(
+            pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
+        grid = GridWorldGridState(state).grid
+
+        self.assertFalse(np.any(grid == GridWorldGridState.PIT), "pit should not be on grid")
