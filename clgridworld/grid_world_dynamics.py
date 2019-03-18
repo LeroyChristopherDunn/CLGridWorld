@@ -28,7 +28,7 @@ class GridWorldDynamics:
         new_state[STATE.PLAYER_KEY] = new_player_coords
         return GridWorldState(new_state)
 
-    def _player_moves_into_boundary(self, action):
+    def _player_moves_into_boundary(self, action) -> bool:
 
         player_coords = self.state[STATE.PLAYER_KEY]
         shape = self.state[STATE.GRID_SHAPE_KEY]
@@ -45,7 +45,7 @@ class GridWorldDynamics:
         elif action == ACTIONS.WEST:
             return player_coords[1] == 0
 
-    def _player_moves_into_beacon(self, action):
+    def _player_moves_into_beacon(self, action) -> bool:
 
         player_coords = self.state[STATE.PLAYER_KEY]
         new_player_coords = GridWorldDynamics._translate_coords(player_coords, action)
@@ -53,7 +53,7 @@ class GridWorldDynamics:
         return new_player_coords in self.beacons
 
     @staticmethod
-    def _translate_coords(coords: (int, int), action):
+    def _translate_coords(coords: (int, int), action) -> (int, int):
 
         new_coords = tuple(coords)
 
