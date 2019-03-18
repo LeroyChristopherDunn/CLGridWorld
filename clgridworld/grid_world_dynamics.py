@@ -1,5 +1,5 @@
 from clgridworld.grid_world_actions import GridWorldActions as ACTIONS
-from clgridworld.grid_world_state import GridWorldState as STATE
+from clgridworld.grid_world_state import GridWorldStateKey as STATE
 
 
 class GridWorldDynamics:

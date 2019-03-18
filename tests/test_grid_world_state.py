@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from clgridworld.grid_world_state import GridWorldState
+from clgridworld.grid_world_state import GridWorldState, GridWorldStateKey
 from tests.grid_world_state_builder import GridWorldStateBuilder
 
 
@@ -24,17 +24,17 @@ class TestGridWorldState(TestCase):
 
         state = GridWorldState.create(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords)
 
-        self.assertEqual(shape, state[GridWorldState.GRID_SHAPE_KEY], "shape not equal")
-        self.assertEqual(player_coords, state[GridWorldState.PLAYER_KEY], "player coords not equal")
-        self.assertEqual(key_coords, state[GridWorldState.KEY_DICT_KEY], "key coords not equal")
-        self.assertEqual(lock_coords, state[GridWorldState.LOCK_KEY], "lock coords not equal")
-        self.assertEqual(pit_start_coords, state[GridWorldState.PIT_START_KEY], "pit start key not equal")
-        self.assertEqual(pit_end_coords, state[GridWorldState.PIT_END_KEY], "pit end key not equal")
-        self.assertEqual(nw_beacon, state[GridWorldState.NW_BEACON_KEY], "nw beacon coords not equal")
-        self.assertEqual(ne_beacon, state[GridWorldState.NE_BEACON_KEY], "ne beacon coords not equal")
-        self.assertEqual(sw_beacon, state[GridWorldState.SW_BEACON_KEY], "sw beacon coords not equal")
-        self.assertEqual(se_beacon, state[GridWorldState.SE_BEACON_KEY], "se beacon coords not equal")
-        self.assertEqual(has_key, state[GridWorldState.HAS_KEY_DICT_KEY], "has key not equal")
+        self.assertEqual(shape, state[GridWorldStateKey.GRID_SHAPE_KEY], "shape not equal")
+        self.assertEqual(player_coords, state[GridWorldStateKey.PLAYER_KEY], "player coords not equal")
+        self.assertEqual(key_coords, state[GridWorldStateKey.KEY_DICT_KEY], "key coords not equal")
+        self.assertEqual(lock_coords, state[GridWorldStateKey.LOCK_KEY], "lock coords not equal")
+        self.assertEqual(pit_start_coords, state[GridWorldStateKey.PIT_START_KEY], "pit start key not equal")
+        self.assertEqual(pit_end_coords, state[GridWorldStateKey.PIT_END_KEY], "pit end key not equal")
+        self.assertEqual(nw_beacon, state[GridWorldStateKey.NW_BEACON_KEY], "nw beacon coords not equal")
+        self.assertEqual(ne_beacon, state[GridWorldStateKey.NE_BEACON_KEY], "ne beacon coords not equal")
+        self.assertEqual(sw_beacon, state[GridWorldStateKey.SW_BEACON_KEY], "sw beacon coords not equal")
+        self.assertEqual(se_beacon, state[GridWorldStateKey.SE_BEACON_KEY], "se beacon coords not equal")
+        self.assertEqual(has_key, state[GridWorldStateKey.HAS_KEY_DICT_KEY], "has key not equal")
 
     def test_given_player_coords_out_of_bounds_should_throw_error(self):
 
@@ -113,10 +113,10 @@ class TestGridWorldState(TestCase):
         state = GridWorldStateBuilder.create_state_with_spec(
             shape=shape, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
 
-        self.assertEqual(None, state[GridWorldState.NW_BEACON_KEY], "nw beacon coords not equal")
-        self.assertEqual(ne_beacon, state[GridWorldState.NE_BEACON_KEY], "ne beacon coords not equal")
-        self.assertEqual(None, state[GridWorldState.SW_BEACON_KEY], "sw beacon coords not equal")
-        self.assertEqual(None, state[GridWorldState.SE_BEACON_KEY], "se beacon coords not equal")
+        self.assertEqual(None, state[GridWorldStateKey.NW_BEACON_KEY], "nw beacon coords not equal")
+        self.assertEqual(ne_beacon, state[GridWorldStateKey.NE_BEACON_KEY], "ne beacon coords not equal")
+        self.assertEqual(None, state[GridWorldStateKey.SW_BEACON_KEY], "sw beacon coords not equal")
+        self.assertEqual(None, state[GridWorldStateKey.SE_BEACON_KEY], "se beacon coords not equal")
 
     def test_given_pit_on_south_bound_should_correctly_create_state(self):
 
@@ -130,10 +130,10 @@ class TestGridWorldState(TestCase):
         state = GridWorldStateBuilder.create_state_with_spec(
             shape=shape, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
 
-        self.assertEqual(nw_beacon, state[GridWorldState.NW_BEACON_KEY], "nw beacon coords not equal")
-        self.assertEqual(ne_beacon, state[GridWorldState.NE_BEACON_KEY], "ne beacon coords not equal")
-        self.assertEqual(None, state[GridWorldState.SW_BEACON_KEY], "sw beacon coords not equal")
-        self.assertEqual(None, state[GridWorldState.SE_BEACON_KEY], "se beacon coords not equal")
+        self.assertEqual(nw_beacon, state[GridWorldStateKey.NW_BEACON_KEY], "nw beacon coords not equal")
+        self.assertEqual(ne_beacon, state[GridWorldStateKey.NE_BEACON_KEY], "ne beacon coords not equal")
+        self.assertEqual(None, state[GridWorldStateKey.SW_BEACON_KEY], "sw beacon coords not equal")
+        self.assertEqual(None, state[GridWorldStateKey.SE_BEACON_KEY], "se beacon coords not equal")
 
     def test_given_pit_on_ne_bound_should_correctly_create_state(self):
 
@@ -146,10 +146,10 @@ class TestGridWorldState(TestCase):
         state = GridWorldStateBuilder.create_state_with_spec(
             shape=shape, pit_start_coords=pit_start_coords, pit_end_coords=pit_end_coords)
 
-        self.assertEqual(None, state[GridWorldState.NW_BEACON_KEY], "nw beacon coords not equal")
-        self.assertEqual(None, state[GridWorldState.NE_BEACON_KEY], "ne beacon coords not equal")
-        self.assertEqual(sw_beacon, state[GridWorldState.SW_BEACON_KEY], "sw beacon coords not equal")
-        self.assertEqual(None, state[GridWorldState.SE_BEACON_KEY], "se beacon coords not equal")
+        self.assertEqual(None, state[GridWorldStateKey.NW_BEACON_KEY], "nw beacon coords not equal")
+        self.assertEqual(None, state[GridWorldStateKey.NE_BEACON_KEY], "ne beacon coords not equal")
+        self.assertEqual(sw_beacon, state[GridWorldStateKey.SW_BEACON_KEY], "sw beacon coords not equal")
+        self.assertEqual(None, state[GridWorldStateKey.SE_BEACON_KEY], "se beacon coords not equal")
 
     def test_given_no_pit_should_correctly_create_state(self):
 
@@ -168,17 +168,17 @@ class TestGridWorldState(TestCase):
 
         state = GridWorldState.create(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords)
 
-        self.assertEqual(shape, state[GridWorldState.GRID_SHAPE_KEY], "shape not equal")
-        self.assertEqual(player_coords, state[GridWorldState.PLAYER_KEY], "player coords not equal")
-        self.assertEqual(key_coords, state[GridWorldState.KEY_DICT_KEY], "key coords not equal")
-        self.assertEqual(lock_coords, state[GridWorldState.LOCK_KEY], "lock coords not equal")
-        self.assertEqual(pit_start_coords, state[GridWorldState.PIT_START_KEY], "pit start key not equal")
-        self.assertEqual(pit_end_coords, state[GridWorldState.PIT_END_KEY], "pit end key not equal")
-        self.assertEqual(nw_beacon, state[GridWorldState.NW_BEACON_KEY], "nw beacon coords not equal")
-        self.assertEqual(ne_beacon, state[GridWorldState.NE_BEACON_KEY], "ne beacon coords not equal")
-        self.assertEqual(sw_beacon, state[GridWorldState.SW_BEACON_KEY], "sw beacon coords not equal")
-        self.assertEqual(se_beacon, state[GridWorldState.SE_BEACON_KEY], "se beacon coords not equal")
-        self.assertEqual(0, state[GridWorldState.HAS_KEY_DICT_KEY], "has key not equal")
+        self.assertEqual(shape, state[GridWorldStateKey.GRID_SHAPE_KEY], "shape not equal")
+        self.assertEqual(player_coords, state[GridWorldStateKey.PLAYER_KEY], "player coords not equal")
+        self.assertEqual(key_coords, state[GridWorldStateKey.KEY_DICT_KEY], "key coords not equal")
+        self.assertEqual(lock_coords, state[GridWorldStateKey.LOCK_KEY], "lock coords not equal")
+        self.assertEqual(pit_start_coords, state[GridWorldStateKey.PIT_START_KEY], "pit start key not equal")
+        self.assertEqual(pit_end_coords, state[GridWorldStateKey.PIT_END_KEY], "pit end key not equal")
+        self.assertEqual(nw_beacon, state[GridWorldStateKey.NW_BEACON_KEY], "nw beacon coords not equal")
+        self.assertEqual(ne_beacon, state[GridWorldStateKey.NE_BEACON_KEY], "ne beacon coords not equal")
+        self.assertEqual(sw_beacon, state[GridWorldStateKey.SW_BEACON_KEY], "sw beacon coords not equal")
+        self.assertEqual(se_beacon, state[GridWorldStateKey.SE_BEACON_KEY], "se beacon coords not equal")
+        self.assertEqual(0, state[GridWorldStateKey.HAS_KEY_DICT_KEY], "has key not equal")
 
     def test_given_single_set_of_pit_coords_should_throw_error(self):
 
@@ -195,8 +195,8 @@ class TestGridWorldState(TestCase):
 
         state = GridWorldStateBuilder.create_state_with_spec(key_coords=key_coords)
 
-        self.assertEqual(key_coords, state[GridWorldState.KEY_DICT_KEY], "key coords not equal")
-        self.assertEqual(has_key, state[GridWorldState.HAS_KEY_DICT_KEY], "has key not equal")
+        self.assertEqual(key_coords, state[GridWorldStateKey.KEY_DICT_KEY], "key coords not equal")
+        self.assertEqual(has_key, state[GridWorldStateKey.HAS_KEY_DICT_KEY], "has key not equal")
 
     def test_given_no_lock_should_correctly_create_state(self):
 
@@ -204,7 +204,7 @@ class TestGridWorldState(TestCase):
 
         state = GridWorldStateBuilder.create_state_with_spec(lock_coords=lock_coords)
 
-        self.assertEqual(lock_coords, state[GridWorldState.LOCK_KEY], "lock coords not equal")
+        self.assertEqual(lock_coords, state[GridWorldStateKey.LOCK_KEY], "lock coords not equal")
 
     def test_given_no_key_and_lock_should_throw_error(self):
 

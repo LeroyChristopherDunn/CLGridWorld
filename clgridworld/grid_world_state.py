@@ -1,6 +1,5 @@
 
-
-class GridWorldState:
+class GridWorldStateKey:
 
     GRID_SHAPE_KEY = "grid_shape"
     PLAYER_KEY = "player"
@@ -13,6 +12,9 @@ class GridWorldState:
     SW_BEACON_KEY = "sw_beacon"
     SE_BEACON_KEY = "se_beacon"
     HAS_KEY_DICT_KEY = "has_key"
+
+
+class GridWorldState:
 
     @staticmethod
     def create(shape: (int, int), player_coords: (int, int), key_coords: (int, int)=None, lock_coords: (int, int)=None,
@@ -27,17 +29,17 @@ class GridWorldState:
         has_key = 1 if key_coords is None else 0
 
         return {
-            GridWorldState.GRID_SHAPE_KEY:      shape,
-            GridWorldState.PLAYER_KEY:          player_coords,
-            GridWorldState.KEY_DICT_KEY:        key_coords,
-            GridWorldState.LOCK_KEY:            lock_coords,
-            GridWorldState.PIT_START_KEY:       pit_start_coords,
-            GridWorldState.PIT_END_KEY:         pit_end_coords,
-            GridWorldState.NW_BEACON_KEY:       nw_beacon_coords,
-            GridWorldState.NE_BEACON_KEY:       ne_beacon_coords,
-            GridWorldState.SW_BEACON_KEY:       sw_beacon_coords,
-            GridWorldState.SE_BEACON_KEY:       se_beacon_coords,
-            GridWorldState.HAS_KEY_DICT_KEY:    has_key,
+            GridWorldStateKey.GRID_SHAPE_KEY:      shape,
+            GridWorldStateKey.PLAYER_KEY:          player_coords,
+            GridWorldStateKey.KEY_DICT_KEY:        key_coords,
+            GridWorldStateKey.LOCK_KEY:            lock_coords,
+            GridWorldStateKey.PIT_START_KEY:       pit_start_coords,
+            GridWorldStateKey.PIT_END_KEY:         pit_end_coords,
+            GridWorldStateKey.NW_BEACON_KEY:       nw_beacon_coords,
+            GridWorldStateKey.NE_BEACON_KEY:       ne_beacon_coords,
+            GridWorldStateKey.SW_BEACON_KEY:       sw_beacon_coords,
+            GridWorldStateKey.SE_BEACON_KEY:       se_beacon_coords,
+            GridWorldStateKey.HAS_KEY_DICT_KEY:    has_key,
         }
 
     @staticmethod

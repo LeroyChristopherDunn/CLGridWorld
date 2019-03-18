@@ -1,6 +1,6 @@
 import numpy as np
 
-from clgridworld.grid_world_state import GridWorldState
+from clgridworld.grid_world_state import GridWorldState, GridWorldStateKey
 
 
 class GridWorldGridState:
@@ -16,17 +16,17 @@ class GridWorldGridState:
 
         self.state = state
 
-        self.grid_shape = state[GridWorldState.GRID_SHAPE_KEY]
-        self.player_coords = state[GridWorldState.PLAYER_KEY]
-        self.lock_coords = state[GridWorldState.LOCK_KEY]
-        self.key_coords = state[GridWorldState.KEY_DICT_KEY]
-        self.pit_start_coords = state[GridWorldState.PIT_START_KEY]
-        self.pit_end_coords = state[GridWorldState.PIT_END_KEY]
-        self.nw_beacon_coords = state[GridWorldState.NW_BEACON_KEY]
-        self.ne_beacon_coords = state[GridWorldState.NE_BEACON_KEY]
-        self.sw_beacon_coords = state[GridWorldState.SW_BEACON_KEY]
-        self.se_beacon_coords = state[GridWorldState.SE_BEACON_KEY]
-        self.has_key = state[GridWorldState.GRID_SHAPE_KEY]
+        self.grid_shape = state[GridWorldStateKey.GRID_SHAPE_KEY]
+        self.player_coords = state[GridWorldStateKey.PLAYER_KEY]
+        self.lock_coords = state[GridWorldStateKey.LOCK_KEY]
+        self.key_coords = state[GridWorldStateKey.KEY_DICT_KEY]
+        self.pit_start_coords = state[GridWorldStateKey.PIT_START_KEY]
+        self.pit_end_coords = state[GridWorldStateKey.PIT_END_KEY]
+        self.nw_beacon_coords = state[GridWorldStateKey.NW_BEACON_KEY]
+        self.ne_beacon_coords = state[GridWorldStateKey.NE_BEACON_KEY]
+        self.sw_beacon_coords = state[GridWorldStateKey.SW_BEACON_KEY]
+        self.se_beacon_coords = state[GridWorldStateKey.SE_BEACON_KEY]
+        self.has_key = state[GridWorldStateKey.GRID_SHAPE_KEY]
 
         self.grid = self.create_grid()
 

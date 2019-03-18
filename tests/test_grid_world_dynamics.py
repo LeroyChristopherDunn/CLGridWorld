@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from clgridworld.grid_world_actions import GridWorldActions
 from clgridworld.grid_world_dynamics import GridWorldDynamics
-from clgridworld.grid_world_state import GridWorldState
+from clgridworld.grid_world_state import GridWorldState, GridWorldStateKey
 from tests.grid_world_state_builder import GridWorldStateBuilder
 
 
@@ -62,7 +62,7 @@ class TestGridWorldDynamics(TestCase):
         actual_state = GridWorldDynamics(state).step(GridWorldActions.NORTH)
 
         expected_state = state.copy()
-        expected_state[GridWorldState.PLAYER_KEY] = expected_player_state
+        expected_state[GridWorldStateKey.PLAYER_KEY] = expected_player_state
         self.assertEqual(expected_state, actual_state)
 
     def test_when_player_moves_east_into_empty_space_should_move_to_empty_space(self):
@@ -74,7 +74,7 @@ class TestGridWorldDynamics(TestCase):
         actual_state = GridWorldDynamics(state).step(GridWorldActions.EAST)
 
         expected_state = state.copy()
-        expected_state[GridWorldState.PLAYER_KEY] = expected_player_state
+        expected_state[GridWorldStateKey.PLAYER_KEY] = expected_player_state
         self.assertEqual(expected_state, actual_state)
 
     def test_when_player_moves_south_into_empty_space_should_move_to_empty_space(self):
@@ -86,7 +86,7 @@ class TestGridWorldDynamics(TestCase):
         actual_state = GridWorldDynamics(state).step(GridWorldActions.SOUTH)
 
         expected_state = state.copy()
-        expected_state[GridWorldState.PLAYER_KEY] = expected_player_state
+        expected_state[GridWorldStateKey.PLAYER_KEY] = expected_player_state
         self.assertEqual(expected_state, actual_state)
 
     def test_when_player_moves_west_into_empty_space_should_move_to_empty_space(self):
@@ -98,7 +98,7 @@ class TestGridWorldDynamics(TestCase):
         actual_state = GridWorldDynamics(state).step(GridWorldActions.WEST)
 
         expected_state = state.copy()
-        expected_state[GridWorldState.PLAYER_KEY] = expected_player_state
+        expected_state[GridWorldStateKey.PLAYER_KEY] = expected_player_state
         self.assertEqual(expected_state, actual_state)
 
     def test_when_player_moves_north_into_beacon_should_remain_in_same_state(self):
