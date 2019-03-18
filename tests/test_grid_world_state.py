@@ -87,6 +87,21 @@ class TestGridWorldState(TestCase):
         self.assertRaises(ValueError, GridWorldStateBuilder.create_state_with_spec,
                           key_coords=(5, 7), pit_start_coords=(4, 2), pit_end_coords=(5, 7))
 
+    def test_given_player_coords_overlap_with_beacon_should_throw_error(self):
+
+        self.assertRaises(ValueError, GridWorldStateBuilder.create_state_with_spec,
+                          player_coords=(3, 1), pit_start_coords=(4, 2), pit_end_coords=(5, 7))
+
+    def test_given_key_coords_overlap_with_beacon_should_throw_error(self):
+
+        self.assertRaises(ValueError, GridWorldStateBuilder.create_state_with_spec,
+                          key_coords=(6, 8), pit_start_coords=(4, 2), pit_end_coords=(5, 7))
+
+    def test_given_lock_coords_overlap_with_beacon_should_throw_error(self):
+
+        self.assertRaises(ValueError, GridWorldStateBuilder.create_state_with_spec,
+                          lock_coords=(6, 1), pit_start_coords=(4, 2), pit_end_coords=(5, 7))
+
     def test_given_pit_on_sw_bound_should_correctly_create_state(self):
 
         shape = (20, 20)

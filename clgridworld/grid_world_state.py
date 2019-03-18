@@ -18,11 +18,11 @@ class GridWorldState:
     def create(shape: (int, int), player_coords: (int, int), key_coords: (int, int)=None, lock_coords: (int, int)=None,
                pit_start_coords: (int, int)=None, pit_end_coords: (int, int)=None) -> dict:
 
-        _GridWorldStateValidator(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords)\
-            .validate()
-
         ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords = \
             GridWorldState._get_pit_beacon_coords(shape, pit_start_coords, pit_end_coords)
+
+        _GridWorldStateValidator(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords,
+                                 ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords).validate()
 
         has_key = 1 if key_coords is None else 0
 
@@ -43,7 +43,7 @@ class GridWorldState:
     @staticmethod
     def _get_pit_beacon_coords(shape, pit_start_coords, pit_end_coords):
 
-        if pit_start_coords is None and pit_end_coords is None:
+        if pit_start_coords is None or pit_end_coords is None:
             return None, None, None, None
 
         pit_row_start = pit_start_coords[0]
@@ -74,7 +74,8 @@ class GridWorldState:
 class _GridWorldStateValidator:
 
     def __init__(self, grid_shape: (int, int), player: (int, int), key: (int, int), lock: (int, int),
-                 pit_start: (int, int), pit_end: (int, int)):
+                 pit_start: (int, int), pit_end: (int, int), ne_beacon: (int, int), nw_beacon: (int, int),
+                 se_beacon: (int, int), sw_beacon: (int, int)):
 
         self.grid_shape = grid_shape
         self.player = player
@@ -82,12 +83,18 @@ class _GridWorldStateValidator:
         self.pit_start = pit_start
         self.lock = lock
         self.key = key
+        self.ne_beacon = ne_beacon
+        self.nw_beacon = nw_beacon
+        self.se_beacon = se_beacon
+        self.sw_beacon = sw_beacon
 
     def validate(self):
         self._validate_key_lock_pairing()
         self._validate_pit_coords_pairing()
         self._validate_coords_are_in_bounds()
-        self._validate_coords_dont_overlap()
+        self._validate_basic_coords_dont_overlap()
+        self._validate_coords_dont_overlap_with_pit()
+        self._validate_coords_dont_overlap_with_beacons()
 
     def _validate_key_lock_pairing(self):
 
@@ -120,7 +127,7 @@ class _GridWorldStateValidator:
     def is_in_shape_bounds(point: (int, int), shape: (int, int)) -> bool:
         return 0 <= point[0] < shape[0] and 0 <= point[1] < shape[1]
 
-    def _validate_coords_dont_overlap(self):
+    def _validate_basic_coords_dont_overlap(self):
 
         if self.player == self.key:
             raise ValueError("player coords %s equal to key coords %s" % (self.player, self.key))
@@ -130,6 +137,8 @@ class _GridWorldStateValidator:
 
         if self.key == self.lock:
             raise ValueError("key coords %s equal to lock coords %s" % (self.key, self.lock))
+
+    def _validate_coords_dont_overlap_with_pit(self):
 
         if self.pit_start is None and self.pit_end is None:
             return
@@ -150,4 +159,19 @@ class _GridWorldStateValidator:
         if self.key is not None and pit_row_start <= self.key[0] <= pit_row_end and pit_col_start <= self.key[1] <= pit_col_end:
             raise ValueError("key coords %s within pit start coords %s and pit end coords %s" %
                              (self.key, self.pit_start, self.pit_end))
+
+    def _validate_coords_dont_overlap_with_beacons(self):
+
+        beacons = [self.ne_beacon, self.nw_beacon, self.se_beacon, self.sw_beacon]
+
+        for beacon in beacons:
+
+            if self.player == beacon:
+                raise ValueError("player coords %s overlap with pit beacon coords %s" % (self.player, beacon))
+
+            if self.lock == beacon:
+                raise ValueError("lock coords %s overlap with pit beacon coords %s" % (self.lock, beacon))
+
+            if self.key == beacon:
+                raise ValueError("key coords %s overlap with pit beacon coords %s" % (self.key, beacon))
 
