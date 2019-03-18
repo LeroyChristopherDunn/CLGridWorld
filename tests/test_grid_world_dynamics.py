@@ -8,6 +8,11 @@ from tests.grid_world_state_builder import GridWorldStateBuilder
 
 class TestGridWorldDynamics(TestCase):
 
+    def setUp(self):
+
+        self.actions = [GridWorldActions.NORTH, GridWorldActions.EAST, GridWorldActions.SOUTH, GridWorldActions.WEST]
+        self.action_names = ["North", "East", "South", "West"]
+
     def test_new_state_should_be_new_object(self):
 
         player_coords = (0, 0)
@@ -19,73 +24,39 @@ class TestGridWorldDynamics(TestCase):
 
     def test_when_player_moves_into_boundary_should_remain_in_same_state(self):
 
-        actions = [GridWorldActions.NORTH, GridWorldActions.EAST, GridWorldActions.SOUTH, GridWorldActions.WEST]
-        action_names = ["North", "East", "South", "West"]
         grid_shape = (10, 10)
         player_start_coords = [(0, 0), (9, 9), (9, 9), (0, 0)]
 
-        for i in range(len(actions)):
-            with self.subTest(action=action_names[i]):
+        for i in range(len(self.actions)):
+            with self.subTest(action=self.action_names[i]):
 
                 player_coords = player_start_coords[i]
-                action = actions[i]
+                action = self.actions[i]
 
                 state = GridWorldStateBuilder.create_state_with_spec(shape=grid_shape, player_coords=player_coords)
                 new_state = GridWorldDynamics(state).step(action)
 
                 self.assertDictEqual(state, new_state)
 
-    def test_when_player_moves_north_into_empty_space_should_move_to_empty_space(self):
+    def test_when_player_moves_into_empty_space_should_move_into_empty_space(self):
 
-        player_coords = (1, 0)
-        expected_player_state = (0, 0)
+        player_start_coords = [(1, 0), (0, 0), (0, 0), (0, 1)]
+        expected_player_coords_list = [(0, 0), (0, 1), (1, 0), (0, 0)]
 
-        state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
-        actual_state = GridWorldDynamics(state).step(GridWorldActions.NORTH)
+        for i in range(len(self.actions)):
+            with self.subTest(action=self.action_names[i]):
 
-        expected_state = state.copy()
-        expected_state[GridWorldStateKey.PLAYER_KEY] = expected_player_state
-        self.assertEqual(expected_state, actual_state)
-        self.assertFalse(actual_state.is_in_pit(), "should not be in pit")
+                player_coords = player_start_coords[i]
+                action = self.actions[i]
+                expected_player_coords = expected_player_coords_list[i]
 
-    def test_when_player_moves_east_into_empty_space_should_move_to_empty_space(self):
+                state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
+                actual_state = GridWorldDynamics(state).step(action)
 
-        player_coords = (0, 0)
-        expected_player_state = (0, 1)
-
-        state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
-        actual_state = GridWorldDynamics(state).step(GridWorldActions.EAST)
-
-        expected_state = state.copy()
-        expected_state[GridWorldStateKey.PLAYER_KEY] = expected_player_state
-        self.assertEqual(expected_state, actual_state)
-        self.assertFalse(actual_state.is_in_pit(), "should not be in pit")
-
-    def test_when_player_moves_south_into_empty_space_should_move_to_empty_space(self):
-
-        player_coords = (0, 0)
-        expected_player_state = (1, 0)
-
-        state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
-        actual_state = GridWorldDynamics(state).step(GridWorldActions.SOUTH)
-
-        expected_state = state.copy()
-        expected_state[GridWorldStateKey.PLAYER_KEY] = expected_player_state
-        self.assertEqual(expected_state, actual_state)
-        self.assertFalse(actual_state.is_in_pit(), "should not be in pit")
-
-    def test_when_player_moves_west_into_empty_space_should_move_to_empty_space(self):
-
-        player_coords = (0, 1)
-        expected_player_state = (0, 0)
-
-        state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
-        actual_state = GridWorldDynamics(state).step(GridWorldActions.WEST)
-
-        expected_state = state.copy()
-        expected_state[GridWorldStateKey.PLAYER_KEY] = expected_player_state
-        self.assertEqual(expected_state, actual_state)
-        self.assertFalse(actual_state.is_in_pit(), "should not be in pit")
+                expected_state = state.copy()
+                expected_state[GridWorldStateKey.PLAYER_KEY] = expected_player_coords
+                self.assertDictEqual(expected_state, actual_state)
+                self.assertFalse(actual_state.is_in_pit(), "should not be in pit")
 
     def test_when_player_moves_north_into_beacon_should_remain_in_same_state(self):
 
