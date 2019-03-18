@@ -196,3 +196,5 @@ class TestGridWorldState(TestCase):
         self.assertRaises(ValueError, GridWorldStateBuilder.create_state_with_spec,
                           key_coords=None, lock_coords=None)
 
+    # todo intersections with beacons
+
