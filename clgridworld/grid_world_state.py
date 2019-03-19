@@ -1,3 +1,5 @@
+from gym import spaces
+
 
 class GridWorldStateKey:
 
@@ -54,6 +56,31 @@ class GridWorldState(dict):
 
     def lock_is_unlocked(self):
         return self[GridWorldStateKey.LOCK] is None
+
+
+class GridWorldStateObservationSpace(spaces.Dict):
+
+    MAX_COORD_SIZE = 5000
+
+    def __init__(self):
+
+        coord_space = spaces.Discrete(GridWorldStateObservationSpace.MAX_COORD_SIZE)
+        coords_space = spaces.Tuple((coord_space, coord_space))
+        bool_space = spaces.Discrete(2)
+
+        super(GridWorldStateObservationSpace, self).__init__({
+            GridWorldStateKey.GRID_SHAPE: coords_space,
+            GridWorldStateKey.PLAYER: coords_space,
+            GridWorldStateKey.LOCK: coords_space,
+            GridWorldStateKey.KEY: coords_space,
+            GridWorldStateKey.PIT_START: coords_space,
+            GridWorldStateKey.PIT_END: coords_space,
+            GridWorldStateKey.NW_BEACON: coords_space,
+            GridWorldStateKey.NE_BEACON: coords_space,
+            GridWorldStateKey.SW_BEACON: coords_space,
+            GridWorldStateKey.SE_BEACON: coords_space,
+            GridWorldStateKey.HAS_KEY: bool_space
+        })
 
 
 class GridWorldStateFactory:
