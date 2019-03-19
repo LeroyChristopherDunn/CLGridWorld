@@ -4,7 +4,7 @@ from clgridworld.grid_world import GridWorld
 from clgridworld.grid_world_action import GridWorldActionSpace
 from clgridworld.grid_world_dynamics import GridWorldDynamics, TerminalStateValidator
 from clgridworld.grid_world_grid_state import GridWorldGridState
-from clgridworld.grid_world_reward import GridWorldRewardCalculator
+from clgridworld.grid_world_reward import GridWorldRewardFunction
 from clgridworld.grid_world_state import GridWorldStateFactory, GridWorldStateObservationSpace, GridWorldState
 
 
@@ -49,7 +49,7 @@ class GridWorldBuilder:
 
     @staticmethod
     def reward(curr_state: GridWorldState, action, next_state: GridWorldState) -> int:
-        return GridWorldRewardCalculator().calculate(curr_state, next_state)
+        return GridWorldRewardFunction().calculate(curr_state, next_state)
 
     @staticmethod
     def render(curr_state: GridWorldState) -> None:

@@ -9,7 +9,7 @@ class GridWorldReward:
     PLAYER_MOVED_INTO_PIT = -200
 
 
-class GridWorldRewardCalculator:
+class GridWorldRewardFunction:
 
     def calculate(self, curr_state: GridWorldState, next_state: GridWorldState) -> int:
 

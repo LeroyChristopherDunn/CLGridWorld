@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from clgridworld.grid_world_action import GridWorldAction
 from clgridworld.grid_world_dynamics import GridWorldDynamics
-from clgridworld.grid_world_reward import GridWorldRewardCalculator, GridWorldReward
+from clgridworld.grid_world_reward import GridWorldRewardFunction, GridWorldReward
 from tests.grid_world_state_builder import GridWorldStateBuilder
 
 
@@ -13,7 +13,7 @@ class GridWorldRewardTest(TestCase):
         curr_state = GridWorldStateBuilder.create_state_with_spec()
         next_state = GridWorldStateBuilder.create_state_with_spec()
 
-        reward = GridWorldRewardCalculator().calculate(curr_state, next_state)
+        reward = GridWorldRewardFunction().calculate(curr_state, next_state)
 
         self.assertEqual(GridWorldReward.NO_MOVEMENT, reward)
 
@@ -24,7 +24,7 @@ class GridWorldRewardTest(TestCase):
         curr_state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
         next_state = GridWorldDynamics(curr_state).step(GridWorldAction.EAST)
 
-        reward = GridWorldRewardCalculator().calculate(curr_state, next_state)
+        reward = GridWorldRewardFunction().calculate(curr_state, next_state)
 
         self.assertFalse(curr_state == next_state, "states should not be equal")
         self.assertEqual(GridWorldReward.PLAYER_MOVED_INTO_EMPTY_SPACE, reward)
@@ -36,7 +36,7 @@ class GridWorldRewardTest(TestCase):
         curr_state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
         next_state = GridWorldDynamics(curr_state).step(GridWorldAction.EAST)
 
-        reward = GridWorldRewardCalculator().calculate(curr_state, next_state)
+        reward = GridWorldRewardFunction().calculate(curr_state, next_state)
 
         self.assertFalse(curr_state == next_state, "states should not be equal")
         self.assertEqual(GridWorldReward.PLAYER_MOVED_INTO_EMPTY_SPACE, reward)
@@ -49,7 +49,7 @@ class GridWorldRewardTest(TestCase):
         curr_state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords, key_coords=key_coords)
         next_state = GridWorldDynamics(curr_state).step(GridWorldAction.PICK_UP_KEY)
 
-        reward = GridWorldRewardCalculator().calculate(curr_state, next_state)
+        reward = GridWorldRewardFunction().calculate(curr_state, next_state)
 
         self.assertEqual(GridWorldReward.PLAYER_PICKED_UP_KEY, reward)
 
@@ -63,7 +63,7 @@ class GridWorldRewardTest(TestCase):
             player_coords=player_coords, key_coords=key_coords, lock_coords=lock_coords)
         next_state = GridWorldDynamics(curr_state).step(GridWorldAction.UNLOCK_LOCK)
 
-        reward = GridWorldRewardCalculator().calculate(curr_state, next_state)
+        reward = GridWorldRewardFunction().calculate(curr_state, next_state)
 
         self.assertEqual(GridWorldReward.PLAYER_UNLOCKED_LOCK, reward)
 
@@ -79,6 +79,6 @@ class GridWorldRewardTest(TestCase):
             pit_end_coords=pit_end_coords)
         next_state = GridWorldDynamics(curr_state).step(GridWorldAction.NORTH)
 
-        reward = GridWorldRewardCalculator().calculate(curr_state, next_state)
+        reward = GridWorldRewardFunction().calculate(curr_state, next_state)
 
         self.assertEqual(GridWorldReward.PLAYER_MOVED_INTO_PIT, reward)
