@@ -28,9 +28,9 @@ class GridWorldGridState:
         self.se_beacon_coords = state[GridWorldStateKey.SE_BEACON]
         self.has_key = state[GridWorldStateKey.HAS_KEY]
 
-        self.grid = self.create_grid()
+        self.grid = self._create_grid()
 
-    def create_grid(self) -> np.ndarray:
+    def _create_grid(self) -> np.ndarray:
 
         grid = np.chararray(self.grid_shape, unicode=True)
         grid[:] = GridWorldGridState.EMPTY
