@@ -57,6 +57,9 @@ class GridWorldState(dict):
     def lock_is_unlocked(self):
         return self[GridWorldStateKey.LOCK] is None
 
+    def __hash__(self) -> int:
+        return self.__str__().__hash__()
+
 
 class GridWorldStateObservationSpace(spaces.Dict):
 

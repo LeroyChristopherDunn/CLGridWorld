@@ -6,6 +6,19 @@ from tests.grid_world_state_builder import GridWorldStateBuilder
 
 class TestGridWorldState(TestCase):
 
+    def test_hash(self):
+
+        shape = (10, 10)
+        player_coords = (1, 4)
+        key_coords = (7, 5)
+
+        state1 = GridWorldStateFactory.create(shape, player_coords, key_coords)
+        state2 = GridWorldStateFactory.create(shape, player_coords, key_coords)
+        state3 = GridWorldStateFactory.create(shape, (9, 9), key_coords)
+
+        self.assertEqual(state1.__hash__(), state2.__hash__())
+        self.assertNotEqual(state1.__hash__(), state3.__hash__())
+
     def test_given_valid_parameters_should_correctly_create_state(self):
 
         #  target task spec in 'Autonomous Task Sequencing... Narvekar et al 2017'
