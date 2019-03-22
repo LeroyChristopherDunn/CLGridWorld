@@ -237,6 +237,7 @@ class _GridWorldStateValidator:
     def _validate_coords_dont_overlap_with_beacons(self):
 
         beacons = [self.ne_beacon, self.nw_beacon, self.se_beacon, self.sw_beacon]
+        beacons = list(filter(lambda beacon: beacon is not None, beacons))
 
         for beacon in beacons:
 

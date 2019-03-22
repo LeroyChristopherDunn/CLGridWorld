@@ -228,3 +228,38 @@ class TestGridWorldState(TestCase):
         self.assertRaises(ValueError, GridWorldStateBuilder.create_state_with_spec,
                           key_coords=None, lock_coords=None)
 
+    def test_given_no_key_and_no_pit_should_not_throw_error(self):
+        
+        shape = (10, 10)
+        player_coords = (1, 4)
+        key_coords = None
+        pit_start_coords = None
+        pit_end_coords = None
+
+        state = GridWorldStateBuilder.create_state_with_spec(shape=shape, player_coords=player_coords, 
+                                                             key_coords=key_coords, pit_start_coords=pit_start_coords, 
+                                                             pit_end_coords=pit_end_coords)
+
+        self.assertEqual(shape, state[GridWorldStateKey.GRID_SHAPE], "shape not equal")
+        self.assertEqual(player_coords, state[GridWorldStateKey.PLAYER], "player coords not equal")
+        self.assertEqual(key_coords, state[GridWorldStateKey.KEY], "key coords not equal")
+        self.assertEqual(pit_start_coords, state[GridWorldStateKey.PIT_START], "pit start key not equal")
+        self.assertEqual(pit_end_coords, state[GridWorldStateKey.PIT_END], "pit end key not equal")
+
+    def test_given_no_lock_and_no_pit_should_not_throw_error(self):
+        
+        shape = (10, 10)
+        player_coords = (1, 4)
+        lock_coords = None
+        pit_start_coords = None
+        pit_end_coords = None
+
+        state = GridWorldStateBuilder.create_state_with_spec(shape=shape, player_coords=player_coords,
+                                                             lock_coords=lock_coords, pit_start_coords=pit_start_coords,
+                                                             pit_end_coords=pit_end_coords)
+
+        self.assertEqual(shape, state[GridWorldStateKey.GRID_SHAPE], "shape not equal")
+        self.assertEqual(player_coords, state[GridWorldStateKey.PLAYER], "player coords not equal")
+        self.assertEqual(lock_coords, state[GridWorldStateKey.LOCK], "lock coords not equal")
+        self.assertEqual(pit_start_coords, state[GridWorldStateKey.PIT_START], "pit start lock not equal")
+        self.assertEqual(pit_end_coords, state[GridWorldStateKey.PIT_END], "pit end lock not equal")
