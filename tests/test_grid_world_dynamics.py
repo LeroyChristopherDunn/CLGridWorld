@@ -254,6 +254,30 @@ class TestGridWorldDynamics(TestCase):
                 self.assertDictEqual(expected_state, actual_state)
                 self.assertTrue(actual_state.lock_is_unlocked(), "lock should be unlocked")
 
+    def test_given_player_has_key_and_is_next_to_lock_when_unlock_should_unlock_lock_2(self):
+
+        #  test case bug discovered while training
+
+        lock_coords = (9, 1)
+        player_start_coords = [(8, 1), (9, 2), (9, 0)]
+        player_position_to_lock = ["North", "East", "West"]
+        grid_shape = (10, 10)
+
+        for i in range(len(player_position_to_lock)):
+            with self.subTest(player_position_to_lock=player_position_to_lock[i]):
+
+                player_coords = player_start_coords[i]
+
+                state = GridWorldStateBuilder.create_state_with_spec(
+                    player_coords=player_coords, lock_coords=lock_coords, key_coords=None, shape=grid_shape)
+                actual_state = GridWorldDynamics(state).step(GridWorldAction.UNLOCK_LOCK)
+
+                expected_state = state.copy()
+                expected_state[GridWorldStateKey.LOCK] = None
+
+                self.assertDictEqual(expected_state, actual_state)
+                self.assertTrue(actual_state.lock_is_unlocked(), "lock should be unlocked")
+
     def test_given_player_is_in_pit_should_throw_terminal_state_error_after_any_action_taken(self):
 
         shape = (10, 10)

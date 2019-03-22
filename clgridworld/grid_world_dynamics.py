@@ -115,7 +115,7 @@ class GridWorldDynamics:
         key_coords = self.state[STATE_KEY.KEY]
         lock_coords = self.state[STATE_KEY.LOCK]
 
-        if action is not ACTIONS.UNLOCK_LOCK:
+        if action != ACTIONS.UNLOCK_LOCK:
             return False
 
         if key_coords is not None:
