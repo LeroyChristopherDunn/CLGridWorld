@@ -29,18 +29,6 @@ class GridWorldRewardTest(TestCase):
         self.assertFalse(curr_state == next_state, "states should not be equal")
         self.assertEqual(GridWorldReward.PLAYER_MOVED_INTO_EMPTY_SPACE, reward)
 
-    def test_given_player_moved_into_empty_space_should_return_correct_reward(self):
-
-        player_coords = (0, 0)
-
-        curr_state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
-        next_state = GridWorldDynamics(curr_state).step(GridWorldAction.EAST)
-
-        reward = GridWorldRewardFunction().calculate(curr_state, next_state)
-
-        self.assertFalse(curr_state == next_state, "states should not be equal")
-        self.assertEqual(GridWorldReward.PLAYER_MOVED_INTO_EMPTY_SPACE, reward)
-
     def test_given_player_picked_up_key_should_return_correct_reward(self):
 
         player_coords = (0, 0)
