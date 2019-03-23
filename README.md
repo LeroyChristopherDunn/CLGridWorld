@@ -11,7 +11,7 @@ Quoted directly from [1]
 
 Quoted directly from [1]
 
-![GridWorld](GridWorld.PNG)
+![GridWorld](img/GridWorld.PNG)
 
 "The world consists of a room, which can contain 4 types of objects. Keys are items the agent can pick up by moving to them and executing a pickup action. These are used to unlock locks. Each lock in a room is dependent on a set of keys. If the agent is holding the right keys, then moving to a lock and executing an unlock action opens the lock. Pits are obstacles placed throughout the domain. If the agent moves into a pit, the episode is terminated. Finally, beacons are landmarks that are placed on the corners of pits. 
 
@@ -56,7 +56,7 @@ Below are code snippets to generate grid worlds with varying features
 
 ### Complete Spec (key, lock, and pit)
 
-![Complete Spec]('GridWorld (2).PNG')
+![Complete Spec](img/GridWorld_complete_spec.PNG)
 
 ```python
 from clgridworld.grid_world_builder import GridWorldBuilder, InitialStateParams
@@ -68,7 +68,7 @@ env = GridWorldBuilder.create(params)
 
 ### Key Only
 
-![Key Only]('GridWorld (3).PNG')
+![Key Only](img/GridWorld_key_only.PNG)
 
 ```python
 from clgridworld.grid_world_builder import GridWorldBuilder, InitialStateParams
@@ -79,7 +79,7 @@ env = GridWorldBuilder.create(params)
 
 ### Lock and Pit
 
-![Key Only]('GridWorld (4).PNG')
+![Key Only](img/GridWorld_lock_and_pit.PNG)
 
 ```python
 from clgridworld.grid_world_builder import GridWorldBuilder, InitialStateParams
