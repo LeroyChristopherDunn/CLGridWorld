@@ -5,7 +5,7 @@ setup(
     version='1.0.0',
     packages=['clgridworld', 'example', 'tests'],
     url='https://github.com/LeroyChristopherDunn/CurriculumLearningGridWorld',
-    license='MIT',
+    license='GNU GPLv3',
     author='Leroy Christopher Dunn',
     author_email='social.leroy.c.dunn@gmail.com',
     description='Curriculum Learning Environment for Reinforcement Learning Agents',
