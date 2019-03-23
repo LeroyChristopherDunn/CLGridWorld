@@ -8,7 +8,7 @@ from clgridworld.grid_world_action import GridWorldAction
 from clgridworld.grid_world_builder import GridWorldBuilder, InitialStateParams
 
 
-class BasicQLearningEpsilonDecreasingAgent:
+class QLearningEpsilonDecreasingAgent:
 
     def __init__(self, action_space, discount_factor=0.95, learning_rate=0.01, epsilon=0.1, seed=None):
 
@@ -26,7 +26,7 @@ class BasicQLearningEpsilonDecreasingAgent:
         self.episode_count = 1
 
     def update_epsilon(self):
-        self.epsilon = 100.0 / (100.0 + self.episode_count)
+        self.epsilon = 500.0 / (500.0 + self.episode_count)
 
     def inc_episode(self):
         self.episode_count += 1
@@ -61,18 +61,20 @@ if __name__ == '__main__':
     # want to change the amount of output.
     logger.set_level(logger.INFO)
 
-    params = InitialStateParams(shape=(10, 10), player=(1, 4), lock=(9, 1))
+    # target task spec as defined in Source Task Sequencing,,, Narvekar et al 2017
+    params = InitialStateParams(shape=(10, 10), player=(1, 4), key=(7, 5), lock=(1, 1), pit_start=(4, 2),
+                                pit_end=(4, 7))
     env = GridWorldBuilder.create(params)
     seed = 0
     env.seed(seed)
-    agent = BasicQLearningEpsilonDecreasingAgent(env.action_space, discount_factor=1, seed=seed)
+    agent = QLearningEpsilonDecreasingAgent(env.action_space, discount_factor=1, seed=seed)
 
     print("Generated environment: ")
     env.render()
     print("")
 
-    num_episodes = 2000
-    max_steps_per_episode = 1000
+    num_episodes = 5000
+    max_steps_per_episode = 10000
     episodic_rewards = []
 
     for i in range(num_episodes):
@@ -109,7 +111,8 @@ if __name__ == '__main__':
         episodic_rewards.append(accum_reward)
         agent.inc_episode()
         if i % 100 == 0:
-            print("episode {} reward: {}".format(i, accum_reward))
+            avg_reward = np.average(episodic_rewards[-100:])
+            print("episode {} avg reward: {}".format(i, avg_reward))
 
     plt.plot(episodic_rewards)
     plt.ylabel('Episodic Reward')

@@ -48,7 +48,9 @@ if __name__ == '__main__':
     # want to change the amount of output.
     logger.set_level(logger.INFO)
 
-    params = InitialStateParams(shape=(10, 10), player=(1, 4), lock=(9, 1))
+    # target task spec as defined in Source Task Sequencing,,, Narvekar et al 2017
+    params = InitialStateParams(shape=(10, 10), player=(1, 4), key=(7, 5), lock=(1, 1), pit_start=(4, 2),
+                                pit_end=(4, 7))
     env = GridWorldBuilder.create(params)
     seed = 0
     env.seed(seed)
@@ -58,8 +60,8 @@ if __name__ == '__main__':
     env.render()
     print("")
 
-    num_episodes = 2000
-    max_steps_per_episode = 1000
+    num_episodes = 5000
+    max_steps_per_episode = 10000
     episodic_rewards = []
 
     for i in range(num_episodes):
@@ -95,7 +97,8 @@ if __name__ == '__main__':
 
         episodic_rewards.append(accum_reward)
         if i % 100 == 0:
-            print("episode {} reward: {}".format(i, accum_reward))
+            avg_reward = np.average(episodic_rewards[-100:])
+            print("episode {} avg reward: {}".format(i, avg_reward))
 
     plt.plot(episodic_rewards)
     plt.ylabel('Episodic Reward')
