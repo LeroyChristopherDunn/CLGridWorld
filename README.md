@@ -14,9 +14,12 @@ Configurable Curriculum Learning Domain for Reinforcement Learning Agents. As sp
     + [Lock and Pit](#lock-and-pit)
   * [Example Agents](#example-agents)
 - [Gym Environment](#gym-environment)
-  * [Observations / State Space](#observations--state-space)
+  * [Observations, State Space](#observations--state-space)
   * [Action Space](#action-space)
 - [Todo](#todo)
+- [Contributing](#contributing)
+- [Authors](#authors)
+- [License](#license)
 - [References](#references)
 
 # Curriculum Learning
@@ -156,6 +159,18 @@ player = observation["player"]
 - Create environment wrappers to expose alternative observations, such as those described in [1]
 - Pass additional parameters to grid world generator to configure the reward function
 - Pass additional parameters to grid world generator to define 'empty space' terminal states
+
+# Contributing
+
+Please do
+
+# Authors
+
+* **Leroy Dunn** - *Initial work* - [LeroyChristopherDunn](https://github.com/LeroyChristopherDunn)
+
+# License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details
 
 # References
 
