@@ -44,14 +44,53 @@ The degrees of freedom marked as optional, can be excluded from an generated gri
 
 ## Rules
 
-In it's standard form, an episode ends when an agent collects all keys and unlocks all locks. If the lock location is not specified to the grid world generator, a grid world without a lock will be generated and the episode will end when the agent collects all keys. Therefore either key location, lock location, or both must be passed to the grid world generator.
+In it's standard form, an episode ends when an agent collects all keys and unlocks all locks. If the lock location is not specified to the grid world generator, a grid world without a lock will be generated and the episode will end when the agent collects all keys. If the key location is not specified to the grid generator, a grid world without a key will be generated and the agent will begin the episode with all keys. Either key location, lock location, or both must be passed to the grid world generator. 
 
 Pit start location and end location define the starting and end points of the pit rectangle. Either both locations must be passed to the grid world generator to create a grid world with a pit, or both excluded to created a grid world without a pit.
 
-## Example Grid World Generation
-
-
 # Basic Usage
+
+## Grid World Generation
+
+Below are code snippets to generate grid worlds with varying features
+
+### Complete Spec (key, lock, and pit)
+
+![Complete Spec]('GridWorld (2).PNG')
+
+```python
+from clgridworld.grid_world_builder import GridWorldBuilder, InitialStateParams
+
+params = InitialStateParams(shape=(10, 10), player=(1, 4), key=(7, 5), lock=(1, 1), pit_start=(4, 2),
+                            pit_end=(4, 7))    
+env = GridWorldBuilder.create(params)
+```
+
+### Key Only
+
+![Key Only]('GridWorld (3).PNG')
+
+```python
+from clgridworld.grid_world_builder import GridWorldBuilder, InitialStateParams
+
+params = InitialStateParams(shape=(5, 5), player=(4, 4), key=(0, 0))
+env = GridWorldBuilder.create(params)
+```
+
+### Lock and Pit
+
+![Key Only]('GridWorld (4).PNG')
+
+```python
+from clgridworld.grid_world_builder import GridWorldBuilder, InitialStateParams
+
+params = InitialStateParams(shape=(7, 7), player=(6, 5), lock=(0, 1), pit_start=(3, 2), pit_end=(3, 6))
+env = GridWorldBuilder.create(params)
+```
+
+## Example Agents
+
+# State Space
 
 # Todo
 
