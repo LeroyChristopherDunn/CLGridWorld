@@ -58,6 +58,8 @@ class GridWorldDynamics:
         elif action == ACTIONS.WEST:
             return player_coords[1] == 0
 
+        return False
+
     def _player_moves_into_immovable_object(self, action) -> bool:
 
         player_coords = self.state[STATE_KEY.PLAYER]
