@@ -90,6 +90,12 @@ env = GridWorldBuilder.create(params)
 
 ## Example Agents
 
+See the ``examples`` directory.
+
+- Run ![examples/agents/random_agent.py](example/agents/random_agent.py) to run an simple random agent.
+- Run ![examples/agents/q_learning eps_greedy_agent](example/agents/q_learning_eps_greedy_agent.py) to run a basic q learning agent with epsilon greedy exploration
+- Run ![examples/agents/q_learning_eps_dec_agent](example/agents/q_learning_eps_dec_agent.py) to run a basic q learning agent wiht epsilon decreasing exploration
+
 # State Space
 
 # Todo
