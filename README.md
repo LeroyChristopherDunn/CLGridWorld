@@ -96,7 +96,42 @@ See the ``examples`` directory.
 - Run ![examples/agents/q_learning eps_greedy_agent](example/agents/q_learning_eps_greedy_agent.py) to run a basic q learning agent with epsilon greedy exploration
 - Run ![examples/agents/q_learning_eps_dec_agent](example/agents/q_learning_eps_dec_agent.py) to run a basic q learning agent wiht epsilon decreasing exploration
 
-# Observations / State Space
+# Gym Environment
+
+## Observations / State Space
+
+Each observation is a dictionary with the keys defined below:
+
+| Key       | Type             | Nullable ('None') |
+|-----------|------------------|-------------------|
+| grid_size | tuple (int, int) |                   |
+| player    | tuple (int, int) |                   |
+| lock      | tuple (int, int) |         x         |
+| key       | tuple (int, int) |         x         |
+| pit_start | tuple (int, int) |         x         |
+| pit_end   | tuple (int, int) |         x         |
+| nw_beacon | tuple (int, int) |         x         |
+| ne_beacon | tuple (int, int) |         x         |
+| sw_beacon | tuple (int, int) |         x         |
+| se_beacon | tuple (int, int) |         x         |
+| has_key   | boolean 0 or 1   |                   |
+
+For example to retrieve the player coords from the observation
+
+```python
+player = observation["player"]
+```
+
+## Action Space
+
+| Key | Description |
+|-----|-------------|
+| 0   | North       |
+| 1   | East        |
+| 2   | South       |
+| 3   | West        |
+| 4   | Pick up key |
+| 5   | Unlock lock |
 
 # Todo
 
