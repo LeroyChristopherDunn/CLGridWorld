@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from clgridworld.grid_world_action import GridWorldAction
 from clgridworld.grid_world_dynamics import GridWorldDynamics
+from clgridworld.grid_world_grid_state import GridWorldGridState
 from clgridworld.grid_world_state import GridWorldStateKey
 from tests.grid_world_state_builder import GridWorldStateBuilder
 
@@ -184,6 +185,33 @@ class TestGridWorldDynamics(TestCase):
                 state = GridWorldStateBuilder.create_state_with_spec(
                     player_coords=player_coords, key_coords=key_coords, lock_coords=None)
                 actual_state = GridWorldDynamics(state).step(GridWorldAction.PICK_UP_KEY)
+
+                expected_state = state.copy()
+                expected_state[GridWorldStateKey.KEY] = None
+                expected_state[GridWorldStateKey.HAS_KEY] = 1
+                self.assertDictEqual(expected_state, actual_state)
+
+    def test_given_player_is_next_to_key_when_pick_up_key_should_pick_up_key_2(self):
+
+        # test generated from observed bug when training
+
+        lock_coords = (1, 1)
+        key_coords = (7, 5)
+        pit_start = (4, 4)
+        pit_end = (4, 6)
+        player_start_coords = [(6, 5), (7, 6), (8, 5), (7, 4)]
+        player_position_to_key = ["North", "East", "South", "West"]
+
+        for i in range(len(player_position_to_key)):
+            with self.subTest(player_position_to_key=player_position_to_key[i]):
+                player_coords = player_start_coords[i]
+
+                state = GridWorldStateBuilder.create_state_with_spec(
+                    player_coords=player_coords, key_coords=key_coords, lock_coords=lock_coords,
+                    pit_start_coords=pit_start, pit_end_coords=pit_end)
+                print(GridWorldGridState(state).grid)
+                action = 1.0 * GridWorldAction.PICK_UP_KEY  # not the same pointer ref as the action constant
+                actual_state = GridWorldDynamics(state).step(action)
 
                 expected_state = state.copy()
                 expected_state[GridWorldStateKey.KEY] = None

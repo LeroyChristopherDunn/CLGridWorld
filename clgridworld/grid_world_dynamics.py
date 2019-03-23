@@ -89,7 +89,7 @@ class GridWorldDynamics:
         player_coords = self.state[STATE_KEY.PLAYER]
         key_coords = self.state[STATE_KEY.KEY]
 
-        if action is not ACTIONS.PICK_UP_KEY:
+        if action != ACTIONS.PICK_UP_KEY:
             return False
 
         if key_coords is None:
