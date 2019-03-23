@@ -1,6 +1,24 @@
 # CLGridWorld
 Configurable Curriculum Learning Domain for Reinforcement Learning Agents. As specified by [1]
 
+- [Curriculum Learning](#curriculum-learning)
+- [Grid World Domain](#grid-world-domain)
+- [Installation](#installation)
+- [Grid World Generation](#grid-world-generation)
+  * [Degrees of freedom](#degrees-of-freedom)
+  * [Rules](#rules)
+- [Basic Usage](#basic-usage)
+  * [Grid World Generation](#grid-world-generation-1)
+    + [Complete Spec (key, lock, and pit)](#complete-spec--key--lock--and-pit-)
+    + [Key Only](#key-only)
+    + [Lock and Pit](#lock-and-pit)
+  * [Example Agents](#example-agents)
+- [Gym Environment](#gym-environment)
+  * [Observations / State Space](#observations--state-space)
+  * [Action Space](#action-space)
+- [Todo](#todo)
+- [References](#references)
+
 # Curriculum Learning
 
 Quoted directly from [1]
@@ -98,7 +116,7 @@ See the ``examples`` directory.
 
 # Gym Environment
 
-## Observations / State Space
+## Observations, State Space
 
 Each observation is a dictionary with the keys defined below:
 
