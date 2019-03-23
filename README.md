@@ -96,9 +96,13 @@ See the ``examples`` directory.
 - Run ![examples/agents/q_learning eps_greedy_agent](example/agents/q_learning_eps_greedy_agent.py) to run a basic q learning agent with epsilon greedy exploration
 - Run ![examples/agents/q_learning_eps_dec_agent](example/agents/q_learning_eps_dec_agent.py) to run a basic q learning agent wiht epsilon decreasing exploration
 
-# State Space
+# Observations / State Space
 
 # Todo
+
+- Create environment wrappers to expose alternative observations, such as those described in [1]
+- Pass additional parameters to grid world generator to configure the reward function
+- Pass additional parameters to grid world generator to define 'empty space' terminal states
 
 # References
 
