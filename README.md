@@ -1,5 +1,5 @@
 # CLGridWorld
-Configurable Curriculum Learning Domain for Reinforcement Learning Agents. As specified by [1]
+Configurable Curriculum Learning Domain for Reinforcement Learning Agents
 
 - [Curriculum Learning](#curriculum-learning)
 - [Grid World Domain](#grid-world-domain)
