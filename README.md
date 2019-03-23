@@ -17,10 +17,6 @@ Quoted directly from [1]
 
 The goal of the learning agent is to traverse the world and unlock all the locks. At each time step, the learning agent can move in one of the four cardinal directions, execute a pickup action, or an unlock action. Moving into a wall causes no motion. Sucessfully picking up a key gives a reward of +500, and sucessfully unlocking a lock gives a reward of +1000. Falling into a pit terminates the episode with a reward of -200. All other actions receive a constant step penalty of -10."
 
-# Grid World Generation
-
-
-
 # Installation
 
 ```bash
@@ -28,6 +24,32 @@ git clone https://github.com/LeroyChristopherDunn/CLGridWorld.git
 cd CLGridWorld
 pip install -e .
 ```
+
+# Grid World Generation
+
+The GridWorldGenerator can be used to create a variety of grid worlds. All generated grid worlds subclass the gym.Env class from ![openaigym](https://github.com/openai/gym/blob/master/README.rst) and therefore can be used in a plug-and-play fashion with various rl agents developed by the community
+
+## Degrees of freedom
+
+Currently the CL grid world has the following degrees of freedom:
+
+- grid size
+- player start location
+- key location (optional)
+- lock location (optional)
+- pit start location (optional)
+- pit end location (optional)
+
+The degrees of freedom marked as optional, can be excluded from an generated grid world. For instance, a grid world may be created with or without a pit. 
+
+## Rules
+
+In it's standard form, an episode ends when an agent collects all keys and unlocks all locks. If the lock location is not specified to the grid world generator, a grid world without a lock will be generated and the episode will end when the agent collects all keys. Therefore either key location, lock location, or both must be passed to the grid world generator.
+
+Pit start location and end location define the starting and end points of the pit rectangle. Either both locations must be passed to the grid world generator to create a grid world with a pit, or both excluded to created a grid world without a pit.
+
+## Example Grid World Generation
+
 
 # Basic Usage
 
