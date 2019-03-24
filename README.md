@@ -18,6 +18,7 @@ Configurable Curriculum Learning Domain for Reinforcement Learning Agents
   * [Action Space](#action-space)
 - [Todo](#todo)
 - [Contributing](#contributing)
+- [Running the Tests](#running-the-tests)
 - [Authors](#authors)
 - [License](#license)
 - [References](#references)
@@ -163,6 +164,13 @@ player = observation["player"]
 # Contributing
 
 Please do
+
+# Running the Tests
+
+from the project root
+```bash
+python -m unittest 
+```
 
 # Authors
 
