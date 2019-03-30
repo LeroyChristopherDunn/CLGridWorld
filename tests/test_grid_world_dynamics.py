@@ -209,7 +209,6 @@ class TestGridWorldDynamics(TestCase):
                 state = GridWorldStateBuilder.create_state_with_spec(
                     player_coords=player_coords, key_coords=key_coords, lock_coords=lock_coords,
                     pit_start_coords=pit_start, pit_end_coords=pit_end)
-                print(GridWorldGridState(state).grid)
                 action = 1.0 * GridWorldAction.PICK_UP_KEY  # not the same pointer ref as the action constant
                 actual_state = GridWorldDynamics(state).step(action)
 
