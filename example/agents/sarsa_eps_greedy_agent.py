@@ -23,6 +23,8 @@ class SarsaEpsilonGreedyAgent:
         self.alpha = learning_rate
         self.epsilon = epsilon
 
+        self.prev_sample = None
+
     def get_action(self, curr_state):
 
         if np.random.rand(1) < self.epsilon:
@@ -38,13 +40,27 @@ class SarsaEpsilonGreedyAgent:
             self.Q[curr_state] = np.zeros([self.num_actions])
         return np.argmax(self.Q[curr_state])
 
-    def update(self, prev_state, prev_action, prev_reward, curr_state, curr_action):
+    def update(self, prev_state, action, curr_state, reward):
+
+        if self.prev_sample is not None:
+            prev_sample = self.prev_sample
+            self._update(prev_sample[0], prev_sample[1], prev_sample[2], prev_sample[3], action)
+
+        self.prev_sample = (prev_state, action, curr_state, reward)
+
+    def _update(self, prev_state, prev_action, curr_state, prev_reward, curr_action):
 
         if curr_state not in self.Q:
             self.Q[curr_state] = np.zeros([self.num_actions])
 
         self.Q[prev_state][prev_action] += self.alpha * (prev_reward + self.gamma * self.Q[curr_state][curr_action]
                                                          - self.Q[prev_state][prev_action])
+
+    def inc_episode(self):
+        if self.prev_sample is not None:
+            prev_sample = self.prev_sample
+            self._update(prev_sample[0], prev_sample[1], prev_sample[2], prev_sample[3],
+                         self.get_best_action(prev_sample[2]))
 
 
 if __name__ == '__main__':
@@ -72,44 +88,36 @@ if __name__ == '__main__':
 
     for i in range(num_episodes):
 
+        reward = 0
         done = False
-        next_state = env.reset()
-        curr_state = None
-        curr_action = None
-        curr_reward = 0
+        curr_state = env.reset()
         step_count = 0
         accum_reward = 0
 
         while True:
 
             prev_state = curr_state
-            curr_state = next_state
-            prev_action = curr_action
-            prev_reward = curr_reward
-
-            curr_action = agent.get_action(curr_state)
-            next_state, curr_reward, done, _ = env.step(curr_action)
-
-            if prev_state is not None and prev_action is not None:
-                agent.update(prev_state, prev_action, prev_reward, curr_state, curr_action)
+            action = agent.get_action(curr_state)
+            curr_state, reward, done, _ = env.step(action)
+            agent.update(prev_state, action, curr_state, reward)
 
             step_count += 1
-            accum_reward += curr_reward
+            accum_reward += reward
 
             ## uncomment the below lines to render the environment to terminal
             # env.render()
             # print("episode: " + str(i) + "." + str(step_count))
-            # print("action: " + GridWorldAction.NAMES[curr_action])
-            # print("reward: " + str(curr_reward))
+            # print("action: " + GridWorldAction.NAMES[action])
+            # print("reward: " + str(reward))
             # print("accum reward: " + str(accum_reward))
             # print("epsilon: " + str(agent.epsilon))
             # print("\n")
             # time.sleep(0.5)
 
             if done or step_count >= max_steps_per_episode:
-                # don't forget to update terminal state reward
-                agent.update(curr_state, curr_action, curr_reward, next_state, agent.get_best_action(next_state))
                 break
+
+        agent.inc_episode()
 
         episodic_rewards.append(accum_reward)
         if i % 100 == 0:
