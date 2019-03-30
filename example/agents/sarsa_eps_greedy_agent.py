@@ -1,14 +1,11 @@
-import time
-
 import numpy as np
-import matplotlib.pyplot as plt
 
-from clgridworld.grid_world_action import GridWorldAction
 from clgridworld.grid_world_builder import GridWorldBuilder, InitialStateParams
-from gym import logger
+from example.agent_trainer import AgentTrainer
+from example.agents.agent import Agent
 
 
-class SarsaEpsilonGreedyAgent:
+class SarsaEpsilonGreedyAgent(Agent):
 
     def __init__(self, action_space, discount_factor=0.95, learning_rate=0.01, epsilon=0.1, seed=0):
 
@@ -65,68 +62,14 @@ class SarsaEpsilonGreedyAgent:
 
 if __name__ == '__main__':
 
-    # You can set the level to logger.DEBUG or logger.WARN if you
-    # want to change the amount of output.
-    logger.set_level(logger.INFO)
+    seed = 0
 
     # target task spec as defined in Source Task Sequencing,,, Narvekar et al 2017
     params = InitialStateParams(shape=(10, 10), player=(1, 4), key=(7, 5), lock=(1, 1), pit_start=(4, 2),
                                 pit_end=(4, 7))
     env = GridWorldBuilder.create(params)
 
-    seed = 0
-    env.seed(seed)
     agent = SarsaEpsilonGreedyAgent(env.action_space, discount_factor=1, seed=seed)
 
-    print("Generated environment: ")
-    env.render()
-    print("")
+    AgentTrainer(env, agent).train(seed, num_episodes=5000, max_steps_per_episode=10000, episode_log_interval=100)
 
-    num_episodes = 5000
-    max_steps_per_episode = 10000
-    episodic_rewards = []
-
-    for i in range(num_episodes):
-
-        reward = 0
-        done = False
-        curr_state = env.reset()
-        step_count = 0
-        accum_reward = 0
-
-        while True:
-
-            prev_state = curr_state
-            action = agent.get_action(curr_state)
-            curr_state, reward, done, _ = env.step(action)
-            agent.update(prev_state, action, curr_state, reward)
-
-            step_count += 1
-            accum_reward += reward
-
-            ## uncomment the below lines to render the environment to terminal
-            # env.render()
-            # print("episode: " + str(i) + "." + str(step_count))
-            # print("action: " + GridWorldAction.NAMES[action])
-            # print("reward: " + str(reward))
-            # print("accum reward: " + str(accum_reward))
-            # print("epsilon: " + str(agent.epsilon))
-            # print("\n")
-            # time.sleep(0.5)
-
-            if done or step_count >= max_steps_per_episode:
-                break
-
-        agent.inc_episode()
-
-        episodic_rewards.append(accum_reward)
-        if i % 100 == 0:
-            avg_reward = np.average(episodic_rewards[-100:])
-            print("episode {} avg reward: {}".format(i, avg_reward))
-
-    plt.plot(episodic_rewards)
-    plt.ylabel('Episodic Reward')
-    plt.xlabel('Episode')
-    plt.show()
-
-    env.close()
