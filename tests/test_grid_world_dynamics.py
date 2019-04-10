@@ -2,8 +2,6 @@ from unittest import TestCase
 
 from clgridworld.grid_world_action import GridWorldAction
 from clgridworld.grid_world_dynamics import GridWorldDynamics
-from clgridworld.grid_world_grid_state import GridWorldGridState
-from clgridworld.grid_world_state import GridWorldStateKey
 from tests.grid_world_state_builder import GridWorldStateBuilder
 
 
@@ -43,7 +41,7 @@ class TestGridWorldDynamics(TestCase):
                 state = GridWorldStateBuilder.create_state_with_spec(shape=grid_shape, player_coords=player_coords)
                 new_state = GridWorldDynamics(state).step(action)
 
-                self.assertDictEqual(state, new_state)
+                self.assertEqual(state, new_state)
 
     def test_when_player_moves_into_empty_space_should_move_into_empty_space(self):
 
@@ -60,9 +58,8 @@ class TestGridWorldDynamics(TestCase):
                 state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords)
                 actual_state = GridWorldDynamics(state).step(action)
 
-                expected_state = state.copy()
-                expected_state[GridWorldStateKey.PLAYER] = expected_player_coords
-                self.assertDictEqual(expected_state, actual_state)
+                expected_state = state.copy(player=expected_player_coords)
+                self.assertEqual(expected_state, actual_state)
                 self.assertFalse(actual_state.is_in_pit(), "should not be in pit")
 
     def test_when_player_moves_into_beacon_should_remain_in_same_state(self):
@@ -84,7 +81,7 @@ class TestGridWorldDynamics(TestCase):
 
                 new_state = GridWorldDynamics(state).step(action)
 
-                self.assertDictEqual(state, new_state)
+                self.assertEqual(state, new_state)
 
     def test_when_player_moves_into_pit_should_move_player_into_pit(self):
 
@@ -107,9 +104,8 @@ class TestGridWorldDynamics(TestCase):
 
                 new_state = GridWorldDynamics(state).step(action)
 
-                expected_state = state.copy()
-                expected_state[GridWorldStateKey.PLAYER] = expected_player_coords
-                self.assertDictEqual(expected_state, new_state)
+                expected_state = state.copy(player=expected_player_coords)
+                self.assertEqual(expected_state, new_state)
                 self.assertTrue(new_state.is_in_pit())
 
     def test_when_player_moves_into_key_should_remain_in_same_state(self):
@@ -127,7 +123,7 @@ class TestGridWorldDynamics(TestCase):
                 state = GridWorldStateBuilder.create_state_with_spec(player_coords=player_coords, key_coords=key_coords)
                 new_state = GridWorldDynamics(state).step(action)
 
-                self.assertDictEqual(state, new_state)
+                self.assertEqual(state, new_state)
                 
     def test_when_player_moves_into_lock_should_remain_in_same_state(self):
 
@@ -145,7 +141,7 @@ class TestGridWorldDynamics(TestCase):
                     player_coords=player_coords, lock_coords=lock_coords)
                 new_state = GridWorldDynamics(state).step(action)
 
-                self.assertDictEqual(state, new_state)
+                self.assertEqual(state, new_state)
 
     def test_given_player_is_not_near_a_key_when_pick_up_key_should_remain_in_same_state(self):
 
@@ -157,7 +153,7 @@ class TestGridWorldDynamics(TestCase):
             shape=shape, player_coords=player_coords, key_coords=key_coords)
         new_state = GridWorldDynamics(state).step(GridWorldAction.PICK_UP_KEY)
 
-        self.assertDictEqual(state, new_state)
+        self.assertEqual(state, new_state)
 
     def test_given_player_is_not_next_to_a_key_when_pick_up_key_should_remain_in_same_state(self):
 
@@ -169,7 +165,7 @@ class TestGridWorldDynamics(TestCase):
             shape=shape, player_coords=player_coords, key_coords=key_coords, lock_coords=None)
         new_state = GridWorldDynamics(state).step(GridWorldAction.PICK_UP_KEY)
 
-        self.assertDictEqual(state, new_state)
+        self.assertEqual(state, new_state)
 
     def test_given_player_is_next_to_key_when_pick_up_key_should_pick_up_key(self):
 
@@ -186,10 +182,8 @@ class TestGridWorldDynamics(TestCase):
                     player_coords=player_coords, key_coords=key_coords, lock_coords=None)
                 actual_state = GridWorldDynamics(state).step(GridWorldAction.PICK_UP_KEY)
 
-                expected_state = state.copy()
-                expected_state[GridWorldStateKey.KEY] = None
-                expected_state[GridWorldStateKey.HAS_KEY] = 1
-                self.assertDictEqual(expected_state, actual_state)
+                expected_state = state.copy(key=None, has_key=1)
+                self.assertEqual(expected_state, actual_state)
 
     def test_given_player_is_next_to_key_when_pick_up_key_should_pick_up_key_2(self):
 
@@ -212,10 +206,8 @@ class TestGridWorldDynamics(TestCase):
                 action = 1.0 * GridWorldAction.PICK_UP_KEY  # not the same pointer ref as the action constant
                 actual_state = GridWorldDynamics(state).step(action)
 
-                expected_state = state.copy()
-                expected_state[GridWorldStateKey.KEY] = None
-                expected_state[GridWorldStateKey.HAS_KEY] = 1
-                self.assertDictEqual(expected_state, actual_state)
+                expected_state = state.copy(key=None, has_key=1)
+                self.assertEqual(expected_state, actual_state)
 
     def test_given_player_does_not_have_key_and_if_not_next_to_lock_when_unlock_should_remain_in_same_state(self):
 
@@ -228,7 +220,7 @@ class TestGridWorldDynamics(TestCase):
             shape=shape, player_coords=player_coords, lock_coords=lock_coords, key_coords=key_coords)
         new_state = GridWorldDynamics(state).step(GridWorldAction.UNLOCK_LOCK)
 
-        self.assertDictEqual(state, new_state)
+        self.assertEqual(state, new_state)
 
     def test_given_player_does_not_have_key_and_is_next_to_lock_when_unlock_should_remain_in_same_state(self):
 
@@ -246,7 +238,7 @@ class TestGridWorldDynamics(TestCase):
                     player_coords=player_coords, lock_coords=lock_coords, key_coords=key_coords)
                 new_state = GridWorldDynamics(state).step(GridWorldAction.UNLOCK_LOCK)
 
-                self.assertDictEqual(state, new_state)
+                self.assertEqual(state, new_state)
 
     def test_given_player_has_key_and_if_not_next_to_lock_when_unlock_should_remain_in_same_state(self):
 
@@ -258,7 +250,7 @@ class TestGridWorldDynamics(TestCase):
             shape=shape, player_coords=player_coords, lock_coords=lock_coords, key_coords=None)
         new_state = GridWorldDynamics(state).step(GridWorldAction.UNLOCK_LOCK)
 
-        self.assertDictEqual(state, new_state)
+        self.assertEqual(state, new_state)
 
     def test_given_player_has_key_and_is_next_to_lock_when_unlock_should_unlock_lock(self):
 
@@ -275,10 +267,9 @@ class TestGridWorldDynamics(TestCase):
                     player_coords=player_coords, lock_coords=lock_coords, key_coords=None)
                 actual_state = GridWorldDynamics(state).step(GridWorldAction.UNLOCK_LOCK)
 
-                expected_state = state.copy()
-                expected_state[GridWorldStateKey.LOCK] = None
+                expected_state = state.copy(lock=None)
 
-                self.assertDictEqual(expected_state, actual_state)
+                self.assertEqual(expected_state, actual_state)
                 self.assertTrue(actual_state.lock_is_unlocked(), "lock should be unlocked")
 
     def test_given_player_has_key_and_is_next_to_lock_when_unlock_should_unlock_lock_2(self):
@@ -299,10 +290,9 @@ class TestGridWorldDynamics(TestCase):
                     player_coords=player_coords, lock_coords=lock_coords, key_coords=None, shape=grid_shape)
                 actual_state = GridWorldDynamics(state).step(GridWorldAction.UNLOCK_LOCK)
 
-                expected_state = state.copy()
-                expected_state[GridWorldStateKey.LOCK] = None
+                expected_state = state.copy(lock=None)
 
-                self.assertDictEqual(expected_state, actual_state)
+                self.assertEqual(expected_state, actual_state)
                 self.assertTrue(actual_state.lock_is_unlocked(), "lock should be unlocked")
 
     def test_given_player_is_in_pit_should_throw_terminal_state_error_after_any_action_taken(self):

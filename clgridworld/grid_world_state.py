@@ -1,45 +1,28 @@
+from typing import NamedTuple, Tuple, Optional
+
 from gym import spaces
 
 
-class GridWorldStateKey:
+_NONE = (-1.-1)
+class GridWorldState(NamedTuple):
 
-    GRID_SHAPE = "grid_shape"
-    PLAYER = "player"
-    KEY = "key"
-    LOCK = "lock"
-    PIT_START = "pit_start"
-    PIT_END = "pit_end"
-    NW_BEACON = "nw_beacon"
-    NE_BEACON = "ne_beacon"
-    SW_BEACON = "sw_beacon"
-    SE_BEACON = "se_beacon"
-    HAS_KEY = "has_key"
-
-
-class GridWorldState(dict):
-
-    def __init__(self, state: dict):
-
-        super().__init__()
-        self.update(state.copy())
-
-        self.grid_shape = self[GridWorldStateKey.GRID_SHAPE]
-        self.player = self[GridWorldStateKey.PLAYER]
-        self.lock = self[GridWorldStateKey.LOCK]
-        self.key = self[GridWorldStateKey.KEY]
-        self.pit_start = self[GridWorldStateKey.PIT_START]
-        self.pit_end = self[GridWorldStateKey.PIT_END]
-        self.ne_beacon = self[GridWorldStateKey.NE_BEACON]
-        self.nw_beacon = self[GridWorldStateKey.NW_BEACON]
-        self.se_beacon = self[GridWorldStateKey.SE_BEACON]
-        self.sw_beacon = self[GridWorldStateKey.SW_BEACON]
-        self.has_key = self[GridWorldStateKey.HAS_KEY]
+    grid_shape: Tuple[int, int]
+    player: Tuple[int, int]
+    key: Optional[Tuple[int, int]]
+    lock: Optional[Tuple[int, int]]
+    pit_start: Optional[Tuple[int, int]]
+    pit_end: Optional[Tuple[int, int]]
+    nw_beacon: Optional[Tuple[int, int]]
+    ne_beacon: Optional[Tuple[int, int]]
+    sw_beacon: Optional[Tuple[int, int]]
+    se_beacon: Optional[Tuple[int, int]]
+    has_key: int
 
     def is_in_pit(self) -> bool:
 
-        player = self[GridWorldStateKey.PLAYER]
-        pit_start = self[GridWorldStateKey.PIT_START]
-        pit_end = self[GridWorldStateKey.PIT_END]
+        player = self.player
+        pit_start = self.pit_start
+        pit_end = self.pit_end
 
         if pit_start is None and pit_end is None:
             return False
@@ -52,16 +35,45 @@ class GridWorldState(dict):
         return pit_row_start <= player[0] <= pit_row_end and pit_col_start <= player[1] <= pit_col_end
 
     def player_has_key(self):
-        return self[GridWorldStateKey.HAS_KEY] == 1
+        return self.has_key == 1
 
     def lock_is_unlocked(self):
-        return self[GridWorldStateKey.LOCK] is None
+        return self.lock is None
 
     def __hash__(self) -> int:
         return self.__str__().__hash__()
+    
+    def copy(self, 
+             grid_shape: Tuple[int, int] = _NONE,
+             player: Tuple[int, int] = _NONE,
+             key: Tuple[int, int] = _NONE,
+             lock: Tuple[int, int] = _NONE,
+             pit_start: Tuple[int, int] = _NONE,
+             pit_end: Tuple[int, int] = _NONE,
+             nw_beacon: Tuple[int, int] = _NONE,
+             ne_beacon: Tuple[int, int] = _NONE,
+             sw_beacon: Tuple[int, int] = _NONE,
+             se_beacon: Tuple[int, int] = _NONE,
+             has_key: int = _NONE):
+        
+        grid_shape = self.grid_shape if grid_shape == _NONE else grid_shape
+        player = self.player if player == _NONE else player
+        key = self.key if key == _NONE else key
+        lock = self.lock if lock == _NONE else lock
+        pit_start = self.pit_start if pit_start == _NONE else pit_start
+        pit_end = self.pit_end if pit_end == _NONE else pit_end
+        nw_beacon = self.nw_beacon if nw_beacon == _NONE else nw_beacon
+        ne_beacon = self.ne_beacon if ne_beacon == _NONE else ne_beacon
+        sw_beacon = self.sw_beacon if sw_beacon == _NONE else sw_beacon
+        se_beacon = self.se_beacon if se_beacon == _NONE else se_beacon
+        has_key = self.has_key if has_key == _NONE else has_key
+
+        return GridWorldState(grid_shape, player, key, lock, pit_start, pit_end,
+                              nw_beacon, ne_beacon, sw_beacon, se_beacon, has_key)
+        
 
 
-class GridWorldStateObservationSpace(spaces.Dict):
+class GridWorldStateObservationSpace(spaces.Tuple):
 
     MAX_COORD_SIZE = 5000
 
@@ -71,19 +83,19 @@ class GridWorldStateObservationSpace(spaces.Dict):
         coords_space = spaces.Tuple((coord_space, coord_space))
         bool_space = spaces.Discrete(2)
 
-        super(GridWorldStateObservationSpace, self).__init__({
-            GridWorldStateKey.GRID_SHAPE: coords_space,
-            GridWorldStateKey.PLAYER: coords_space,
-            GridWorldStateKey.LOCK: coords_space,
-            GridWorldStateKey.KEY: coords_space,
-            GridWorldStateKey.PIT_START: coords_space,
-            GridWorldStateKey.PIT_END: coords_space,
-            GridWorldStateKey.NW_BEACON: coords_space,
-            GridWorldStateKey.NE_BEACON: coords_space,
-            GridWorldStateKey.SW_BEACON: coords_space,
-            GridWorldStateKey.SE_BEACON: coords_space,
-            GridWorldStateKey.HAS_KEY: bool_space
-        })
+        super(GridWorldStateObservationSpace, self).__init__((
+            coords_space, # grid shape
+            coords_space, # player
+            coords_space, # key
+            coords_space, # lock
+            coords_space, # pit start
+            coords_space, # pit end
+            coords_space, # nw beacon
+            coords_space, # ne beacon
+            coords_space, # sw beacon
+            coords_space, # se beacon
+            bool_space    # has key
+        ))
 
 
 class GridWorldStateFactory:
@@ -100,19 +112,20 @@ class GridWorldStateFactory:
 
         has_key = 1 if key_coords is None else 0
 
-        return GridWorldState({
-            GridWorldStateKey.GRID_SHAPE:   shape,
-            GridWorldStateKey.PLAYER:       player_coords,
-            GridWorldStateKey.KEY:          key_coords,
-            GridWorldStateKey.LOCK:         lock_coords,
-            GridWorldStateKey.PIT_START:    pit_start_coords,
-            GridWorldStateKey.PIT_END:      pit_end_coords,
-            GridWorldStateKey.NW_BEACON:    nw_beacon_coords,
-            GridWorldStateKey.NE_BEACON:    ne_beacon_coords,
-            GridWorldStateKey.SW_BEACON:    sw_beacon_coords,
-            GridWorldStateKey.SE_BEACON:    se_beacon_coords,
-            GridWorldStateKey.HAS_KEY:      has_key,
-        })
+        return GridWorldState(
+            shape,
+            player_coords,
+            key_coords,
+            lock_coords,
+            pit_start_coords,
+            pit_end_coords,
+            nw_beacon_coords,
+            ne_beacon_coords,
+            sw_beacon_coords,
+            se_beacon_coords,
+            has_key
+        )
+
 
     @staticmethod
     def _get_pit_beacon_coords(shape, pit_start_coords, pit_end_coords):

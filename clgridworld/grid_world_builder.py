@@ -55,7 +55,7 @@ class GridWorldBuilder:
     def render(curr_state: GridWorldState) -> None:
         grid_state = GridWorldGridState(curr_state)
         print(grid_state.grid)
-        has_key = "true" if grid_state.has_key else "false"
+        has_key = "true" if grid_state.state.has_key else "false"
         print("has_key: " + has_key)
 
 

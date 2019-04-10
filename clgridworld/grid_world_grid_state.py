@@ -1,6 +1,6 @@
 import numpy as np
 
-from clgridworld.grid_world_state import GridWorldStateKey, GridWorldState
+from clgridworld.grid_world_state import GridWorldState
 
 
 class GridWorldGridState:
@@ -16,36 +16,24 @@ class GridWorldGridState:
 
         self.state = state
 
-        self.grid_shape = state[GridWorldStateKey.GRID_SHAPE]
-        self.player_coords = state[GridWorldStateKey.PLAYER]
-        self.lock_coords = state[GridWorldStateKey.LOCK]
-        self.key_coords = state[GridWorldStateKey.KEY]
-        self.pit_start_coords = state[GridWorldStateKey.PIT_START]
-        self.pit_end_coords = state[GridWorldStateKey.PIT_END]
-        self.nw_beacon_coords = state[GridWorldStateKey.NW_BEACON]
-        self.ne_beacon_coords = state[GridWorldStateKey.NE_BEACON]
-        self.sw_beacon_coords = state[GridWorldStateKey.SW_BEACON]
-        self.se_beacon_coords = state[GridWorldStateKey.SE_BEACON]
-        self.has_key = state[GridWorldStateKey.HAS_KEY]
-
         self.grid = self._create_grid()
 
     def _create_grid(self) -> np.ndarray:
 
-        grid = np.chararray(self.grid_shape, unicode=True)
+        grid = np.chararray(self.state.grid_shape, unicode=True)
         grid[:] = GridWorldGridState.EMPTY
 
-        GridWorldGridState._plot_if_not_null(grid, self.player_coords, GridWorldGridState.PLAYER)
-        GridWorldGridState._plot_if_not_null(grid, self.key_coords, GridWorldGridState.KEY)
-        GridWorldGridState._plot_if_not_null(grid, self.lock_coords, GridWorldGridState.LOCK)
+        GridWorldGridState._plot_if_not_null(grid, self.state.player, GridWorldGridState.PLAYER)
+        GridWorldGridState._plot_if_not_null(grid, self.state.key, GridWorldGridState.KEY)
+        GridWorldGridState._plot_if_not_null(grid, self.state.lock, GridWorldGridState.LOCK)
 
-        if self.pit_start_coords is not None and self.pit_end_coords is not None:
-            grid[self.pit_start_coords[0]:self.pit_end_coords[0] + 1, self.pit_start_coords[1]:self.pit_end_coords[1] + 1] = GridWorldGridState.PIT
+        if self.state.pit_start is not None and self.state.pit_end is not None:
+            grid[self.state.pit_start[0]:self.state.pit_end[0] + 1, self.state.pit_start[1]:self.state.pit_end[1] + 1] = GridWorldGridState.PIT
 
-        GridWorldGridState._plot_if_not_null(grid, self.nw_beacon_coords, GridWorldGridState.BEACON)
-        GridWorldGridState._plot_if_not_null(grid, self.ne_beacon_coords, GridWorldGridState.BEACON)
-        GridWorldGridState._plot_if_not_null(grid, self.sw_beacon_coords, GridWorldGridState.BEACON)
-        GridWorldGridState._plot_if_not_null(grid, self.se_beacon_coords, GridWorldGridState.BEACON)
+        GridWorldGridState._plot_if_not_null(grid, self.state.nw_beacon, GridWorldGridState.BEACON)
+        GridWorldGridState._plot_if_not_null(grid, self.state.ne_beacon, GridWorldGridState.BEACON)
+        GridWorldGridState._plot_if_not_null(grid, self.state.sw_beacon, GridWorldGridState.BEACON)
+        GridWorldGridState._plot_if_not_null(grid, self.state.se_beacon, GridWorldGridState.BEACON)
 
         return grid
 

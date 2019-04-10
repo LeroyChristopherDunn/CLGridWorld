@@ -41,6 +41,8 @@ The goal of the learning agent is to traverse the world and unlock all the locks
 
 # Installation
 
+Compatible with python 3.7 and upwards
+
 ```bash
 git clone https://github.com/LeroyChristopherDunn/CLGridWorld.git
 cd CLGridWorld
