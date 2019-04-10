@@ -1,6 +1,7 @@
 import numpy as np
 
 from clgridworld.grid_world_builder import GridWorldBuilder, InitialStateParams
+from clgridworld.wrapper.distance_observation_wrapper import DistanceObservationWrapper
 from example.agent_trainer import AgentTrainer
 from example.agents.agent import Agent
 
@@ -22,6 +23,8 @@ class QLearningEpsilonGreedyAgent(Agent):
 
     def get_action(self, curr_state):
 
+        curr_state = self.make_hashable(curr_state)
+
         if np.random.rand(1) < self.epsilon:
             # exploration
             return self.action_space.sample()
@@ -30,11 +33,17 @@ class QLearningEpsilonGreedyAgent(Agent):
             return self.get_best_action(curr_state)
 
     def get_best_action(self, curr_state):
+
+        curr_state = self.make_hashable(curr_state)
+
         if curr_state not in self.Q:
             self.Q[curr_state] = np.zeros([self.num_actions])
         return np.argmax(self.Q[curr_state])
 
     def update(self, prev_state, action, curr_state, reward):
+
+        prev_state = self.make_hashable(prev_state)
+        curr_state = self.make_hashable(curr_state)
 
         if curr_state not in self.Q:
             self.Q[curr_state] = np.zeros([self.num_actions])
@@ -54,6 +63,7 @@ if __name__ == '__main__':
     params = InitialStateParams(shape=(10, 10), player=(1, 4), key=(7, 5), lock=(1, 1), pit_start=(4, 2),
                                 pit_end=(4, 7))
     env = GridWorldBuilder.create(params)
+    env = DistanceObservationWrapper(env)
 
     agent = QLearningEpsilonGreedyAgent(env.action_space, discount_factor=1, seed=seed)
 

@@ -24,6 +24,8 @@ class SarsaEpsilonGreedyAgent(Agent):
 
     def get_action(self, curr_state):
 
+        curr_state = self.make_hashable(curr_state)
+
         if np.random.rand(1) < self.epsilon:
             # exploration
             return self.action_space.sample()
@@ -33,11 +35,16 @@ class SarsaEpsilonGreedyAgent(Agent):
 
     def get_best_action(self, curr_state):
 
+        curr_state = self.make_hashable(curr_state)
+
         if curr_state not in self.Q:
             self.Q[curr_state] = np.zeros([self.num_actions])
         return np.argmax(self.Q[curr_state])
 
     def update(self, prev_state, action, curr_state, reward):
+
+        prev_state = self.make_hashable(prev_state)
+        curr_state = self.make_hashable(curr_state)
 
         if self.prev_sample is not None:
             prev_sample = self.prev_sample
