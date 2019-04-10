@@ -16,7 +16,7 @@ class GridWorldState(NamedTuple):
     ne_beacon: Optional[Tuple[int, int]]
     sw_beacon: Optional[Tuple[int, int]]
     se_beacon: Optional[Tuple[int, int]]
-    has_key: int
+    has_key: bool
 
     def is_in_pit(self) -> bool:
 
@@ -35,7 +35,7 @@ class GridWorldState(NamedTuple):
         return pit_row_start <= player[0] <= pit_row_end and pit_col_start <= player[1] <= pit_col_end
 
     def player_has_key(self):
-        return self.has_key == 1
+        return self.has_key
 
     def lock_is_unlocked(self):
         return self.lock is None
@@ -110,7 +110,7 @@ class GridWorldStateFactory:
         _GridWorldStateValidator(shape, player_coords, key_coords, lock_coords, pit_start_coords, pit_end_coords,
                                  ne_beacon_coords, nw_beacon_coords, se_beacon_coords, sw_beacon_coords).validate()
 
-        has_key = 1 if key_coords is None else 0
+        has_key = key_coords is None
 
         return GridWorldState(
             shape,

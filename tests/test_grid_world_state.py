@@ -195,7 +195,7 @@ class TestGridWorldState(TestCase):
         self.assertEqual(ne_beacon, state.ne_beacon, "ne beacon coords not equal")
         self.assertEqual(sw_beacon, state.sw_beacon, "sw beacon coords not equal")
         self.assertEqual(se_beacon, state.se_beacon, "se beacon coords not equal")
-        self.assertEqual(0, state.has_key, "has key not equal")
+        self.assertEqual(False, state.has_key, "has key not equal")
 
     def test_given_single_set_of_pit_coords_should_throw_error(self):
 
