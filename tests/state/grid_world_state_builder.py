@@ -1,4 +1,5 @@
-from clgridworld.grid_world_state import GridWorldStateFactory, GridWorldState
+from clgridworld.state.state import GridWorldState
+from clgridworld.state.state_factory import GridWorldStateFactory
 
 
 class GridWorldStateBuilder:

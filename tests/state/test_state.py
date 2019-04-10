@@ -1,10 +1,10 @@
 from unittest import TestCase
 
-from clgridworld.grid_world_state import GridWorldStateFactory
-from tests.grid_world_state_builder import GridWorldStateBuilder
+from clgridworld.state.state_factory import GridWorldStateFactory
+from tests.state.grid_world_state_builder import GridWorldStateBuilder
 
 
-class TestGridWorldState(TestCase):
+class TestGridWorldStateFactory(TestCase):
 
     def test_hash(self):
 

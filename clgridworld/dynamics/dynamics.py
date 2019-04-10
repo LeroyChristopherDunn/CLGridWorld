@@ -1,5 +1,6 @@
-from clgridworld.grid_world_action import GridWorldAction as ACTIONS
-from clgridworld.grid_world_state import GridWorldState
+from clgridworld.action.action import GridWorldAction as ACTIONS
+from clgridworld.state.state import GridWorldState
+from clgridworld.state.validator import TerminalStateValidator
 
 
 class GridWorldDynamics:
@@ -17,10 +18,10 @@ class GridWorldDynamics:
             raise Exception("state is terminal state. No further actions allowed")
 
         if self._player_moves_into_boundary(action):
-            return self.clone_state()
+            return self._clone_state()
 
         if self._player_moves_into_immovable_object(action):
-            return self.clone_state()
+            return self._clone_state()
 
         if self._player_picks_up_key_from_eligible_coords(action):
             return self._pick_up_key()
@@ -30,7 +31,7 @@ class GridWorldDynamics:
 
         return self._translate_player(action)
 
-    def clone_state(self):
+    def _clone_state(self):
         return self.state.copy()
 
     def _translate_player(self, action) -> GridWorldState:
@@ -128,8 +129,3 @@ class GridWorldDynamics:
         return TerminalStateValidator.is_terminal_state(self.state)
 
 
-class TerminalStateValidator:
-
-    @staticmethod
-    def is_terminal_state(state: GridWorldState) -> bool:
-        return state.is_in_pit() or (state.player_has_key() and state.lock_is_unlocked())

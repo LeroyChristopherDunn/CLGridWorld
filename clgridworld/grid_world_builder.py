@@ -1,24 +1,24 @@
 from types import SimpleNamespace
+from typing import NamedTuple, Optional, Tuple
 
 from clgridworld.grid_world import GridWorld
-from clgridworld.grid_world_action import GridWorldActionSpace
-from clgridworld.grid_world_dynamics import GridWorldDynamics, TerminalStateValidator
-from clgridworld.grid_world_grid_state import GridWorldGridState
-from clgridworld.grid_world_reward import GridWorldRewardFunction
-from clgridworld.grid_world_state import GridWorldStateFactory, GridWorldStateObservationSpace, GridWorldState
+from clgridworld.action.action import GridWorldActionSpace
+from clgridworld.dynamics.dynamics import GridWorldDynamics
+from clgridworld.state.validator import TerminalStateValidator
+from clgridworld.visualizer.grid_state_visualizer import GridStateVisualizer
+from clgridworld.reward.reward import GridWorldRewardFunction
+from clgridworld.state.state import GridWorldObservationSpace, GridWorldState
+from clgridworld.state.state_factory import GridWorldStateFactory
 
 
-class InitialStateParams:
+class InitialStateParams(NamedTuple):
 
-    def __init__(self, shape: (int, int), player: (int, int), key: (int, int)=None, lock: (int, int)=None,
-                 pit_start: (int, int)=None, pit_end: (int, int)=None):
-
-        self.shape = shape
-        self.player = player
-        self.key = key
-        self.lock = lock
-        self.pit_start = pit_start
-        self.pit_end = pit_end
+    shape: Tuple[int, int]
+    player: Tuple[int, int]
+    key: Optional[Tuple[int, int]] = None
+    lock: Optional[Tuple[int, int]] = None
+    pit_start: Optional[Tuple[int, int]] = None
+    pit_end: Optional[Tuple[int, int]] = None
 
 
 class GridWorldBuilder:
@@ -29,7 +29,7 @@ class GridWorldBuilder:
         initial_state = GridWorldStateFactory.create(params.shape, params.player, params.key,
                                                      params.lock, params.pit_start, params.pit_end)
 
-        observation_space = GridWorldStateObservationSpace(params.shape)
+        observation_space = GridWorldObservationSpace(params.shape)
         action_space = GridWorldActionSpace()
 
         dynamics = SimpleNamespace()
@@ -53,7 +53,7 @@ class GridWorldBuilder:
 
     @staticmethod
     def render(curr_state: GridWorldState) -> None:
-        grid_state = GridWorldGridState(curr_state)
+        grid_state = GridStateVisualizer(curr_state)
         print(grid_state.grid)
         has_key = "true" if grid_state.state.has_key else "false"
         print("has_key: " + has_key)

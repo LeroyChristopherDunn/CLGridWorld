@@ -1,4 +1,4 @@
-from clgridworld.grid_world_state import GridWorldState
+from clgridworld.state.state import GridWorldState
 
 
 class GridWorldReward:

@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from clgridworld.grid_world_action import GridWorldAction
-from clgridworld.grid_world_dynamics import GridWorldDynamics
-from tests.grid_world_state_builder import GridWorldStateBuilder
+from clgridworld.action.action import GridWorldAction
+from clgridworld.dynamics.dynamics import GridWorldDynamics
+from tests.state.grid_world_state_builder import GridWorldStateBuilder
 
 
 class TestGridWorldDynamics(TestCase):
