@@ -8,6 +8,10 @@ from tests.state.grid_world_state_builder import GridWorldStateBuilder
 
 class GridWorldRewardTest(TestCase):
 
+    def setUp(self):
+        super().setUp()
+        self.expected_reward = GridWorldReward()
+
     def test_given_same_state_should_return_correct_reward(self):
 
         curr_state = GridWorldStateBuilder.create_state_with_spec()
@@ -15,7 +19,7 @@ class GridWorldRewardTest(TestCase):
 
         reward = GridWorldRewardFunction().calculate(curr_state, next_state)
 
-        self.assertEqual(GridWorldReward.NO_MOVEMENT, reward)
+        self.assertEqual(self.expected_reward.no_movement, reward)
 
     def test_given_player_moved_into_empty_space_should_return_correct_reward(self):
 
@@ -27,7 +31,7 @@ class GridWorldRewardTest(TestCase):
         reward = GridWorldRewardFunction().calculate(curr_state, next_state)
 
         self.assertFalse(curr_state == next_state, "states should not be equal")
-        self.assertEqual(GridWorldReward.PLAYER_MOVED_INTO_EMPTY_SPACE, reward)
+        self.assertEqual(self.expected_reward.player_moved_into_empty_space, reward)
 
     def test_given_player_picked_up_key_should_return_correct_reward(self):
 
@@ -39,7 +43,7 @@ class GridWorldRewardTest(TestCase):
 
         reward = GridWorldRewardFunction().calculate(curr_state, next_state)
 
-        self.assertEqual(GridWorldReward.PLAYER_PICKED_UP_KEY, reward)
+        self.assertEqual(self.expected_reward.player_picked_up_key, reward)
 
     def test_given_player_unlocked_lock_should_return_correct_reward(self):
 
@@ -53,7 +57,7 @@ class GridWorldRewardTest(TestCase):
 
         reward = GridWorldRewardFunction().calculate(curr_state, next_state)
 
-        self.assertEqual(GridWorldReward.PLAYER_UNLOCKED_LOCK, reward)
+        self.assertEqual(self.expected_reward.player_unlocked_lock, reward)
 
     def test_given_player_moved_into_pit_should_return_correct_reward(self):
 
@@ -69,4 +73,4 @@ class GridWorldRewardTest(TestCase):
 
         reward = GridWorldRewardFunction().calculate(curr_state, next_state)
 
-        self.assertEqual(GridWorldReward.PLAYER_MOVED_INTO_PIT, reward)
+        self.assertEqual(self.expected_reward.player_moved_into_pit, reward)
