@@ -29,7 +29,7 @@ class GridWorldBuilder:
         initial_state = GridWorldStateFactory.create(params.shape, params.player, params.key,
                                                      params.lock, params.pit_start, params.pit_end)
 
-        observation_space = GridWorldStateObservationSpace()
+        observation_space = GridWorldStateObservationSpace(params.shape)
         action_space = GridWorldActionSpace()
 
         dynamics = SimpleNamespace()

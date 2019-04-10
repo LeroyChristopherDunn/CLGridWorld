@@ -75,12 +75,9 @@ class GridWorldState(NamedTuple):
 
 class GridWorldStateObservationSpace(spaces.Tuple):
 
-    MAX_COORD_SIZE = 5000
+    def __init__(self, grid_size: (int, int)):
 
-    def __init__(self):
-
-        coord_space = spaces.Discrete(GridWorldStateObservationSpace.MAX_COORD_SIZE)
-        coords_space = spaces.Tuple((coord_space, coord_space))
+        coords_space = spaces.Tuple((spaces.Discrete(grid_size[0]), spaces.Discrete(grid_size[1])))
         bool_space = spaces.Discrete(2)
 
         super(GridWorldStateObservationSpace, self).__init__((
