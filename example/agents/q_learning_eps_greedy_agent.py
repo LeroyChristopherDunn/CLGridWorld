@@ -2,6 +2,7 @@ import numpy as np
 
 from clgridworld.grid_world_builder import GridWorldBuilder, InitialStateParams
 from clgridworld.wrapper.distance_observation_wrapper import DistanceObservationWrapper
+from clgridworld.wrapper.tuple_observation_wrapper import TupleObservationWrapper
 from example.agent_trainer import AgentTrainer
 from example.agents.agent import Agent
 
@@ -23,8 +24,6 @@ class QLearningEpsilonGreedyAgent(Agent):
 
     def get_action(self, curr_state):
 
-        curr_state = self.make_hashable(curr_state)
-
         if np.random.rand(1) < self.epsilon:
             # exploration
             return self.action_space.sample()
@@ -34,16 +33,11 @@ class QLearningEpsilonGreedyAgent(Agent):
 
     def get_best_action(self, curr_state):
 
-        curr_state = self.make_hashable(curr_state)
-
         if curr_state not in self.Q:
             self.Q[curr_state] = np.zeros([self.num_actions])
         return np.argmax(self.Q[curr_state])
 
     def update(self, prev_state, action, curr_state, reward):
-
-        prev_state = self.make_hashable(prev_state)
-        curr_state = self.make_hashable(curr_state)
 
         if curr_state not in self.Q:
             self.Q[curr_state] = np.zeros([self.num_actions])
@@ -54,7 +48,6 @@ class QLearningEpsilonGreedyAgent(Agent):
     def inc_episode(self):
         pass
 
-
 if __name__ == '__main__':
 
     seed = 0
@@ -63,9 +56,10 @@ if __name__ == '__main__':
     params = InitialStateParams(shape=(10, 10), player=(1, 4), key=(7, 5), lock=(1, 1), pit_start=(4, 2),
                                 pit_end=(4, 7))
     env = GridWorldBuilder.create(params)
-    env = DistanceObservationWrapper(env)
+    env = DistanceObservationWrapper(env) # transform state space to distance based states
+    env = TupleObservationWrapper(env) # convert states to tuples to make hashable
 
     agent = QLearningEpsilonGreedyAgent(env.action_space, discount_factor=1, seed=seed)
 
-    AgentTrainer(env, agent).train(seed, num_episodes=5000, max_steps_per_episode=10000, episode_log_interval=100)
+    AgentTrainer(env, agent).train(seed, num_episodes=10000, max_steps_per_episode=10000, episode_log_interval=100)
 
