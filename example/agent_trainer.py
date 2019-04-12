@@ -13,7 +13,7 @@ class AgentTrainer:
         self.env = env
         self.agent = agent
 
-    def train(self, seed=0, num_episodes=5000, max_steps_per_episode=10000, episode_log_interval=100):
+    def train(self, seed=0, num_episodes=5000, max_steps_per_episode=-1, episode_log_interval=100):
 
         start_time = time.time()
 
