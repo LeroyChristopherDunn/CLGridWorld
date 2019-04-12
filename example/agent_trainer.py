@@ -1,3 +1,5 @@
+import time
+
 import gym
 import numpy as np
 
@@ -13,6 +15,8 @@ class AgentTrainer:
 
     def train(self, seed=0, num_episodes=5000, max_steps_per_episode=10000, episode_log_interval=100):
 
+        start_time = time.time()
+
         env = self.env
         agent = self.agent
 
@@ -23,6 +27,7 @@ class AgentTrainer:
         print("")
 
         episodic_rewards = []
+        episodic_steps = []
 
         for i in range(num_episodes):
 
@@ -56,9 +61,12 @@ class AgentTrainer:
             agent.inc_episode()
 
             episodic_rewards.append(accum_reward)
+            episodic_steps.append(step_count)
+
             if i % episode_log_interval == 0:
                 avg_reward = np.average(episodic_rewards[-episode_log_interval:])
-                print("episode {} avg reward: {}".format(i, avg_reward))
+                avg_num_steps = np.average(episodic_steps[-episode_log_interval:])
+                print("episode {} avg reward: {} avg steps {}".format(i, avg_reward, avg_num_steps))
 
         plt.plot(episodic_rewards)
         plt.ylabel('Episodic Reward')
@@ -66,3 +74,7 @@ class AgentTrainer:
         plt.show()
 
         env.close()
+
+        end_time = time.time()
+
+        print("time taken: {} seconds".format(end_time - start_time))
