@@ -3,6 +3,7 @@ import time
 import gym
 import numpy as np
 
+from clgridworld.action.action import GridWorldAction
 from example.agents.agent import Agent
 import matplotlib.pyplot as plt
 
@@ -13,7 +14,7 @@ class AgentTrainer:
         self.env = env
         self.agent = agent
 
-    def train(self, seed=0, num_episodes=5000, max_steps_per_episode=-1, episode_log_interval=100):
+    def train(self, seed=0, num_episodes=5000, max_steps_per_episode=-1, episode_log_interval=100, should_render=False):
 
         start_time = time.time()
 
@@ -45,15 +46,14 @@ class AgentTrainer:
                 step_count += 1
                 accum_reward += reward
 
-                ## uncomment the below lines to render the environment to terminal
-                # env.render()
-                # print("episode: " + str(i) + "." + str(step_count))
-                # print("action: " + GridWorldAction.NAMES[action])
-                # print("reward: " + str(reward))
-                # print("accum reward: " + str(accum_reward))
-                # print("epsilon: " + str(agent.epsilon))
-                # print("\n")
-                # time.sleep(0.5)
+                if should_render:
+                    env.render()
+                    print("episode: " + str(i) + "." + str(step_count))
+                    print("action: " + GridWorldAction.NAMES[action])
+                    print("reward: " + str(reward))
+                    print("accum reward: " + str(accum_reward))
+                    print("\n")
+                    time.sleep(0.5)
 
                 if done or step_count >= max_steps_per_episode:
                     break
