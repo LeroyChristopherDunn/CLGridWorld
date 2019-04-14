@@ -1,10 +1,9 @@
-from collections import OrderedDict
 from typing import Tuple
 
 import numpy as np
+
 from clgridworld.state.state import GridWorldState
 
-_cache = OrderedDict()
 
 class EuclideanDistanceCalculator:
 
@@ -37,27 +36,5 @@ class EuclideanDistanceCalculator:
 
     @staticmethod
     def distance(x: Tuple[int, int], y: Tuple[int, int])->float:
-
-        x, y = EuclideanDistanceCalculator._sort(x, y)
-
-        key = x.__hash__() + y.__hash__()
-
-        if key not in _cache:
-            value = np.linalg.norm(np.asarray(x) - np.asarray(y))
-            _cache[key] = value
-
-        return _cache[key]
-
-    @staticmethod
-    def _sort(x: Tuple[int, int], y: Tuple[int, int]):
-
-        should_swap = False
-
-        if x[0] > y[0]:
-            should_swap = True
-
-        if x[0] == y[0] and x[1] > y[1]:
-            should_swap = True
-
-        return (y , x) if should_swap else (x , y)
+        return np.linalg.norm(np.asarray(x) - np.asarray(y))
 

@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 import gym
 
 
@@ -21,11 +23,16 @@ class GridWorld(gym.Env):
 
     def step(self, action):
         self.prev_state = self.curr_state
-        self.curr_state = self.dynamics.step(self.prev_state, action)
-        reward = self.reward_function.calculate(self.prev_state, action, self.curr_state)
-        done = self.terminal_state_validator.is_terminal_state(self.curr_state)
-        info = {}
+        self.curr_state, reward, done, info = self._step(self.prev_state, action)
         return self.curr_state, reward, done, info
+
+    @lru_cache(maxsize=None)
+    def _step(self, prev_state, action):
+        curr_state = self.dynamics.step(prev_state, action)
+        reward = self.reward_function.calculate(prev_state, action, curr_state)
+        done = self.terminal_state_validator.is_terminal_state(curr_state)
+        info = {}
+        return curr_state, reward, done, info
 
     def reset(self):
         self.prev_state = self.initial_state
