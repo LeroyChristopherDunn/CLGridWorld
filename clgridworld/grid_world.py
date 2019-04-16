@@ -45,3 +45,6 @@ class GridWorld(gym.Env):
     def seed(self, seed=None):
         self.observation_space.seed(seed)
         self.action_space.seed(seed)
+
+    def __str__(self):
+        return "<GridWorld" + str({"initial_state": self.initial_state}) + ">"
