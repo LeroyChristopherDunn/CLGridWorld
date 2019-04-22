@@ -49,10 +49,10 @@ class GridWorldDynamics:
             return player_coords[0] == 0
 
         elif action == ACTIONS.EAST:
-            return player_coords[1] == shape[0] - 1
+            return player_coords[1] == shape[1] - 1
 
         elif action == ACTIONS.SOUTH:
-            return player_coords[0] == shape[1] - 1
+            return player_coords[0] == shape[0] - 1
 
         elif action == ACTIONS.WEST:
             return player_coords[1] == 0

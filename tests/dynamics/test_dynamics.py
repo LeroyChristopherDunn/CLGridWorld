@@ -43,6 +43,31 @@ class TestGridWorldDynamics(TestCase):
 
                 self.assertEqual(state, new_state)
 
+    def test_when_player_moves_into_boundary_should_remain_in_same_state_2(self):
+
+        #bug identified during training where player is not on corner boundary and grid shape is rectangle
+
+        grid_shape = (7, 6)
+        player_start_coords = [(0, 2), (1, 5), (6, 4), (5, 0)]
+
+        for i in range(len(self.directional_actions)):
+            with self.subTest(action=self.action_names[i]):
+
+                player_coords = player_start_coords[i]
+                action = self.directional_actions[i]
+
+                state = GridWorldStateBuilder.create_state_with_spec(
+                    shape=grid_shape,
+                    player_coords=player_coords,
+                    key_coords=None,
+                    lock_coords=(0, 1),
+                    pit_start_coords=(3, 2),
+                    pit_end_coords=(3, 5)
+                )
+                new_state = GridWorldDynamics(state).step(action)
+
+                self.assertEqual(state, new_state)
+
     def test_when_player_moves_into_empty_space_should_move_into_empty_space(self):
 
         player_start_coords =           [(1, 0), (0, 0), (0, 0), (0, 1)]
