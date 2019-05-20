@@ -26,15 +26,13 @@ class SarsaAgent(Agent):
 
     def get_action(self, curr_state):
 
-        if curr_state not in self.Q:
-            self.Q[curr_state] = np.zeros([self.num_actions])
+        self.init_state(curr_state)
 
         return self.policy.select_action(self.Q[curr_state])
 
     def get_best_action(self, curr_state):
 
-        if curr_state not in self.Q:
-            self.Q[curr_state] = np.zeros([self.num_actions])
+        self.init_state(curr_state)
 
         return self.test_policy.select_action(self.Q[curr_state])
 
@@ -48,11 +46,14 @@ class SarsaAgent(Agent):
 
     def _update(self, prev_state, prev_action, curr_state, prev_reward, curr_action):
 
-        if curr_state not in self.Q:
-            self.Q[curr_state] = np.zeros([self.num_actions])
+        self.init_state(curr_state)
 
         self.Q[prev_state][prev_action] += self.alpha * (prev_reward + self.gamma * self.Q[curr_state][curr_action]
                                                          - self.Q[prev_state][prev_action])
+
+    def init_state(self, state):
+        if state not in self.Q:
+            self.Q[state] = np.zeros([self.num_actions])
 
     def inc_episode(self):
         self.policy.inc_episode()
