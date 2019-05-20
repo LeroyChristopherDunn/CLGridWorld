@@ -2,10 +2,10 @@ from typing import NamedTuple, Tuple, Optional
 
 from gym import spaces
 
+_NONE = (-1. - 1)
 
-_NONE = (-1.-1)
+
 class GridWorldState(NamedTuple):
-
     grid_shape: Tuple[int, int]
     player: Tuple[int, int]
     key: Optional[Tuple[int, int]]
@@ -19,7 +19,6 @@ class GridWorldState(NamedTuple):
     has_key: bool
 
     def is_in_pit(self) -> bool:
-
         player = self.player
         pit_start = self.pit_start
         pit_end = self.pit_end
@@ -42,8 +41,8 @@ class GridWorldState(NamedTuple):
 
     def __hash__(self) -> int:
         return self.__str__().__hash__()
-    
-    def copy(self, 
+
+    def copy(self,
              grid_shape: Tuple[int, int] = _NONE,
              player: Tuple[int, int] = _NONE,
              key: Tuple[int, int] = _NONE,
@@ -55,7 +54,6 @@ class GridWorldState(NamedTuple):
              sw_beacon: Tuple[int, int] = _NONE,
              se_beacon: Tuple[int, int] = _NONE,
              has_key: int = _NONE):
-        
         grid_shape = self.grid_shape if grid_shape == _NONE else grid_shape
         player = self.player if player == _NONE else player
         key = self.key if key == _NONE else key
@@ -70,27 +68,24 @@ class GridWorldState(NamedTuple):
 
         return GridWorldState(grid_shape, player, key, lock, pit_start, pit_end,
                               nw_beacon, ne_beacon, sw_beacon, se_beacon, has_key)
-        
 
 
 class GridWorldObservationSpace(spaces.Tuple):
 
     def __init__(self, grid_size: (int, int)):
-
         coords_space = spaces.Tuple((spaces.Discrete(grid_size[0]), spaces.Discrete(grid_size[1])))
         bool_space = spaces.Discrete(2)
 
         super(GridWorldObservationSpace, self).__init__((
-            coords_space, # grid shape
-            coords_space, # player
-            coords_space, # key
-            coords_space, # lock
-            coords_space, # pit start
-            coords_space, # pit end
-            coords_space, # nw beacon
-            coords_space, # ne beacon
-            coords_space, # sw beacon
-            coords_space, # se beacon
-            bool_space    # has key
+            coords_space,  # grid shape
+            coords_space,  # player
+            coords_space,  # key
+            coords_space,  # lock
+            coords_space,  # pit start
+            coords_space,  # pit end
+            coords_space,  # nw beacon
+            coords_space,  # ne beacon
+            coords_space,  # sw beacon
+            coords_space,  # se beacon
+            bool_space  # has key
         ))
-

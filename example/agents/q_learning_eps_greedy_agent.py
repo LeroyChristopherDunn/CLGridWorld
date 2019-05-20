@@ -48,18 +48,17 @@ class QLearningEpsilonGreedyAgent(Agent):
     def inc_episode(self):
         pass
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     seed = 0
 
     # target task spec as defined in Source Task Sequencing,,, Narvekar et al 2017
     params = InitialStateParams(shape=(10, 10), player=(1, 4), key=(7, 5), lock=(1, 1), pit_start=(4, 2),
                                 pit_end=(4, 7))
     env = GridWorldBuilder.create(params)
-    env = DistanceObservationWrapper(env) # transform state space to distance based states
-    env = TupleObservationWrapper(env) # convert states to tuples to make hashable
+    env = DistanceObservationWrapper(env)  # transform state space to distance based states
+    env = TupleObservationWrapper(env)  # convert states to tuples to make hashable
 
     agent = QLearningEpsilonGreedyAgent(env.action_space, discount_factor=1, seed=seed)
 
     AgentTrainer(env, agent).train(seed, num_episodes=10000, max_steps_per_episode=10000, episode_log_interval=100)
-

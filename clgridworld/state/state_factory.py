@@ -29,7 +29,6 @@ class GridWorldStateFactory:
             has_key
         )
 
-
     @staticmethod
     def _get_pit_beacon_coords(shape, pit_start_coords, pit_end_coords):
 

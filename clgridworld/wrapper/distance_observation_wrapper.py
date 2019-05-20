@@ -28,7 +28,7 @@ class DistanceObservationWrapper(gym.ObservationWrapper):
 
         self.observation_space = spaces.Box(low=observation_space_low, high=observation_space_high)
 
-    @lru_cache(maxsize = None)
+    @lru_cache(maxsize=None)
     def observation(self, observation: GridWorldState) -> np.ndarray:
 
         is_terminal_state = TerminalStateValidator.is_terminal_state(observation)

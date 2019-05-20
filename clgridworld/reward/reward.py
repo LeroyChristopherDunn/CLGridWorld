@@ -4,10 +4,9 @@ from clgridworld.state.state import GridWorldState
 
 
 class GridWorldReward(NamedTuple):
-
     no_movement: int = -10
-    player_moved_into_empty_space:int = -10
-    player_picked_up_key:int = 500
+    player_moved_into_empty_space: int = -10
+    player_picked_up_key: int = 500
     player_unlocked_lock: int = 1000
     player_moved_into_pit: int = -200
 
