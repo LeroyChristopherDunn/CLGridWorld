@@ -1,4 +1,7 @@
 # CLGridWorld
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/LeroyChristopherDunn/CLGridWorld/blob/master/colab_demo.ipynb)
+
 Configurable Curriculum Learning Domain for Reinforcement Learning Agents
 
 - [Curriculum Learning](#curriculum-learning)
