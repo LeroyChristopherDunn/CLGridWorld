@@ -10,5 +10,5 @@ setup(
     author='Leroy Christopher Dunn',
     author_email='social.leroy.c.dunn@gmail.com',
     description='Curriculum Learning Environment for Reinforcement Learning Agents',
-    install_requires=['gym', 'numpy', 'matplotlib']
+    install_requires=['gym==0.12.1', 'numpy', 'matplotlib']
 )
