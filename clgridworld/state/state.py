@@ -40,7 +40,7 @@ class GridWorldState(NamedTuple):
         return self.lock is None
 
     def __hash__(self) -> int:
-        return self.__str__().__hash__()
+        return hash(tuple(self))
 
     def copy(self,
              grid_shape: Tuple[int, int] = _NONE,
