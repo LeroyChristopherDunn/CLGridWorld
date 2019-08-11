@@ -46,5 +46,16 @@ class GridWorld(gym.Env):
         self.observation_space.seed(seed)
         self.action_space.seed(seed)
 
+    def copy(self, seed=None):
+        new_grid_world = GridWorld(self.observation_space, self.action_space, self.initial_state, self.reward_function,
+                                   self.dynamics, self.terminal_state_validator, self.visualizer)
+
+        new_grid_world.prev_state = self.prev_state
+        new_grid_world.curr_state = self.curr_state
+
+        new_grid_world.seed(seed)
+
+        return new_grid_world
+
     def __str__(self):
         return "<GridWorld" + str({"initial_state": self.initial_state}) + ">"
